@@ -10,15 +10,15 @@ export function PrivacyPage() {
       title="Política de privacidad"
       updated={UPDATED}
       path="/privacidad"
-      seoTitle="Política de privacidad — Noticias Guayaquil"
-      seoDescription="Qué datos recoge Noticias Guayaquil y cómo los trata, conforme a la Ley Orgánica de Protección de Datos Personales del Ecuador."
-      intro="Noticias Guayaquil no pide registro ni recoge datos personales para funcionar. Esta página explica lo poco que sí se guarda y por qué."
+      seoTitle="Política de privacidad — Guayas Hoy"
+      seoDescription="Qué datos recoge Guayas Hoy y cómo los trata, conforme a la Ley Orgánica de Protección de Datos Personales del Ecuador."
+      intro="Guayas Hoy no pide registro ni recoge datos personales para funcionar. Esta página explica lo poco que sí se guarda y por qué."
       sections={[
         {
           title: '1. Quiénes somos',
           body: (
             <p className="m-0">
-              Noticias Guayaquil es un agregador de noticias de la ciudad. Reunimos titulares
+              Guayas Hoy es un agregador de noticias de la ciudad. Reunimos titulares
               y extractos publicados por medios de comunicación y enlazamos a sus artículos
               originales. No producimos contenido periodístico propio.
             </p>
@@ -46,7 +46,7 @@ export function PrivacyPage() {
             <>
               <p className="m-0">
                 Usamos <code>localStorage</code>, no cookies de seguimiento. Se guardan dos
-                valores: <code>ngye-theme</code> (claro u oscuro) y <code>cookie_consent</code>{' '}
+                valores: <code>guayashoy-theme</code> (claro u oscuro) y <code>cookie_consent</code>{' '}
                 (si ya viste el aviso).
               </p>
               <p className="m-0">
@@ -90,11 +90,14 @@ export function PrivacyPage() {
               La Ley Orgánica de Protección de Datos Personales del Ecuador te da derecho de
               acceso, rectificación, eliminación y oposición sobre tus datos personales. Como
               no tratamos datos que te identifiquen, en la práctica no hay nada que rectificar
-              ni eliminar; aun así, si tienes una consulta escríbenos a{' '}
-              <a href="mailto:hola@noticiasguayaquil.ec" className="text-accent no-underline hover:underline">
-                hola@noticiasguayaquil.ec
+              ni eliminar.
+              {/* Sin canal de contacto público: no hay formulario ni correo de contacto.
+              , aun así, si tienes una consulta escríbenos a{' '}
+              <a href="mailto:hola@guayashoy.com" className="text-accent no-underline hover:underline">
+                hola@guayashoy.com
               </a>
               .
+              */}
             </p>
           ),
         },

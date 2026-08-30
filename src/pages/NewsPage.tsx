@@ -45,7 +45,7 @@ export function NewsPage() {
     setParams(updated);
   }
 
-  const title = query ? `Búsqueda: ${query} — Noticias Guayaquil` : 'Todas las noticias — Noticias Guayaquil';
+  const title = query ? `Búsqueda: ${query} — Guayas Hoy` : 'Todas las noticias — Guayas Hoy';
 
   usePageSeo({
     title,

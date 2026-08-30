@@ -48,7 +48,7 @@ export function SourceCredit({ article, variant = 'inline', className = '' }: Pr
       </p>
       <p className="font-display font-bold text-lg text-foreground m-0 mb-1">{source.name}</p>
       <p className="text-sm text-muted-foreground m-0 mb-4">
-        Noticias Guayaquil resume y enlaza. El artículo completo, las fotos y los
+        Guayas Hoy resume y enlaza. El artículo completo, las fotos y los
         derechos son de {source.name}.
       </p>
       <div className="flex flex-wrap items-center gap-3">

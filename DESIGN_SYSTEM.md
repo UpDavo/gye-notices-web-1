@@ -1,4 +1,4 @@
-# Noticias Guayaquil — Sistema de Diseño
+# Guayas Hoy — Sistema de Diseño
 
 Derivado del estándar visual de la casa (Vite + React + TS + Tailwind v4 +
 framer-motion). **La estructura es la misma; cambia la paleta y el modo por

@@ -65,7 +65,7 @@ export function ArticlePage() {
   usePageSeo(
     article
       ? {
-          title: `${article.title} — Noticias Guayaquil`,
+          title: `${article.title} — Guayas Hoy`,
           description: article.excerpt,
           path: `/noticia/${article.slug}`,
           image: article.image_url || undefined,
@@ -209,7 +209,7 @@ export function ArticlePage() {
             <SourceCredit article={article} variant="block" className="mb-6" />
 
             <p className="text-xs text-muted-foreground leading-relaxed m-0">
-              Noticias Guayaquil es un agregador: reproduce el titular y un extracto breve
+              Guayas Hoy es un agregador: reproduce el titular y un extracto breve
               con fines informativos y enlaza al artículo completo. Los derechos sobre el
               texto y las imágenes pertenecen a {article.source.name}.
             </p>

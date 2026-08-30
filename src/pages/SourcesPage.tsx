@@ -37,9 +37,9 @@ export function SourcesPage() {
   const { data: sources } = useSources();
 
   usePageSeo({
-    title: 'Medios y cómo trabajamos — Noticias Guayaquil',
+    title: 'Medios y cómo trabajamos — Guayas Hoy',
     description:
-      'De qué medios sale el contenido de Noticias Guayaquil y con qué reglas se agrega: solo titular y extracto, enlace al original y salida inmediata a petición.',
+      'De qué medios sale el contenido de Guayas Hoy y con qué reglas se agrega: solo titular y extracto, enlace al original y salida inmediata a petición.',
     path: '/medios',
   });
 
@@ -55,7 +55,7 @@ export function SourcesPage() {
               De dónde sale todo esto.
             </h1>
             <p className="text-muted-foreground text-lg leading-relaxed m-0">
-              Noticias Guayaquil no produce noticias. Reúne lo que publican los medios de
+              Guayas Hoy no produce noticias. Reúne lo que publican los medios de
               la ciudad y del país, y manda al lector de vuelta a ellos.
             </p>
           </header>
@@ -104,6 +104,7 @@ export function SourcesPage() {
             </div>
           </section>
 
+          {/* Sin canal de contacto público: no hay formulario ni correo de contacto.
           <section className="rounded-3xl border border-border bg-surface p-8 md:p-10 mb-8 text-center">
             <h2 className="font-display font-bold text-2xl text-foreground tracking-tight m-0 mb-3">
               ¿Eres de un medio?
@@ -113,12 +114,13 @@ export function SourcesPage() {
               frecuencia, o si quieres que tu medio aparezca aquí.
             </p>
             <a
-              href="mailto:hola@noticiasguayaquil.ec"
+              href="mailto:hola@guayashoy.com"
               className="inline-block rounded-full px-8 py-3 text-sm font-semibold bg-accent text-white no-underline hover:opacity-90 transition-opacity"
             >
-              hola@noticiasguayaquil.ec
+              hola@guayashoy.com
             </a>
           </section>
+          */}
         </div>
       </main>
 

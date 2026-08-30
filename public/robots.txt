@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /noticias?q=
 
-Sitemap: https://noticiasguayaquil.ec/sitemap.xml
+Sitemap: https://guayashoy.com/sitemap.xml

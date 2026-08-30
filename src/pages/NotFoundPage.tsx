@@ -5,7 +5,7 @@ import { usePageSeo } from '../hooks/usePageSeo';
 
 export function NotFoundPage() {
   usePageSeo({
-    title: 'Página no encontrada — Noticias Guayaquil',
+    title: 'Página no encontrada — Guayas Hoy',
     description: 'La página que buscas no existe.',
     path: '/404',
     noIndex: true,

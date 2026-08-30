@@ -7,7 +7,7 @@ import { NewsFeedSection } from '../components/sections/NewsFeedSection';
 import { usePageSeo } from '../hooks/usePageSeo';
 import { SITE_URL } from '../lib/api';
 
-const TITLE = 'Noticias Guayaquil | Lo que pasa en la ciudad, hoy';
+const TITLE = 'Guayas Hoy | Lo que pasa en la ciudad, hoy';
 const DESCRIPTION =
   'Las noticias de Guayaquil de los principales medios de la ciudad, reunidas en un solo lugar. Titulares, extracto y enlace directo al medio que las publicó.';
 
@@ -21,7 +21,7 @@ export function HomePage() {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       '@id': `${SITE_URL}/#website`,
-      name: 'Noticias Guayaquil',
+      name: 'Guayas Hoy',
       url: SITE_URL,
       description: DESCRIPTION,
       inLanguage: 'es-EC',

@@ -78,7 +78,7 @@ export function Navbar() {
       >
         <div className="flex items-center justify-between pl-4 pr-2.5 md:pl-6 md:pr-3 py-2.5 gap-4">
           <Link to="/" className="flex items-center no-underline shrink-0">
-            <img src={logoSrc} alt="Noticias Guayaquil" className="h-9 md:h-10 w-auto select-none" />
+            <img src={logoSrc} alt="Guayas Hoy" className="h-9 md:h-10 w-auto select-none" />
           </Link>
 
           <ul className="hidden lg:flex items-center gap-6 list-none m-0 p-0">

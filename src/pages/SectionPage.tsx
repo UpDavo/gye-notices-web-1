@@ -34,7 +34,7 @@ export function SectionPage() {
   );
 
   usePageSeo({
-    title: `${name} — Noticias Guayaquil`,
+    title: `${name} — Guayas Hoy`,
     description:
       category?.description ||
       `Noticias de ${name} publicadas por los medios de Guayaquil, con crédito y enlace al original.`,
@@ -43,7 +43,7 @@ export function SectionPage() {
       ? {
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
-          name: `${name} — Noticias Guayaquil`,
+          name: `${name} — Guayas Hoy`,
           url: `${SITE_URL}/seccion/${slug}`,
           inLanguage: 'es-EC',
           mainEntity: {

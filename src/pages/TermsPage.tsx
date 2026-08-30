@@ -10,15 +10,15 @@ export function TermsPage() {
       title="Términos y condiciones"
       updated={UPDATED}
       path="/terminos"
-      seoTitle="Términos y condiciones — Noticias Guayaquil"
-      seoDescription="Condiciones de uso de Noticias Guayaquil, agregador de noticias de la ciudad, y cómo se trata el contenido de los medios."
-      intro="Al usar Noticias Guayaquil aceptas estas condiciones. La más importante cabe en una línea: el contenido no es nuestro, y por eso siempre te llevamos a quien lo escribió."
+      seoTitle="Términos y condiciones — Guayas Hoy"
+      seoDescription="Condiciones de uso de Guayas Hoy, agregador de noticias de la ciudad, y cómo se trata el contenido de los medios."
+      intro="Al usar Guayas Hoy aceptas estas condiciones. La más importante cabe en una línea: el contenido no es nuestro, y por eso siempre te llevamos a quien lo escribió."
       sections={[
         {
           title: '1. Qué es este sitio',
           body: (
             <p className="m-0">
-              Noticias Guayaquil es un agregador. Reunimos titulares y extractos breves
+              Guayas Hoy es un agregador. Reunimos titulares y extractos breves
               publicados por medios de comunicación, indicamos siempre el medio de origen y
               enlazamos a su artículo completo. No somos un medio de comunicación ni
               elaboramos contenido periodístico.
@@ -62,11 +62,14 @@ export function TermsPage() {
           body: (
             <p className="m-0">
               Cualquier medio puede pedir que dejemos de mostrar su contenido y lo retiramos
-              el mismo día, sin condiciones ni contrapartidas. Basta con escribir a{' '}
-              <a href="mailto:hola@noticiasguayaquil.ec" className="text-accent no-underline hover:underline">
-                hola@noticiasguayaquil.ec
+              el mismo día, sin condiciones ni contrapartidas.
+              {/* Sin canal de contacto público: no hay formulario ni correo de contacto.
+              Basta con escribir a{' '}
+              <a href="mailto:hola@guayashoy.com" className="text-accent no-underline hover:underline">
+                hola@guayashoy.com
               </a>{' '}
               desde un correo del medio.
+              */}
             </p>
           ),
         },

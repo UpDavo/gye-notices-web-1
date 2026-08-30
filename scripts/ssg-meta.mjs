@@ -15,13 +15,13 @@ import 'dotenv/config';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, '..', 'dist');
 
-const SITE_URL = (process.env.SITE_URL || 'https://noticiasguayaquil.ec').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://guayashoy.com').replace(/\/$/, '');
 const OG_IMAGE = `${SITE_URL}/img/og.png`;
 
 const PAGES = [
   {
     outPath: 'noticias/index.html',
-    title: 'Todas las noticias — Noticias Guayaquil',
+    title: 'Todas las noticias — Guayas Hoy',
     description:
       'El archivo completo de notas de Guayaquil: todo lo que publican los medios de la ciudad, con crédito y enlace al artículo original.',
     canonical: `${SITE_URL}/noticias`,
@@ -29,25 +29,25 @@ const PAGES = [
   },
   {
     outPath: 'medios/index.html',
-    title: 'Medios y cómo trabajamos — Noticias Guayaquil',
+    title: 'Medios y cómo trabajamos — Guayas Hoy',
     description:
-      'De qué medios sale el contenido de Noticias Guayaquil y con qué reglas se agrega: solo titular y extracto, enlace al original y salida inmediata a petición.',
+      'De qué medios sale el contenido de Guayas Hoy y con qué reglas se agrega: solo titular y extracto, enlace al original y salida inmediata a petición.',
     canonical: `${SITE_URL}/medios`,
     ogType: 'website',
   },
   {
     outPath: 'privacidad/index.html',
-    title: 'Política de privacidad — Noticias Guayaquil',
+    title: 'Política de privacidad — Guayas Hoy',
     description:
-      'Qué datos recoge Noticias Guayaquil y cómo los trata, conforme a la Ley Orgánica de Protección de Datos Personales del Ecuador.',
+      'Qué datos recoge Guayas Hoy y cómo los trata, conforme a la Ley Orgánica de Protección de Datos Personales del Ecuador.',
     canonical: `${SITE_URL}/privacidad`,
     ogType: 'article',
   },
   {
     outPath: 'terminos/index.html',
-    title: 'Términos y condiciones — Noticias Guayaquil',
+    title: 'Términos y condiciones — Guayas Hoy',
     description:
-      'Condiciones de uso de Noticias Guayaquil, agregador de noticias de la ciudad, y cómo se trata el contenido de los medios.',
+      'Condiciones de uso de Guayas Hoy, agregador de noticias de la ciudad, y cómo se trata el contenido de los medios.',
     canonical: `${SITE_URL}/terminos`,
     ogType: 'article',
   },

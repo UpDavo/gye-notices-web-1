@@ -49,7 +49,7 @@ export function Footer() {
             <div className="max-w-sm">
               <img
                 src="/img/logo-white.svg"
-                alt="Noticias Guayaquil"
+                alt="Guayas Hoy"
                 className="h-9 w-auto max-w-[190px] select-none mb-4"
               />
               <p className="text-base text-white/50 leading-relaxed m-0">
@@ -93,7 +93,7 @@ export function Footer() {
           </div>
 
           <div className="mt-14 pt-6 border-t border-white/10 text-[11px] uppercase tracking-[0.14em] text-white/45">
-            <p className="m-0">© {YEAR} Noticias Guayaquil</p>
+            <p className="m-0">© {YEAR} Guayas Hoy</p>
           </div>
         </div>
       </div>

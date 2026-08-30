@@ -1,4 +1,4 @@
-# Noticias Guayaquil — web
+# Guayas Hoy — web
 
 > La web hermana, con estética opuesta, está en [`../web2`](../web2). Comparten
 > backend y se reparten las noticias; ver el [README raíz](../README.md).
@@ -41,7 +41,7 @@ Copia `.env.example` a `.env`:
 | Variable | Para qué |
 |---|---|
 | `SITE_SLUG` | **Qué web es esta.** El backend alimenta varias y reparte las notas entre ellas; sin este slug la API devolvería también las de la otra. Aquí: `noticias-guayaquil`. |
-| `API_URL` | Base de la API. **Vacío en desarrollo** (lo cubre el proxy de Vite). En Cloudflare, la URL pública del backend. |
+| `API_URL` | Base de la API. **Vacío en desarrollo** (lo cubre el proxy de Vite). En Cloudflare, `https://api.guayashoy.com` (la misma API para las dos webs). |
 | `SITE_URL` | Dominio público del sitio. Alimenta canonical, Open Graph y sitemap. |
 
 `SITE_SLUG` no es un filtro más: `src/lib/api.ts` lo añade a **todas** las
@@ -170,8 +170,8 @@ Es un sitio estático (`dist/`) más dos Pages Functions.
 
 ```
 SITE_SLUG = noticias-guayaquil
-API_URL   = https://<tu-backend>
-SITE_URL  = https://noticiasguayaquil.ec
+API_URL   = https://api.guayashoy.com
+SITE_URL  = https://guayashoy.com
 ```
 
 Las tres se usan **dos veces** y por eso basta declararlas una vez en el
@@ -182,7 +182,7 @@ sitemap.
 **El backend tiene que permitir el origen.** En el servicio de Django:
 
 ```
-CORS_ALLOWED_ORIGINS=https://noticiasguayaquil.ec
+CORS_ALLOWED_ORIGINS=https://guayashoy.com,https://elguayasense.com
 ```
 
 ### `public/_redirects`
