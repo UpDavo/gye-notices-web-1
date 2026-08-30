@@ -41,7 +41,6 @@ export function Navbar() {
      el scroll es la sombra, que es lo que la despega del contenido. */
   const linkClass = 'text-foreground/70 hover:text-foreground';
   const iconClass = 'text-foreground hover:bg-foreground/10';
-  const logoSrc = theme === 'light' ? '/img/logo.svg' : '/img/logo-white.svg';
 
   /* Las cinco primeras secciones caben en la barra; el resto vive en el menú
      móvil y en el pie. Una barra de navegación con nueve enlaces no la lee
@@ -77,8 +76,16 @@ export function Navbar() {
         }}
       >
         <div className="flex items-center justify-between pl-4 pr-2.5 md:pl-6 md:pr-3 py-2.5 gap-4">
-          <Link to="/" className="flex items-center no-underline shrink-0">
-            <img src={logoSrc} alt="Guayas Hoy" className="h-9 md:h-10 w-auto select-none" />
+          {/* La marca es tipográfica: se compone con la fuente del sitio en vez
+              de cargar un SVG. Hereda el color del tema, escala con el texto y
+              no hay dos versiones que mantener. */}
+          <Link
+            to="/"
+            className="flex items-baseline gap-1.5 no-underline shrink-0 font-display font-bold text-xl md:text-2xl tracking-tight leading-none"
+            aria-label="Guayas Hoy — portada"
+          >
+            <span className="text-foreground">Guayas</span>
+            <span className="text-accent">Hoy</span>
           </Link>
 
           <ul className="hidden lg:flex items-center gap-6 list-none m-0 p-0">

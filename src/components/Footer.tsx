@@ -46,11 +46,15 @@ export function Footer() {
       <div className="relative px-6 md:px-12 lg:px-20 pt-16 pb-10">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-12">
-            <img
-              src="/img/logo-white.svg"
-              alt="Guayas Hoy"
-              className="h-9 w-auto max-w-[190px] select-none"
-            />
+            {/* Mismo wordmark tipográfico de la barra, en claro. */}
+            <Link
+              to="/"
+              className="no-underline font-display font-bold text-2xl tracking-tight leading-none flex items-baseline gap-1.5"
+              aria-label="Guayas Hoy — portada"
+            >
+              <span className="text-white">Guayas</span>
+              <span className="text-[hsl(199_95%_65%)]">Hoy</span>
+            </Link>
 
             <div>
               <ColumnTitle>Sitio</ColumnTitle>
