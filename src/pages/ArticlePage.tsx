@@ -53,9 +53,9 @@ export function ArticlePage() {
   const { data: article, loading, error, errorCode, reload } = useArticle(slug);
 
   /* Relacionadas: misma sección, sin repetir la que se está leyendo. Se piden
-     cuatro para que sobre una si la actual está en el grupo. */
+     seis para llenar la columna lateral aunque la actual esté en el grupo. */
   const related = useArticles(
-    article?.category ? { category: article.category.slug, page_size: 4 } : { page_size: 4 },
+    article?.category ? { category: article.category.slug, page_size: 6 } : { page_size: 6 },
   );
 
   useEffect(() => {
@@ -113,139 +113,144 @@ export function ArticlePage() {
 
   const relatedArticles = (related.data?.results ?? [])
     .filter((item) => item.slug !== slug)
-    .slice(0, 3);
+    .slice(0, 5);
 
   return (
     <div className="flex flex-col bg-background min-h-screen">
       <Navbar />
 
-      <main className="flex-1">
-        <header className="relative pt-36 pb-12 px-6 md:px-12 overflow-hidden">
-          <div
-            className="absolute -top-1/3 left-1/2 -translate-x-1/2 w-[90vw] h-[70vh] pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(ellipse at center, hsl(199 95% 55% / 0.16) 0%, transparent 70%)',
-            }}
-            aria-hidden="true"
-          />
+      <main className="flex-1 relative px-6 md:px-12 pt-32">
+        {/* Halo de marca detrás del titular */}
+        <div
+          className="absolute -top-1/4 left-1/2 -translate-x-1/2 w-[90vw] h-[60vh] pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse at center, hsl(199 95% 55% / 0.16) 0%, transparent 70%)',
+          }}
+          aria-hidden="true"
+        />
 
-          <div className="relative max-w-3xl mx-auto">
-            <div className="flex flex-wrap items-center gap-3 mb-8">
-              <Link
-                to="/noticias"
-                className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors no-underline flex items-center gap-1.5"
-              >
-                <ArrowLeft size={14} aria-hidden="true" />
-                Noticias
-              </Link>
-              {article?.category && (
+        {/* Dos columnas, como la portada: la nota manda y la columna lateral
+            recoge lo demás. A una sola columna centrada esta página quedaba
+            con una mancha estrecha y medio ancho vacío, porque aquí no hay
+            cuerpo de artículo que lo llene. */}
+        <div className="relative max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-10 lg:gap-14">
+          <div className="min-w-0">
+            <header>
+              <div className="flex flex-wrap items-center gap-3 mb-8">
+                <Link
+                  to="/noticias"
+                  className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors no-underline flex items-center gap-1.5"
+                >
+                  <ArrowLeft size={14} aria-hidden="true" />
+                  Noticias
+                </Link>
+                {article?.category && (
+                  <>
+                    <span className="text-muted-foreground/50" aria-hidden="true">/</span>
+                    <Link
+                      to={`/seccion/${article.category.slug}`}
+                      className="text-[11px] font-semibold uppercase tracking-widest text-accent bg-accent/10 rounded-full px-3 py-1 no-underline hover:bg-accent/20 transition-colors"
+                    >
+                      {article.category.name}
+                    </Link>
+                  </>
+                )}
+              </div>
+
+              {loading || !article ? (
+                <div className="animate-pulse flex flex-col gap-4" aria-hidden="true">
+                  <div className="h-9 rounded bg-muted w-full" />
+                  <div className="h-9 rounded bg-muted w-3/4" />
+                  <div className="h-3 rounded bg-muted w-40 mt-2" />
+                </div>
+              ) : (
                 <>
-                  <span className="text-muted-foreground/50" aria-hidden="true">/</span>
-                  <Link
-                    to={`/seccion/${article.category.slug}`}
-                    className="text-[11px] font-semibold uppercase tracking-widest text-accent bg-accent/10 rounded-full px-3 py-1 no-underline hover:bg-accent/20 transition-colors"
-                  >
-                    {article.category.name}
-                  </Link>
+                  <h1 className="font-display font-bold text-3xl md:text-5xl text-foreground tracking-tight leading-tight m-0 mb-6">
+                    {article.title}
+                  </h1>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+                    <SourceCredit article={article} variant="link" />
+                    <span aria-hidden="true">·</span>
+                    <time dateTime={article.published_at} title={formatDateTime(article.published_at)}>
+                      {timeAgo(article.published_at)}
+                    </time>
+                    {article.author && article.author !== article.source.name && (
+                      <>
+                        <span aria-hidden="true">·</span>
+                        <span>{article.author}</span>
+                      </>
+                    )}
+                  </div>
                 </>
               )}
-            </div>
+            </header>
 
-            {loading || !article ? (
-              <div className="animate-pulse flex flex-col gap-4" aria-hidden="true">
-                <div className="h-9 rounded bg-muted w-full" />
-                <div className="h-9 rounded bg-muted w-3/4" />
-                <div className="h-3 rounded bg-muted w-40 mt-2" />
-              </div>
-            ) : (
-              <>
-                <h1 className="font-display font-bold text-3xl md:text-5xl text-foreground tracking-tight leading-tight m-0 mb-6">
-                  {article.title}
-                </h1>
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-                  <SourceCredit article={article} variant="link" />
-                  <span aria-hidden="true">·</span>
-                  <time dateTime={article.published_at} title={formatDateTime(article.published_at)}>
-                    {timeAgo(article.published_at)}
-                  </time>
-                  {article.author && article.author !== article.source.name && (
-                    <>
-                      <span aria-hidden="true">·</span>
-                      <span>{article.author}</span>
-                    </>
-                  )}
-                </div>
-              </>
+            {article?.image_url && !imageFailed && (
+              <figure className="mt-8 mb-12 m-0">
+                <img
+                  src={article.image_url}
+                  alt=""
+                  onError={() => setImageFailedFor(slug ?? null)}
+                  className="w-full max-h-[520px] object-cover rounded-3xl"
+                />
+                <figcaption className="text-xs text-muted-foreground mt-3">
+                  {article.image_credit || `Imagen: ${article.source.name}`}
+                </figcaption>
+              </figure>
+            )}
+
+            {article && (
+              <article className="pb-4">
+                {/* El extracto se queda en medida de lectura aunque la columna
+                    sea ancha: una línea de 150 caracteres no se lee. */}
+                <p className="text-lg md:text-xl text-foreground/85 leading-relaxed border-l-2 border-accent pl-6 m-0 mb-10 max-w-[60ch]">
+                  {article.excerpt}
+                </p>
+
+                {/* La salida al medio original. Es el elemento principal de la
+                    página: aquí no hay más texto que leer. */}
+                <SourceCredit article={article} variant="block" className="mb-6" />
+
+                <p className="text-xs text-muted-foreground leading-relaxed m-0 max-w-[70ch]">
+                  Guayas Hoy es un agregador: reproduce el titular y un extracto breve
+                  con fines informativos y enlaza al artículo completo. Los derechos sobre el
+                  texto y las imágenes pertenecen a {article.source.name}.
+                </p>
+              </article>
             )}
           </div>
-        </header>
 
-        {article?.image_url && !imageFailed && (
-          <div className="px-6 md:px-12">
-          <figure className="max-w-4xl mx-auto mb-12 m-0">
-            <img
-              src={article.image_url}
-              alt=""
-              onError={() => setImageFailedFor(slug ?? null)}
-              className="w-full max-h-[460px] object-cover rounded-3xl"
-            />
-            <figcaption className="text-xs text-muted-foreground mt-3 text-center">
-              {article.image_credit || `Imagen: ${article.source.name}`}
-            </figcaption>
-          </figure>
-          </div>
-        )}
-
-        {article && (
-          <div className="px-6 md:px-12">
-          <article className="max-w-3xl mx-auto pb-4">
-            <p className="text-lg md:text-xl text-foreground/85 leading-relaxed border-l-2 border-accent pl-6 m-0 mb-10">
-              {article.excerpt}
-            </p>
-
-            {/* La salida al medio original. Es el elemento principal de la
-                página: aquí no hay más texto que leer. */}
-            <SourceCredit article={article} variant="block" className="mb-6" />
-
-            <p className="text-xs text-muted-foreground leading-relaxed m-0">
-              Guayas Hoy es un agregador: reproduce el titular y un extracto breve
-              con fines informativos y enlaza al artículo completo. Los derechos sobre el
-              texto y las imágenes pertenecen a {article.source.name}.
-            </p>
-          </article>
-          </div>
-        )}
-
-        <section className="px-6 md:px-12 pt-16 pb-8">
-          <div className="max-w-3xl mx-auto">
+          {/* Columna lateral. Se queda pegada al hacer scroll: la nota es corta,
+              pero la lista de al lado sigue siendo útil al llegar al final. */}
+          <aside className="lg:sticky lg:top-8 lg:self-start">
             <p className="text-accent font-semibold text-sm uppercase tracking-widest m-0 mb-6">
               Más de la ciudad
             </p>
             {related.loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              <div className="flex flex-col gap-5">
                 {Array.from({ length: 3 }, (_, i) => (
                   <CardSkeleton key={i} />
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              <ul className="list-none m-0 p-0 flex flex-col gap-5">
                 {relatedArticles.map((item) => (
-                  <ArticleCard key={item.slug} article={item} />
+                  <li key={item.slug} className="pb-5 border-b border-border last:border-0 last:pb-0">
+                    <ArticleCard article={item} variant="compact" />
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
-            <div className="text-center mt-10">
-              <Link
-                to="/noticias"
-                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold border border-border text-foreground no-underline hover:border-accent/50 hover:text-accent transition-colors"
-              >
-                Ver todas las noticias
-                <ArrowRight size={15} aria-hidden="true" />
-              </Link>
-            </div>
-          </div>
-        </section>
+            <Link
+              to="/noticias"
+              className="inline-flex items-center gap-2 mt-8 rounded-full px-6 py-3 text-sm font-semibold border border-border text-foreground no-underline hover:border-accent/50 hover:text-accent transition-colors"
+            >
+              Ver todas las noticias
+              <ArrowRight size={15} aria-hidden="true" />
+            </Link>
+          </aside>
+        </div>
       </main>
 
       <Footer />
