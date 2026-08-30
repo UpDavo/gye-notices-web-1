@@ -1,12 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { keyMatches, remember } from '../lib/soon';
 
 /* Portada de espera. Ocupa la web entera mientras SOON=true y sustituye a
-   cualquier ruta: no hay navegación posible sin la clave. */
+   cualquier ruta: no hay navegación posible sin la clave.
+
+   Solo el titular. El acceso vive en un botón discreto abajo a la derecha:
+   quien tiene la clave sabe que está ahí; el resto ve una página en blanco
+   con una frase. */
 
 export function SoonPage({ onUnlock }: { onUnlock: () => void }) {
+  const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
   const [error, setError] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   /* Mientras la web esté tapada no debe indexarse: lo que vería el buscador es
      esta pantalla, no el sitio. */
@@ -23,6 +29,17 @@ export function SoonPage({ onUnlock }: { onUnlock: () => void }) {
       document.title = previousTitle;
     };
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    inputRef.current?.focus();
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setOpen(false);
+    }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open]);
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -46,66 +63,59 @@ export function SoonPage({ onUnlock }: { onUnlock: () => void }) {
         }}
       />
 
-      <div className="relative w-full max-w-lg text-center">
-        <img
-          src="/img/logo.svg"
-          alt="Guayas Hoy"
-          className="h-12 md:h-14 w-auto mx-auto select-none dark:hidden"
-        />
-        <img
-          src="/img/logo-white.svg"
-          alt="Guayas Hoy"
-          className="h-12 md:h-14 w-auto mx-auto select-none hidden dark:block"
-        />
+      <h1 className="relative font-display font-bold text-4xl md:text-6xl tracking-tight leading-[1.05] text-center max-w-3xl m-0">
+        Estamos armando la portada
+      </h1>
 
-        <p className="mt-10 text-[11px] uppercase tracking-[0.28em] text-accent m-0">
-          Muy pronto
-        </p>
-
-        <h1 className="font-display font-bold text-4xl md:text-5xl tracking-tight leading-[1.05] mt-4 mb-0">
-          Estamos armando la portada
-        </h1>
-
-        <p className="text-muted-foreground leading-relaxed mt-5 mb-0 max-w-md mx-auto">
-          Las noticias de Guayaquil de los principales medios de la ciudad, reunidas en un
-          solo lugar. Falta poco.
-        </p>
-
-        <form onSubmit={submit} className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-          <label htmlFor="soon-key" className="sr-only">
-            Clave de acceso anticipado
-          </label>
-          <input
-            id="soon-key"
-            type="password"
-            autoComplete="off"
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value);
-              setError(false);
-            }}
-            placeholder="Clave de acceso"
-            aria-invalid={error}
-            aria-describedby={error ? 'soon-error' : undefined}
-            className="flex-1 rounded-full border border-border bg-surface px-5 py-3 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-ring/30 transition-colors"
-          />
-          <button
-            type="submit"
-            className="rounded-full px-7 py-3 text-sm font-semibold bg-accent text-white border-0 cursor-pointer hover:opacity-90 transition-opacity"
+      {/* Acceso anticipado. Discreto a propósito: no invita a probar suerte. */}
+      <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+        {open && (
+          <form
+            onSubmit={submit}
+            className="flex items-center gap-2 rounded-full border border-border bg-surface p-1.5 shadow-[0_12px_32px_-16px_rgba(15,23,42,0.45)]"
           >
-            Entrar
-          </button>
-        </form>
+            <label htmlFor="soon-key" className="sr-only">
+              Clave de acceso anticipado
+            </label>
+            <input
+              ref={inputRef}
+              id="soon-key"
+              type="password"
+              autoComplete="off"
+              value={value}
+              onChange={(event) => {
+                setValue(event.target.value);
+                setError(false);
+              }}
+              placeholder="Clave"
+              aria-invalid={error}
+              className={`w-40 sm:w-48 bg-transparent px-4 py-1.5 text-sm text-foreground outline-none placeholder:text-muted-foreground ${
+                error ? 'text-accent' : ''
+              }`}
+            />
+            <button
+              type="submit"
+              className="rounded-full px-4 py-1.5 text-xs font-semibold bg-accent text-white border-0 cursor-pointer hover:opacity-90 transition-opacity"
+            >
+              Entrar
+            </button>
+          </form>
+        )}
 
-        <p
-          id="soon-error"
-          role="status"
-          className={`text-sm mt-4 mb-0 transition-opacity ${
-            error ? 'text-accent opacity-100' : 'opacity-0'
+        <button
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          aria-expanded={open}
+          aria-label={open ? 'Cerrar acceso' : 'Acceso anticipado'}
+          title="Acceso"
+          className={`h-9 w-9 rounded-full border border-border bg-surface text-muted-foreground cursor-pointer transition-opacity hover:opacity-100 focus-visible:opacity-100 ${
+            open ? 'opacity-100' : 'opacity-25'
           }`}
         >
-          Esa clave no es. Revisa que no sobre un espacio.
-        </p>
+          <span aria-hidden="true" className="text-sm leading-none">
+            {open ? '×' : '·'}
+          </span>
+        </button>
       </div>
     </main>
   );
