@@ -1,0 +1,214 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+/* ─── Fuente local ────────────────────────────────────── */
+@font-face {
+  font-family: "AtkinsonHyperlegible";
+  src: url("/fonts/AtkinsonHyperlegible-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AtkinsonHyperlegible";
+  src: url("/fonts/AtkinsonHyperlegible-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AtkinsonHyperlegible";
+  src: url("/fonts/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AtkinsonHyperlegible";
+  src: url("/fonts/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ─── Noticias Guayaquil — Design Tokens ──────────────────
+   Mismo sistema que el estándar de la casa; cambia la paleta.
+   Allí el fondo era negro y el acento morado; aquí el fondo es blanco y el
+   acento celeste, porque un periódico se lee de día y en pantallas malas.
+   Los neutrales llevan tinte 205-213 (frío) para amarrarlos al celeste:
+   nunca un gris puro tipo #333.
+──────────────────────────────────────────────────────────── */
+@theme {
+  --font-display: "AtkinsonHyperlegible", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "AtkinsonHyperlegible", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-bright: hsl(var(--accent-bright));
+  --color-accent-deep: hsl(var(--accent-deep));
+  --color-border: hsl(var(--border));
+  --color-ring: hsl(var(--ring));
+  --color-surface: hsl(var(--surface));
+}
+
+:root {
+  /* Celeste de marca #0284C7, bajado de luminosidad para pasar AA sobre blanco.
+     `accent-bright` es el mismo tono subido: solo para superficies grandes y
+     gradientes, nunca para texto pequeño. */
+  --accent: 200 98% 39%;
+  --accent-bright: 199 95% 54%;
+  --accent-deep: 205 90% 26%;
+  --accent-foreground: 0 0% 100%;
+  --ring: 200 98% 39%;
+
+  --primary: 200 98% 39%;
+  --primary-foreground: 0 0% 100%;
+
+  --background: 0 0% 100%;
+  --foreground: 213 34% 12%;
+
+  /* Superficie elevada: casi blanco, tintado de azul (≈ #f5f8fb) */
+  --surface: 205 44% 97%;
+
+  --secondary: 205 44% 97%;
+  --secondary-foreground: 213 34% 12%;
+  --muted: 205 40% 95%;
+  --muted-foreground: 211 15% 42%;
+  --border: 207 24% 88%;
+
+  --radius: 1rem;
+
+  color-scheme: light;
+}
+
+/* ─── Modo oscuro (clase .dark en <html>) ──────────────
+   Inverso del principal: el fondo se va a azul noche, no a negro puro, para
+   no perder el parentesco con el celeste. El acento SUBE de luminosidad —
+   sobre oscuro el acento emite, sobre claro marca. */
+html.dark {
+  --accent: 199 95% 60%;
+  --accent-bright: 199 92% 52%;
+  /* En oscuro el degradado de las tarjetas sin foto va de azul profundo a
+     celeste medio. Si arrancara del mismo tono que el acento, el bloque
+     brillaría más que las fotos reales de al lado. */
+  --accent-deep: 206 88% 22%;
+  --accent-foreground: 213 44% 8%;
+  --ring: 199 95% 60%;
+
+  --primary: 199 95% 60%;
+  --primary-foreground: 213 44% 8%;
+
+  --background: 213 44% 8%;
+  --foreground: 205 30% 96%;
+
+  --surface: 213 34% 13%;
+  --secondary: 213 34% 13%;
+  --secondary-foreground: 205 30% 96%;
+  --muted: 213 30% 17%;
+  --muted-foreground: 209 16% 64%;
+  --border: 213 25% 22%;
+
+  color-scheme: dark;
+}
+
+/* ─── Base resets ────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  margin: 0;
+  text-align: initial;
+  display: block;
+}
+
+::selection {
+  background: hsl(var(--accent) / 0.22);
+  color: hsl(var(--foreground));
+}
+
+/* El estándar de la casa no tiene focus visible en botones ni enlaces — es un
+   hueco de accesibilidad conocido. Aquí se cierra desde el día uno. */
+:where(a, button, [role="button"], summary, input, textarea, select):focus-visible {
+  outline: 2px solid hsl(var(--accent));
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+/* ─── Recortes de texto ──────────────────────────────── */
+.line-clamp-2,
+.line-clamp-3,
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-2 { -webkit-line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; }
+.line-clamp-4 { -webkit-line-clamp: 4; }
+
+/* ─── Barra de secciones ─────────────────────────────── */
+/* Las pestañas de sección se desplazan de lado en móvil; sin scrollbar
+   visible, que en una barra de 40px de alto se come el texto. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Cintillo de últimas noticias ───────────────────── */
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 60s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
