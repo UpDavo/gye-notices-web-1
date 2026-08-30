@@ -1,0 +1,51 @@
+/* Banners del hero de Guayas Hoy.
+
+   Están aquí, quemados, y no vienen de la API: son tres piezas que cambian
+   cada varias semanas, y traerlas del backend costaba una petición en la
+   primera pantalla, un estado de carga y un despliegue del backend cada vez
+   que se cambia una imagen. Editar este archivo y desplegar la web es más
+   corto y no puede fallar a medias.
+
+   Las imágenes viven en `public/img/` de esta misma web, así que se referencian
+   por ruta absoluta del sitio. Si algún día hacen falta banners por campaña o
+   con ventana de fechas, el backend ya tiene el modelo y el endpoint
+   (`/api/news/banners/`, `news/banners.json`, `seed_banners`) — se vuelve a
+   conectar cambiando el import de `HeroBanners`. */
+
+import type { Banner } from '../lib/api';
+
+export const HERO_BANNERS: Banner[] = [
+  {
+    key: 'hero-principal',
+    title: 'Guayaquil, al día',
+    subtitle: 'Lo que publican los medios de la ciudad, reunido en un solo lugar.',
+    alt: 'Vista panorámica de Guayaquil',
+    image_url: '/img/banner-hero.jpg',
+    image_url_mobile: '/img/banner-hero-mobile.jpg',
+    link_url: '',
+    open_in_new_tab: false,
+    order: 10,
+  },
+  {
+    key: 'fuentes',
+    title: 'De dónde viene cada nota',
+    subtitle: 'Publicamos titular y extracto. El artículo completo, en el medio que lo escribió.',
+    alt: '',
+    image_url: '/img/banner-fuentes.jpg',
+    image_url_mobile: '',
+    link_url: '/medios',
+    open_in_new_tab: false,
+    order: 20,
+  },
+  {
+    key: 'destacado-guayaquil',
+    title: 'Guayaquil',
+    subtitle: 'Obras, tránsito, barrios y municipio.',
+    alt: '',
+    image_url: '/img/banner-seccion.jpg',
+    image_url_mobile: '',
+    link_url: '/seccion/guayaquil',
+    open_in_new_tab: false,
+    order: 30,
+  },
+];

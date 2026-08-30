@@ -3,23 +3,23 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useReducedMotion } from 'framer-motion';
 import type { Banner } from '../lib/api';
-import { useBanners } from '../hooks/useNews';
+import { HERO_BANNERS } from '../data/banners';
 
-/* El hero: carrusel de banners definidos en `news/banners.json` del backend.
+/* El hero: carrusel de los banners de `src/data/banners.ts`.
 
-   Avanza solo cada 6 s y vuelve al primero al llegar al final. Cuántos hay y a
-   qué web va cada uno lo decide el JSON con su lista `sites`, no este archivo.
+   Avanza solo cada 6 s y vuelve al primero al llegar al final. Cuáles son y a
+   dónde llevan se edita en ese archivo, no aquí.
 
    Es un banner y nada más: va de borde a borde, arranca en lo alto de la
-   página y no lleva rótulo encima. El título y el subtítulo del JSON son el
+   página y no lleva rótulo encima. El título y el subtítulo son el
    texto alternativo y el contexto para lectores de pantalla, no una capa de
    tipografía sobre la imagen —la pieza ya viene con su propio texto quemado y
    superponerle otro la ensucia.
 
    La píldora de la barra flota ENCIMA de la imagen; por eso el hueco que esa
-   barra necesita vive aquí y no en la portada. Sin banner —o mientras carga—
-   este componente sigue ocupando ese hueco en vez de desaparecer: si no, el
-   cintillo de última hora se metería debajo de la barra.
+   barra necesita vive aquí y no en la portada. Sin banners, este componente sigue ocupando
+   ese hueco en vez de desaparecer: si no, el cintillo de última hora se
+   metería debajo de la barra.
 
    La pista es un `overflow-x-auto` con scroll-snap, no un `transform`. Así el
    swipe en móvil es el del propio navegador —con su inercia y su rebote— en vez
@@ -73,21 +73,19 @@ function BannerLink({ banner, className, children }: {
 }
 
 export function HeroBanners() {
-  const { data, loading } = useBanners();
   const reduced = useReducedMotion() ?? false;
 
   const trackRef = useRef<HTMLUListElement>(null);
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  /* Las imágenes vienen de una URL escrita a mano en el JSON del backend, así
-     que fallan con facilidad: una ruta mal copiada, un dominio que caduca. El
-     banner roto se retira de la lista en vez de dejar el icono de imagen rota
-     ocupando la primera pantalla. */
+  /* Las rutas se escriben a mano, así que una errata deja un banner sin
+     imagen. El que falla se retira de la lista en vez de dejar el icono de
+     imagen rota ocupando la primera pantalla. */
   const [failed, setFailed] = useState<Record<string, boolean>>({});
   const markFailed = (key: string) => setFailed((prev) => ({ ...prev, [key]: true }));
 
-  const banners = (data ?? []).filter((b) => !failed[b.key]);
+  const banners = HERO_BANNERS.filter((b) => !failed[b.key]);
   const total = banners.length;
 
   const goTo = useCallback((index: number, smooth = true) => {
@@ -135,7 +133,7 @@ export function HeroBanners() {
   }, [reduced, paused, total, goTo]);
 
   // Sin banners no hay hero, pero sí el hueco de la barra flotante.
-  if (loading || total === 0) return <div className="h-28 md:h-32" aria-hidden="true" />;
+  if (total === 0) return <div className="h-28 md:h-32" aria-hidden="true" />;
 
   return (
     <section
