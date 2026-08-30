@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
-import { useCategories } from '../hooks/useNews';
 
 const YEAR = new Date().getFullYear();
 
@@ -11,8 +10,11 @@ const YEAR = new Date().getFullYear();
    su propio crédito y con el enlace al medio, que es donde el lector lo mira.
    Repetirlo aquí no informaba a nadie: solo alargaba la página.
 
-   Queda el bloque oscuro con el halo de marca, dos columnas de enlaces y la
-   línea legal. */
+   Por lo mismo se fue la columna de secciones: navegar por sección se hace
+   desde la barra, arriba, que es donde el lector la busca.
+
+   Queda el bloque oscuro con el halo de marca, la marca, los enlaces del
+   sitio y la línea legal. */
 
 function ColumnTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -23,8 +25,6 @@ function ColumnTitle({ children }: { children: React.ReactNode }) {
 const linkClass = 'text-base text-white/85 hover:text-white no-underline transition-colors';
 
 export function Footer() {
-  const { data: categories } = useCategories();
-
   function scrollTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -46,40 +46,19 @@ export function Footer() {
       <div className="relative px-6 md:px-12 lg:px-20 pt-16 pb-10">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-12">
-            <div className="max-w-sm">
-              <img
-                src="/img/logo-white.svg"
-                alt="Guayas Hoy"
-                className="h-9 w-auto max-w-[190px] select-none mb-4"
-              />
-              <p className="text-base text-white/50 leading-relaxed m-0">
-                Lo que publican los medios de la ciudad, con el crédito y el enlace al
-                original en cada nota.
-              </p>
-            </div>
+            <img
+              src="/img/logo-white.svg"
+              alt="Guayas Hoy"
+              className="h-9 w-auto max-w-[190px] select-none"
+            />
 
-            <div className="flex gap-12 sm:gap-16">
-              <div>
-                <ColumnTitle>Secciones</ColumnTitle>
-                <ul className="list-none m-0 p-0 flex flex-col gap-2.5">
-                  {(categories ?? []).slice(0, 5).map((category) => (
-                    <li key={category.slug}>
-                      <Link to={`/seccion/${category.slug}`} className={linkClass}>
-                        {category.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <ColumnTitle>Sitio</ColumnTitle>
-                <ul className="list-none m-0 p-0 flex flex-col gap-2.5">
-                  <li><Link to="/noticias" className={linkClass}>Todas las notas</Link></li>
-                  <li><Link to="/privacidad" className={linkClass}>Privacidad</Link></li>
-                  <li><Link to="/terminos" className={linkClass}>Términos</Link></li>
-                </ul>
-              </div>
+            <div>
+              <ColumnTitle>Sitio</ColumnTitle>
+              <ul className="list-none m-0 p-0 flex flex-col gap-2.5">
+                <li><Link to="/noticias" className={linkClass}>Todas las notas</Link></li>
+                <li><Link to="/privacidad" className={linkClass}>Privacidad</Link></li>
+                <li><Link to="/terminos" className={linkClass}>Términos</Link></li>
+              </ul>
             </div>
 
             <button
