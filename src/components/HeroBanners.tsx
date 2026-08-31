@@ -2,8 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useReducedMotion } from 'framer-motion';
-import type { Banner } from '../lib/api';
-import { HERO_BANNERS } from '../data/banners';
+import { HERO_BANNERS, type Banner } from '../data/banners';
 
 /* El hero: carrusel de los banners de `src/data/banners.ts`.
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { useArticles, useFeatured } from '../../hooks/useNews';
+import { useFeatured } from '../../hooks/useNews';
 import { ArticleCard } from '../news/ArticleCard';
 import { CardSkeleton, EmptyState, ErrorState } from '../news/States';
 import { Eyebrow, Reveal } from '../ui/ScrollMotion';
@@ -9,16 +9,16 @@ import { Eyebrow, Reveal } from '../ui/ScrollMotion';
 
    Las destacadas las marca un editor desde el admin. Si todavía no hay
    ninguna, la portada se arma sola con lo más reciente en vez de quedarse
-   vacía — un periódico sin portada no es una opción. */
+   vacía — un periódico sin portada no es una opción. Esa caída la resuelve el
+   backend, así que aquí basta una petición. */
 
 export function FrontPageSection() {
-  const featured = useFeatured();
-  const latest = useArticles({ page_size: 7 });
+  /* Una sola petición para toda la sección. El backend ya devuelve lo destacado
+     y, si no hay nada destacado, lo más reciente — que es exactamente la caída
+     que antes se hacía aquí pidiendo el listado por separado. */
+  const { data, loading, error, reload } = useFeatured(7);
 
-  const loading = featured.loading || latest.loading;
-  const error = latest.error;
-
-  const pool = featured.data?.results?.length ? featured.data.results : (latest.data?.results ?? []);
+  const pool = data?.results ?? [];
 
   /* La nota principal ocupa media pantalla, así que se prefiere una que traiga
      foto: sin ella el bloque queda como un rectángulo de color enorme. Si
@@ -31,7 +31,7 @@ export function FrontPageSection() {
   /* La columna lateral se completa con lo más reciente que no esté ya arriba,
      para que la portada nunca muestre la misma nota dos veces. */
   const used = new Set([lead?.slug, ...rest.slice(0, 3).map((a) => a.slug)].filter(Boolean));
-  const aside = (latest.data?.results ?? []).filter((a) => !used.has(a.slug)).slice(0, 4);
+  const aside = pool.filter((a) => !used.has(a.slug)).slice(0, 4);
 
   /* El aire de abajo lo pone la sección siguiente: sumar `pb` aquí y `pt`
      allí dejaba casi tres pantallas de fondo vacío entre un titular y otro. */
@@ -54,7 +54,7 @@ export function FrontPageSection() {
           </Link>
         </Reveal>
 
-        {error && <ErrorState message={error} onRetry={latest.reload} />}
+        {error && <ErrorState message={error} onRetry={reload} />}
 
         {!error && loading && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
