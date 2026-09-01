@@ -30,7 +30,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative overflow-hidden bg-[hsl(213_44%_8%)] text-white rounded-t-[2.5rem] md:rounded-t-[3rem] mt-24">
+    <footer className="relative overflow-hidden bg-[hsl(213_44%_8%)] text-white border-t-4 border-accent mt-24">
       {/* Halo de marca, con fundido superior para que no haya corte duro */}
       <div
         className="absolute inset-x-0 top-0 h-[80%] pointer-events-none"
@@ -49,7 +49,7 @@ export function Footer() {
             {/* Mismo wordmark tipográfico de la barra, en claro. */}
             <Link
               to="/"
-              className="no-underline font-display font-bold text-2xl tracking-tight leading-none flex items-baseline gap-1.5"
+              className="no-underline font-display font-bold text-2xl leading-none flex items-baseline gap-1.5"
               aria-label="Guayas Hoy — portada"
             >
               <span className="text-white">Guayas</span>
@@ -75,7 +75,16 @@ export function Footer() {
             </button>
           </div>
 
-          <div className="mt-14 pt-6 border-t border-white/10 text-[11px] uppercase tracking-[0.14em] text-white/45">
+          {/* La palabra gigante del cierre, en la serif de la marca y casi
+              fundida con el fondo: es el colofón de la edición. */}
+          <p
+            className="font-display font-bold text-white/[0.07] leading-[0.8] m-0 mt-16 -mb-4 select-none whitespace-nowrap text-[14vw] lg:text-[10.5rem]"
+            aria-hidden="true"
+          >
+            Guayas Hoy
+          </p>
+
+          <div className="relative mt-6 pt-6 border-t border-white/10 text-[11px] uppercase tracking-[0.14em] text-white/45">
             <p className="m-0">© {YEAR} Guayas Hoy</p>
           </div>
         </div>

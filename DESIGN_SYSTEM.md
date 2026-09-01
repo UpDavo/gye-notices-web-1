@@ -1,394 +1,241 @@
 # Guayas Hoy — Sistema de Diseño
 
-Derivado del estándar visual de la casa (Vite + React + TS + Tailwind v4 +
-framer-motion). **La estructura es la misma; cambia la paleta y el modo por
-defecto.**
+**Editorial moderna en celeste y blanco.** Serif de display, reglas y filetes en
+vez de cajas, versalitas celestes y radios contenidos. Es la tercera vía entre
+el estándar de la casa (píldoras, vidrio, tarjetas opacas) y el diario clásico
+de [`../web2`](../web2/DESIGN_SYSTEM.md) (papel crema, Georgia, radio 0): toma
+del segundo el vocabulario de imprenta —reglas, kickers, columna con filete— y
+lo compone sobre blanco, con celeste, con fotos a color y con el movimiento del
+primero.
 
-Lo que se conserva tal cual: la primitiva `Reveal`, el easing de marca, la
-píldora de vidrio del navbar, `rounded-full` en todo botón, tarjetas opacas,
-`tracking-tight` en todo título, el ritmo de secciones y el pie con palabra
-gigante.
-
-Lo que cambia: el fondo va de negro a blanco, el acento de morado a celeste, y
-el modo por defecto pasa de oscuro a claro. Un periódico se lee de día, en el
-teléfono y en pantallas malas.
+Stack: Vite + React + TS + Tailwind v4 + framer-motion.
 
 ---
 
-## 1. Fundamento
+## 1. Las tres decisiones que hacen el look
+
+1. **El titular va en serif moderna (Fraunces).** Es lo que separa la edición de
+   un feed. El cuerpo sigue en Atkinson Hyperlegible: la serif es voz, no texto.
+2. **La estructura la ponen las reglas, no las cajas.** Una nota abre con una
+   regla gruesa (`border-t-2 border-foreground/85`) y cierra con un filete fino
+   (`border-t border-border`) sobre el crédito. No hay tarjetas con fondo y
+   borde alrededor.
+3. **Radios contenidos.** `--radius: 0.5rem`. Lo redondo queda para imágenes
+   (`rounded-lg`/`rounded-xl`) y controles; **no hay `rounded-full` en botones
+   ni pestañas** — solo en círculos de icono (tema, menú, flechas del carrusel).
 
 | Decisión | Valor | Por qué |
 |---|---|---|
-| Superficie base | Blanco `#fff` | Es un periódico; la lectura larga manda sobre el efecto |
-| Acento | `hsl(200 98% 39%)` (≈ `#0284C7`) | Celeste de marca, bajado de luminosidad para pasar AA sobre blanco |
-| Modo por defecto | Claro, oscuro con `html.dark` | Al revés que el estándar de la casa |
-| Tipografía | Atkinson Hyperlegible (única familia) | Elección de accesibilidad; alta distinción entre caracteres |
-| Radios | Muy redondeados; `rounded-full` domina | Igual que el estándar |
-| Movimiento | Scroll-driven, no decorativo | Igual que el estándar, pero con menos hero |
-| Vidrio | Escaso y quirúrgico | Solo la barra flotante. Las tarjetas son opacas |
+| Superficie base | Blanco `#fff` | Un periódico se lee de día y en pantallas malas |
+| Acento | `hsl(200 98% 39%)` (≈ `#0284C7`) | Celeste de marca, AA sobre blanco |
+| Display | Fraunces (Google Fonts, variable 400–700) | Serif moderna: editorial sin caer en lo clásico |
+| Cuerpo | Atkinson Hyperlegible local | Elección de accesibilidad |
+| Estructura | Regla gruesa + filete fino | La firma del sistema; el hover tiñe la regla de celeste |
+| Modo por defecto | Oscuro (`html.dark`), claro guardado | Decisión previa del sitio; ambos temas se prueban |
+| Vidrio | Solo la mancheta (`blur(20px) saturate(1.6)`) | El contenido pasa por debajo sin volverse niebla |
 
 ---
 
 ## 2. Tokens de color
 
-Los neutrales **no son grises puros**: todos llevan tinte 203–213 (frío), que es
-lo que los amarra al celeste. Nunca un `#333` genérico.
+Sin cambios de paleta: los neutrales llevan tinte 203–213 (frío) que los amarra
+al celeste; nunca un `#333` genérico. Ver `src/index.css` para los bloques
+completos `:root` / `html.dark`. Reglas que se mantienen:
 
-### Claro (por defecto)
-
-```css
-:root {
-  --accent: 200 98% 39%;          /* celeste de marca, AA sobre blanco */
-  --accent-bright: 199 95% 54%;   /* solo superficies grandes y degradados */
-  --accent-deep: 205 90% 26%;     /* arranque de los degradados */
-  --accent-foreground: 0 0% 100%;
-  --primary: 200 98% 39%;
-  --ring: 200 98% 39%;
-
-  --background: 0 0% 100%;
-  --foreground: 213 34% 12%;
-  --surface: 205 44% 97%;         /* ≈ #f5f8fb — tarjeta elevada */
-  --secondary: 205 44% 97%;
-  --muted: 205 40% 95%;
-  --muted-foreground: 211 15% 42%;
-  --border: 207 24% 88%;
-
-  --radius: 1rem;
-  color-scheme: light;
-}
-```
-
-### Oscuro (`html.dark`)
-
-El fondo se va a **azul noche, no a negro puro**, para no perder el parentesco
-con el celeste. El acento **sube** de luminosidad: sobre oscuro el acento emite,
-sobre claro marca.
-
-```css
-html.dark {
-  --accent: 199 95% 60%;
-  --accent-bright: 199 92% 52%;
-  --accent-deep: 206 88% 22%;
-  --accent-foreground: 213 44% 8%;
-
-  --background: 213 44% 8%;
-  --foreground: 205 30% 96%;
-  --surface: 213 34% 13%;
-  --muted: 213 30% 17%;
-  --muted-foreground: 209 16% 64%;
-  --border: 213 25% 22%;
-
-  color-scheme: dark;
-}
-```
-
-**Regla de conversión claro → oscuro:** el acento gana luminosidad (39% → 60%);
-las superficies se invierten pero conservan el tinte 205–213; los degradados
-arrancan de un azul profundo, no del propio acento — si arrancaran del acento, un
-bloque de color brillaría más que las fotos reales de al lado.
-
-### Escaleras de opacidad
-
-Solo estos peldaños. No inventes intermedios.
-
-**Acento:** `/[0.04]` fondo hover de tarjeta · `/10` chip, píldora de categoría ·
-`/20` chip hover · `/40` borde hover, anillo de foco
-
-**Blanco (sobre el hero):** `/[0.10]` `/25` `/30` `/40` `/55` `/75` `/80` `/90`
+- En oscuro el acento **sube** de luminosidad (39% → 60%): sobre oscuro emite,
+  sobre claro marca.
+- Los degradados arrancan de `--accent-deep`, nunca del propio acento.
+- Escalera de opacidad del acento: `/[0.04]` fondo hover · `/10` chip · `/20`
+  chip hover · `/40`–`/50` borde hover, anillo de foco.
 
 ---
 
 ## 3. Tipografía
 
-Una sola familia, `AtkinsonHyperlegible`, local en 400/700 + itálicas.
-`--font-display` y `--font-body` apuntan a lo mismo.
+```css
+--font-display: "Fraunces", Georgia, "Iowan Old Style", serif;
+--font-body: "AtkinsonHyperlegible", ui-sans-serif, system-ui, sans-serif;
+```
 
-> **Variante editorial:** si algún día quieres el aire de periódico impreso,
-> cambia **solo** `--font-display` a una serif. El sistema está preparado para
-> que sea una línea, pero mientras tanto la familia única se mantiene por
-> coherencia con el estándar de la casa.
+Fraunces se carga desde Google Fonts en `index.html` (preconnect + `swap`);
+Atkinson sigue local en 4 archivos.
 
 | Rol | Clases |
 |---|---|
-| Hero h1 | `text-5xl md:text-6xl lg:text-[5rem] leading-[0.95] tracking-tight` |
-| Section h2 | `text-4xl md:text-6xl tracking-tight leading-tight` |
-| Page h1 | `text-4xl md:text-5xl tracking-tight leading-tight` |
-| Titular de nota | `text-3xl md:text-5xl tracking-tight leading-tight` |
-| Tarjeta lead | `text-2xl md:text-3xl leading-tight tracking-tight` |
-| Tarjeta estándar | `text-lg leading-snug tracking-tight` |
-| Tarjeta compacta | `text-sm leading-snug` |
-| Eyebrow | `text-accent font-semibold text-base md:text-lg tracking-tight mb-4` |
-| Lead | `text-lg md:text-xl text-foreground/85 leading-relaxed` |
-| Cuerpo de tarjeta | `text-sm text-muted-foreground leading-relaxed` |
+| Section h2 | `font-display font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.05]` |
+| Page h1 | `font-display font-bold text-4xl md:text-5xl leading-[1.05]` |
+| Titular de nota | `font-display font-bold text-3xl md:text-5xl leading-[1.08]` |
+| Tarjeta lead | `font-display font-bold text-3xl md:text-4xl lg:text-[2.75rem] leading-[1.08]` |
+| Tarjeta estándar | `font-display font-bold text-xl leading-snug` |
+| Tarjeta compacta | `font-display font-bold text-[15px] leading-snug` |
+| Kicker | clase `.kicker` (11px, 700, uppercase, tracking 0.2em, celeste) |
+| Nav de la mancheta | `text-[12px] font-semibold uppercase tracking-[0.14em]` |
+| Lead / extracto | `text-lg md:text-xl text-foreground/85 leading-relaxed` |
 | Micro-etiqueta | `text-[11px] uppercase tracking-widest` |
 
-**Reglas duras** (heredadas sin cambios):
+### Reglas duras
 
-- Tracking binario: `tracking-tight` en todo título y eyebrow, `tracking-widest`
-  en toda micro-etiqueta en mayúsculas.
-- Mayúsculas solo en micro-etiquetas, nunca en titulares.
+- **La serif no lleva `tracking-tight`.** Una serif ya viene ajustada; apretarla
+  la ensucia. (El `tracking-tight` era del sistema anterior, con sans.)
+- **Las versalitas mandan en lo pequeño:** kicker, navegación, firma y pestañas
+  van en mayúsculas con tracking abierto. Es lo que da el aire editorial.
 - Peso binario: 400 y 700.
-- Los display grandes bajan el leading: `leading-[0.95]`, `[1.15]`.
+- Todo texto de terceros lleva `line-clamp`.
 
-**Truncado.** Los titulares vienen de terceros y no se pueden acortar a mano, así
-que la rejilla los recorta: `line-clamp-3` en el titular de tarjeta,
-`line-clamp-3/4` en el extracto. Sin eso, un titular largo desalinea la fila
-entera.
+### El kicker
 
----
-
-## 4. Vidrio
-
-Existe **solo en la barra flotante**. El ingrediente crítico es `saturate(1.6)`:
-sin él es niebla gris, no vidrio.
+`.kicker` (en `index.css`) es la firma tipográfica. Sobre un titular de sección
+va precedido de un filete corto:
 
 ```jsx
-<div
-  className={`max-w-6xl mx-auto rounded-[1.75rem] border transition-all duration-300 overflow-hidden ${
-    solid
-      ? 'bg-surface/85 border-border shadow-[0_8px_40px_-12px_rgba(15,23,42,0.18)]'
-      : 'bg-black/30 border-white/[0.10]'
-  }`}
-  style={{
-    backdropFilter: 'blur(20px) saturate(1.6)',
-    WebkitBackdropFilter: 'blur(20px) saturate(1.6)',
-  }}
->
+<p className="kicker flex items-center gap-3 m-0 mb-4">
+  <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
+  Portada
+</p>
 ```
 
-`solid = scrolled || pathname !== '/' || menuOpen`, umbral `window.scrollY > 20`.
-Sobre el hero el texto va en blanco; en cuanto se vuelve sólida sigue los tokens
-del tema activo.
-
-**El vidrio necesita algo detrás.** Sobre fondo plano usa `bg-surface` opaco. El
-aviso de cookies, por ejemplo, es opaco a propósito: flotando sobre contenido
-claro, el translúcido dejaba el texto ilegible.
+La categoría de una tarjeta es un `.kicker` a secas, sin píldora de fondo.
 
 ---
 
-## 5. Botones
+## 4. La anatomía de una nota
 
-Todos `rounded-full`. **Ninguno lleva gradiente ni sombra.**
+```jsx
+/* Tarjeta estándar: regla, foto, kicker, titular, extracto, filete + crédito */
+<Link className="group flex flex-col h-full border-t-2 border-foreground/85
+                 hover:border-accent pt-5 no-underline transition-colors duration-300">
+  <Cover className="h-44 rounded-lg" />          {/* la foto sí es redondeada */}
+  <div className="pt-4 flex flex-col gap-2.5 flex-1">
+    <span className="kicker">{categoría}</span>
+    <h3 className="font-display font-bold text-xl leading-snug line-clamp-3
+                   group-hover:text-accent transition-colors">…</h3>
+    <p className="text-sm text-muted-foreground line-clamp-3 flex-1">…</p>
+    <div className="pt-3 border-t border-border">{/* crédito + hora */}</div>
+  </div>
+</Link>
+```
+
+El hover es doble: la regla superior y el titular se tiñen de celeste, y la
+foto escala un 5%. No hay fondo de tarjeta ni sombra.
+
+En listas laterales (portada, página de nota) las compactas se separan con
+filetes finos y la columna entera se separa de la principal con un filete
+vertical: `lg:border-l lg:border-border lg:pl-8`.
+
+---
+
+## 5. Vidrio y la mancheta
+
+La mancheta es una barra fija de ancho completo con filete inferior
+(`border-b border-border bg-background/90` + `blur(20px) saturate(1.6)`), marca
+en serif y navegación en versalitas. Siempre sólida; con el scroll solo cambia
+la sombra. El vidrio existe **solo aquí**.
+
+El banner de portada empieza debajo de ella: `HeroBanners` reserva su altura
+con `pt-[57px]` (y un hueco `h-24 md:h-28` cuando no hay banners). Las páginas
+internas libran la barra con `pt-32 md:pt-36`.
+
+---
+
+## 6. Botones y controles
+
+Rectángulos de radio pequeño. Sin gradiente, sin sombra.
 
 ```jsx
 /* Primario */
-"rounded-full px-7 py-3 text-sm font-semibold bg-accent text-white
- hover:opacity-90 transition-opacity duration-150"
+"rounded-md px-7 py-3 text-sm font-semibold bg-accent text-white hover:opacity-90"
 
 /* Secundario */
-"rounded-full px-7 py-3 text-sm font-semibold border border-border text-foreground
+"rounded-md px-6 py-3 text-sm font-semibold border border-border text-foreground
  hover:border-accent/50 hover:text-accent transition-colors"
 
-/* Sobre el hero */
-"rounded-full px-7 py-3 text-sm font-semibold bg-white text-[hsl(206_92%_14%)]
- hover:opacity-90 transition-opacity"
-
-/* Pestaña de sección, activa */
-"rounded-full px-4 py-1.5 text-sm border bg-accent text-white border-accent font-semibold"
-
-/* Pestaña de sección, inactiva */
-"rounded-full px-4 py-1.5 text-sm border border-border text-muted-foreground
- hover:text-foreground hover:border-foreground/30"
+/* Pestaña de sección (activa / inactiva) */
+"rounded-sm px-3.5 py-1.5 text-[12px] uppercase tracking-[0.1em] border
+ bg-accent text-white border-accent font-bold"
+"… border-border text-muted-foreground hover:text-accent hover:border-accent/50"
 ```
 
-**Escalera de padding:** `py-1.5` nav → `py-2.5` compacto → `py-3 px-7` estándar.
+`rounded-full` queda solo para círculos de icono. Las viñetas (`SourceCredit`,
+cintillo) son **cuadradas**: `h-1.5 w-1.5 bg-accent`.
 
-**Foco visible — resuelto aquí.** El estándar de la casa no tiene focus styling
-en botones ni enlaces; es un hueco de accesibilidad conocido, notable dado que la
-tipografía es una elección de accesibilidad. `src/index.css` lo cierra global:
-
-```css
-:where(a, button, [role="button"], summary, input, textarea, select):focus-visible {
-  outline: 2px solid hsl(var(--accent));
-  outline-offset: 2px;
-  border-radius: 999px;
-}
-```
-
----
-
-## 6. Superficies
-
-La tarjeta estándar es **opaca**, no vidrio. El hover es doble y sutil: el borde
-se tiñe de acento al 40%, el fondo al 4%.
-
-```jsx
-"rounded-3xl border border-border bg-surface
- hover:border-accent/40 hover:bg-accent/[0.04] transition-colors duration-300"
-```
-
-### Vocabulario de radios
-
-| Valor | Uso |
-|---|---|
-| `rounded-full` | Botón, píldora, etiqueta, punto de paginación |
-| `rounded-[1.75rem]` 28px | Píldora del navbar |
-| `rounded-3xl` 24px | Tarjeta de nota, contenedor de sección, estados vacíos |
-| `rounded-2xl` 16px | Tarjeta de medio, bloque de crédito, tarjeta compacta |
-| `rounded-xl` 12px | Inputs, miniaturas |
-
-Regla: **contenedor más grande → radio más grande.**
+**Foco visible global** (en `index.css`): outline celeste de 2px con
+`border-radius: 4px`.
 
 ---
 
 ## 7. Layout
 
-```jsx
-<section className="py-24 md:py-32 px-6 md:px-12 lg:px-20">
-  <div className="max-w-6xl mx-auto">
-```
+Sin cambios: secciones a `py-24 md:py-32 px-6 md:px-12 lg:px-20`, contenedor
+`max-w-6xl` (portada, rejillas, mancheta) / `max-w-3xl` (legales, fuentes).
+Las rejillas de notas suben a `gap-8`: las tarjetas planas necesitan más aire
+que las cajas.
 
-**Ritmo vertical:** `py-24 md:py-32` por defecto · `pt-32 md:pt-36` en páginas
-internas, para librar la barra flotante.
-
-**Horizontal:** `px-6 md:px-12 lg:px-20` universal.
-
-**Contenedores:** `max-w-3xl` (nota, legales) · `max-w-4xl` (imagen de portada) ·
-`max-w-5xl` (medios) · `max-w-6xl` (navbar, rejillas, portada).
-
-**Rejillas:** `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6` para notas ·
-`grid-cols-1 lg:grid-cols-3` para la portada (2 de nota principal + 1 lateral).
+Portada: `grid lg:grid-cols-3` — lead a 2 columnas + lateral con filete
+vertical. Página de nota: `lg:grid-cols-[minmax(0,1fr)_320px]` con lateral
+pegajosa (`lg:top-24`) y filete vertical.
 
 ---
 
-## 8. Sombras y luz
+## 8. El pie
 
-Lista completa; no hay más en todo el sitio:
-
-```css
-0 8px 40px -12px rgba(15,23,42,0.18)     /* navbar sólido */
-0 -8px 32px -12px rgba(15,23,42,0.25)    /* aviso de cookies, sombra hacia arriba */
-```
-
-**Halo ambiental** para cabeceras y cierres:
+Bloque azul noche **plano** (sin esquinas redondeadas) que abre con un filete
+grueso celeste (`border-t-4 border-accent`) y conserva el halo de marca. Cierra
+con la palabra gigante en serif casi fundida con el fondo:
 
 ```jsx
-'radial-gradient(ellipse at center, hsl(199 95% 55% / 0.16) 0%, transparent 70%)'
-```
-
-En claro la opacidad se queda en `0.16–0.22`: un halo al 0.3 sobre blanco se ve
-como una mancha.
-
----
-
-## 9. El hero
-
-Carrusel de banners servidos por el backend (`news/banners.json`).
-
-Antes esto era una pila de seis capas con video, zoom dirigido por scroll y
-entradas escalonadas: costaba pantalla y media antes de la primera noticia. Se
-retiró entera. Lo que hay ahora es una banda de altura fija que rota sola cada
-6 s, con degradado inferior —solo en la parte baja, para que el texto se lea sin
-oscurecer la foto entera— y el rótulo encima.
-
-```jsx
-background: 'linear-gradient(to top, rgba(9,20,32,0.90) 0%, rgba(9,20,32,0.55) 32%, transparent 66%)'
-```
-
-La parada intermedia va al 55% y no al 28%: el subtítulo cae justo ahí y con
-menos capa queda gris sobre gris. Los puntos van abajo a la DERECHA y el rótulo
-reserva `pr-24 md:pr-32`: centrados se montaban sobre el texto.
-
-Consecuencia en el navbar: **la píldora va siempre sólida**. Su segundo estado
-translúcido con texto blanco existía para flotar sobre el video oscuro; sin él,
-dejaría texto blanco sobre fondo blanco. Lo que sigue cambiando con el scroll es
-la sombra.
-
-## 10. Movimiento
-
-```jsx
-<MotionConfig reducedMotion="user">   {/* envuelve la app entera */}
-```
-
-**Easing de marca:** `[0.21, 0.65, 0.36, 1]`. Salida rápida, asentamiento largo.
-
-**La primitiva `Reveal`** es la entrada por defecto, con el desenfoque que se
-resuelve:
-
-```jsx
-initial={reduced ? false : { opacity: 0, y: 32, filter: 'blur(8px)' }}
-whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-transition={{ duration: 0.8, delay, ease: [0.21, 0.65, 0.36, 1] }}
-viewport={{ once: true, margin: '-80px' }}
-```
-
-Stagger `delay={i * 0.08}`, acotado a los seis primeros ítems: en una rejilla de
-doce, escalonar hasta el último deja al lector esperando.
-
-**Salida del hero** (scroll-driven, `offset: ['start start', 'end start']`):
-
-```js
-scale          = useTransform(p, [0, 0.9],  [1, 0.88])
-radius         = useTransform(p, [0, 0.9],  ['0px', '40px'])
-contentOpacity = useTransform(p, [0, 0.45], [1, 0])
-contentY       = useTransform(p, [0, 0.45], [0, -60])
-```
-
-**Reduced motion — obligatorio.** Un solo idioma en todo el código:
-
-```jsx
-const reduced = useReducedMotion() ?? false;
-style={reduced ? undefined : { scale, opacity }}
-initial={reduced ? false : { opacity: 0, y: 32 }}
-```
-
-Y en CSS: `.ticker-track { animation: none }` y `html { scroll-behavior: auto }`.
-
----
-
-## 11. El cintillo
-
-Mismos requisitos que la banda de logos del estándar: lista **duplicada** (el
-`-50%` de la animación depende de ello), la copia con `aria-hidden` para que un
-lector de pantalla no la lea dos veces, y máscara de fundido en los bordes.
-
-```css
-.ticker-track { display: flex; width: max-content; animation: ticker-scroll 60s linear infinite; }
-.ticker-track:hover { animation-play-state: paused; }
+"font-display font-bold text-white/[0.07] leading-[0.8] whitespace-nowrap
+ text-[14vw] lg:text-[10.5rem]"   /* aria-hidden: es colofón, no contenido */
 ```
 
 ---
 
-## 12. Reglas propias de un agregador
+## 9. Movimiento
 
-Estas no vienen del estándar; nacen de que el contenido es de otros.
+Sin cambios respecto del estándar: `<MotionConfig reducedMotion="user">`,
+easing de marca `[0.21, 0.65, 0.36, 1]`, primitiva `Reveal` (fade-up +
+desenfoque, stagger acotado a los 6 primeros), cintillo con lista duplicada y
+máscara de fundido, y el idioma `reduced ? undefined : {…}` en todo lo que se
+mueve.
+
+---
+
+## 10. Reglas propias de un agregador
+
+Estas no cambian con el rediseño; nacen de que el contenido es de otros.
 
 - **El crédito nunca es opcional.** `SourceCredit` no tiene modo sin enlace.
-- **La página de una nota no tiene cuerpo de artículo.** El elemento principal es
-  el botón de salida al medio, no un pie de foto.
-- **Toda foto es de terceros, así que toda foto puede fallar.** Cada `<img>`
-  lleva `onError` y cae al motivo de olas de la marca. Un icono de imagen rota
-  sobre un titular es peor que no tener foto.
-- **Todo titular puede ser larguísimo.** Nada de alturas fijas sin `line-clamp`.
-- **La lista puede venir vacía.** Cada listado pinta sus tres estados: esqueleto
-  con la altura real de la tarjeta, vacío con explicación, y error con reintento.
+- **La página de una nota no tiene cuerpo de artículo.** El elemento principal
+  es el bloque de salida al medio (abre con la regla gruesa del sistema).
+- **Toda foto es de terceros y puede fallar:** `onError` en toda `<img>`, caída
+  al motivo de olas de la marca.
+- **Todo titular puede ser larguísimo:** `line-clamp`, nunca alturas fijas.
+- **La lista puede venir vacía:** esqueleto (con la anatomía real de la
+  tarjeta: regla + bloques), vacío con explicación y error con reintento.
 
 ---
 
-## 13. Checklist
+## 11. Checklist
 
-- [ ] Copiar el bloque `@theme` + `:root` + `html.dark` tal cual
-- [ ] Atkinson Hyperlegible local (4 archivos, `font-display: swap`)
-- [ ] `<MotionConfig reducedMotion="user">` en la raíz
-- [ ] Secciones a `py-24 md:py-32 px-6 md:px-12 lg:px-20`
-- [ ] Botones `rounded-full`, sin gradiente, sin sombra
-- [ ] Tarjetas opacas `bg-surface`; vidrio solo en la barra flotante
-- [ ] Todo título `tracking-tight`; toda micro-etiqueta `uppercase tracking-widest`
-- [ ] Focus-visible global
-- [ ] `line-clamp` en todo texto de terceros
-- [ ] `onError` en toda imagen de terceros
+- [ ] Titular en `font-display` (Fraunces), **sin** `tracking-tight`
+- [ ] Notas con regla gruesa arriba y filete fino sobre el crédito; sin cajas
+- [ ] Kickers y navegación en versalitas con tracking abierto
+- [ ] `rounded-md`/`rounded-sm` en botones y pestañas; `rounded-full` solo en
+      círculos de icono
+- [ ] Viñetas cuadradas, no puntos redondos
+- [ ] Vidrio solo en la mancheta; `blur(20px) saturate(1.6)`
+- [ ] Foco visible global; `line-clamp` y `onError` en todo lo de terceros
 - [ ] Los tres estados en todo listado
+- [ ] Ambos temas probados (el sitio nace en oscuro)
 
 ### Errores comunes
 
 | No | Sí |
 |---|---|
+| Píldoras `rounded-full` en botones | `rounded-md`, rectángulo editorial |
+| Tarjetas con borde y fondo | Regla gruesa + filete fino |
+| Serif con `tracking-tight` | Serif con tracking natural |
+| Kicker con píldora de fondo | Kicker tipográfico a secas |
+| Sombras para separar | Reglas para separar |
 | Grises neutros `#333` | Neutrales tintados `hsl(205 …)` |
-| Botones con gradiente | Acento plano + `hover:opacity-90` |
-| Vidrio en todas las tarjetas | Vidrio solo en el navbar; tarjetas opacas |
-| `backdrop-blur` sin `saturate` | Siempre `blur(20px) saturate(1.6)` |
-| Títulos con tracking normal | Siempre `tracking-tight` |
-| Verdes o morados para estado | Quedarse en el arco celeste → azul profundo |
-| Sombras de elevación en tarjetas | Bordes + tinte de fondo en hover |
-| Animar sin comprobar `reduced` | Siempre el idioma `reduced ? undefined : {...}` |
-| Altura fija con texto de terceros | `line-clamp` |
+| Puntos redondos de viñeta | Cuadrados de acento |
+| Animar sin comprobar `reduced` | Idioma `reduced ? undefined : {…}` |

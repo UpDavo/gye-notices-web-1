@@ -16,7 +16,7 @@ export function NotFoundPage() {
       <Navbar />
       <main className="flex-1 flex flex-col items-center justify-center text-center px-6 py-32">
         <p className="text-muted-foreground text-sm uppercase tracking-widest m-0 mb-4">404</p>
-        <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground mb-4 tracking-tight">
+        <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground mb-4">
           Esta página no existe
         </h1>
         <p className="text-muted-foreground max-w-md mb-8">
@@ -24,7 +24,7 @@ export function NotFoundPage() {
         </p>
         <Link
           to="/"
-          className="rounded-full px-7 py-3 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity no-underline"
+          className="rounded-md px-7 py-3 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity no-underline"
         >
           Ir a la portada
         </Link>

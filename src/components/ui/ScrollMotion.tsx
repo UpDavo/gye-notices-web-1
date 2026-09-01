@@ -1,10 +1,13 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { type ReactNode } from 'react';
 
-/* ─── Eyebrow — etiqueta de acento sobre el titular de sección ── */
+/* ─── Eyebrow — kicker editorial sobre el titular de sección ──
+   Versalitas celestes con un filete corto delante: es la firma tipográfica
+   de la edición. */
 export function Eyebrow({ children }: { children: ReactNode }) {
   return (
-    <p className="text-accent font-semibold text-base md:text-lg tracking-tight m-0 mb-4">
+    <p className="kicker flex items-center gap-3 m-0 mb-4">
+      <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
       {children}
     </p>
   );

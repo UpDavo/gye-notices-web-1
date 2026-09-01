@@ -24,7 +24,7 @@ function NotFound() {
       <Navbar />
       <main className="flex-1 flex flex-col items-center justify-center text-center px-6 py-32">
         <p className="text-muted-foreground text-sm uppercase tracking-widest m-0 mb-4">404</p>
-        <h1 className="font-display font-bold text-4xl text-foreground mb-4 tracking-tight">
+        <h1 className="font-display font-bold text-4xl text-foreground mb-4">
           Esa nota ya no está aquí
         </h1>
         <p className="text-muted-foreground max-w-md mb-8">
@@ -32,7 +32,7 @@ function NotFound() {
         </p>
         <Link
           to="/noticias"
-          className="rounded-full px-7 py-3 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity no-underline"
+          className="rounded-md px-7 py-3 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity no-underline"
         >
           Ver todas las noticias
         </Link>
@@ -150,7 +150,7 @@ export function ArticlePage() {
                     <span className="text-muted-foreground/50" aria-hidden="true">/</span>
                     <Link
                       to={`/seccion/${article.category.slug}`}
-                      className="text-[11px] font-semibold uppercase tracking-widest text-accent bg-accent/10 rounded-full px-3 py-1 no-underline hover:bg-accent/20 transition-colors"
+                      className="kicker bg-accent/10 rounded-sm px-3 py-1 no-underline hover:bg-accent/20 transition-colors"
                     >
                       {article.category.name}
                     </Link>
@@ -166,7 +166,7 @@ export function ArticlePage() {
                 </div>
               ) : (
                 <>
-                  <h1 className="font-display font-bold text-3xl md:text-5xl text-foreground tracking-tight leading-tight m-0 mb-6">
+                  <h1 className="font-display font-bold text-3xl md:text-5xl text-foreground leading-[1.08] m-0 mb-6">
                     {article.title}
                   </h1>
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
@@ -192,7 +192,7 @@ export function ArticlePage() {
                   src={article.image_url}
                   alt=""
                   onError={() => setImageFailedFor(slug ?? null)}
-                  className="w-full max-h-[520px] object-cover rounded-3xl"
+                  className="w-full max-h-[520px] object-cover rounded-xl"
                 />
                 <figcaption className="text-xs text-muted-foreground mt-3">
                   {article.image_credit || `Imagen: ${article.source.name}`}
@@ -223,8 +223,9 @@ export function ArticlePage() {
 
           {/* Columna lateral. Se queda pegada al hacer scroll: la nota es corta,
               pero la lista de al lado sigue siendo útil al llegar al final. */}
-          <aside className="lg:sticky lg:top-8 lg:self-start">
-            <p className="text-accent font-semibold text-sm uppercase tracking-widest m-0 mb-6">
+          <aside className="lg:sticky lg:top-24 lg:self-start lg:border-l lg:border-border lg:pl-8">
+            <p className="kicker flex items-center gap-3 m-0 mb-6">
+              <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
               Más de la ciudad
             </p>
             {related.loading ? (
@@ -244,7 +245,7 @@ export function ArticlePage() {
             )}
             <Link
               to="/noticias"
-              className="inline-flex items-center gap-2 mt-8 rounded-full px-6 py-3 text-sm font-semibold border border-border text-foreground no-underline hover:border-accent/50 hover:text-accent transition-colors"
+              className="inline-flex items-center gap-2 mt-8 rounded-md px-6 py-3 text-sm font-semibold border border-border text-foreground no-underline hover:border-accent/50 hover:text-accent transition-colors"
             >
               Ver todas las noticias
               <ArrowRight size={15} aria-hidden="true" />

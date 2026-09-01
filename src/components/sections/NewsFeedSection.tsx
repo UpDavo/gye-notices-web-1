@@ -36,11 +36,13 @@ export function NewsFeedSection() {
   const withContent = (categories ?? []).filter((c) => (c.article_count ?? 0) > 0);
   const articles = data?.results ?? [];
 
+  /* Pestañas rectangulares en versalitas: el vocabulario editorial no lleva
+     píldoras. La activa se rellena de acento. */
   const badgeClass = (isActive: boolean) =>
-    `shrink-0 rounded-full px-4 py-1.5 text-sm border cursor-pointer transition-colors duration-200 whitespace-nowrap ${
+    `shrink-0 rounded-sm px-3.5 py-1.5 text-[12px] uppercase tracking-[0.1em] border cursor-pointer transition-colors duration-200 whitespace-nowrap ${
       isActive
-        ? 'bg-accent text-white border-accent font-semibold'
-        : 'bg-transparent border-border text-muted-foreground hover:text-foreground hover:border-foreground/30'
+        ? 'bg-accent text-white border-accent font-bold'
+        : 'bg-transparent border-border text-muted-foreground hover:text-accent hover:border-accent/50'
     }`;
 
   return (
@@ -49,16 +51,16 @@ export function NewsFeedSection() {
         <Reveal className="flex flex-wrap items-end justify-between gap-4 mb-8">
           <div>
             <Eyebrow>Al día</Eyebrow>
-            <h2 className="font-display font-bold text-4xl md:text-6xl text-foreground tracking-tight leading-tight m-0">
+            <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05] m-0">
               Por dónde va la ciudad.
             </h2>
           </div>
           <Link
             to="/noticias"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent no-underline hover:gap-2.5 transition-all duration-200"
+            className="kicker inline-flex items-center gap-1.5 no-underline hover:gap-2.5 transition-all duration-200"
           >
             Ver todas
-            <ArrowRight size={16} aria-hidden="true" />
+            <ArrowRight size={14} aria-hidden="true" />
           </Link>
         </Reveal>
 
@@ -95,7 +97,7 @@ export function NewsFeedSection() {
         )}
 
         {!error && !loading && articles.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {articles.map((article, i) => (
               <Reveal key={article.slug} y={24} delay={Math.min(i, 5) * 0.06}>
                 <ArticleCard article={article} />

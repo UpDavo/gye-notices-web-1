@@ -32,7 +32,7 @@ function windowedPages(page: number, totalPages: number): (number | 'gap')[] {
 }
 
 const arrowClass =
-  'flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground bg-transparent cursor-pointer transition-colors hover:border-accent/50 hover:text-accent disabled:opacity-30 disabled:pointer-events-none';
+  'flex h-9 w-9 items-center justify-center rounded-md border border-border text-foreground bg-transparent cursor-pointer transition-colors hover:border-accent/50 hover:text-accent disabled:opacity-30 disabled:pointer-events-none';
 
 export function Pagination({ page, totalPages, onChange }: Props) {
   if (totalPages <= 1) return null;
@@ -61,10 +61,10 @@ export function Pagination({ page, totalPages, onChange }: Props) {
             onClick={() => onChange(item)}
             aria-label={`Página ${item}`}
             aria-current={item === page ? 'page' : undefined}
-            className={`h-9 min-w-9 px-3 rounded-full text-sm border cursor-pointer transition-colors ${
+            className={`h-9 min-w-9 px-3 rounded-md text-sm border cursor-pointer transition-colors ${
               item === page
                 ? 'bg-accent text-white border-accent font-semibold'
-                : 'border-border text-muted-foreground bg-transparent hover:text-foreground hover:border-foreground/30'
+                : 'border-border text-muted-foreground bg-transparent hover:text-accent hover:border-accent/50'
             }`}
           >
             {item}

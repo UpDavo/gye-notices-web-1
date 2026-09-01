@@ -5,11 +5,13 @@ import type { Article } from '../../lib/api';
 import { timeAgo } from '../../lib/format';
 import { SourceCredit } from './SourceCredit';
 
-/* Tarjeta de nota en tres tamaños.
+/* Tarjeta de nota en tres tamaños, en clave editorial.
 
-   `lead` manda en la portada, `standard` llena las rejillas y `compact` es la
-   fila de una lista lateral. Comparten el mismo hover del sistema: el borde se
-   tiñe de acento y el fondo apenas se levanta. */
+   Ya no son cajas con borde y fondo: cada nota es una pieza plana que abre con
+   una regla gruesa arriba —la firma del sistema— y cierra con un filete fino
+   sobre la línea de crédito. La regla se tiñe de celeste al pasar el puntero,
+   igual que el titular. `lead` manda en la portada, `standard` llena las
+   rejillas y `compact` es la fila de una lista lateral. */
 
 type Variant = 'lead' | 'standard' | 'compact';
 
@@ -20,13 +22,9 @@ type Props = {
   eager?: boolean;
 };
 
-function CategoryPill({ article }: { article: Article }) {
+function Kicker({ article }: { article: Article }) {
   if (!article.category) return null;
-  return (
-    <span className="self-start text-[11px] font-semibold uppercase tracking-widest text-accent bg-accent/10 rounded-full px-3 py-1">
-      {article.category.name}
-    </span>
-  );
+  return <span className="kicker">{article.category.name}</span>;
 }
 
 /* Un medio puede no traer imagen: los feeds de WordPress casi nunca la traen.
@@ -54,7 +52,7 @@ function Fallback({ article, label = true }: { article: Article; label?: boolean
         <path d="M0 16q12.5-14 25 0t25 0 25 0 25 0 25 0 25 0 25 0" fill="none" stroke="#fff" strokeWidth="2.5" />
       </svg>
       {label && (
-        <span className="relative font-display font-bold text-white/90 text-sm tracking-tight leading-tight">
+        <span className="relative font-display font-bold text-white/90 text-sm leading-tight">
           {article.source.name}
         </span>
       )}
@@ -103,13 +101,10 @@ export function ArticleCard({ article, variant = 'standard', eager = false }: Pr
 
   if (variant === 'compact') {
     return (
-      <Link
-        to={to}
-        className="group flex gap-4 items-start rounded-2xl border border-transparent hover:border-border hover:bg-surface p-3 -m-3 no-underline transition-colors duration-200"
-      >
-        <Cover article={article} className="h-16 w-20 shrink-0 rounded-xl" eager={eager} label={false} />
+      <Link to={to} className="group flex gap-4 items-start no-underline">
+        <Cover article={article} className="h-16 w-20 shrink-0 rounded-md" eager={eager} label={false} />
         <div className="flex flex-col gap-1.5 min-w-0">
-          <h3 className="font-display font-bold text-sm text-foreground leading-snug m-0 line-clamp-3 group-hover:text-accent transition-colors duration-200">
+          <h3 className="font-display font-bold text-[15px] text-foreground leading-snug m-0 line-clamp-3 group-hover:text-accent transition-colors duration-200">
             {article.title}
           </h3>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -126,15 +121,15 @@ export function ArticleCard({ article, variant = 'standard', eager = false }: Pr
     return (
       <Link
         to={to}
-        className="group grid grid-cols-1 md:grid-cols-2 gap-0 rounded-3xl border border-border bg-surface overflow-hidden no-underline hover:border-accent/40 transition-colors duration-300"
+        className="group grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 border-t-2 border-foreground/85 hover:border-accent pt-6 no-underline transition-colors duration-300"
       >
-        <Cover article={article} className="h-56 md:h-full md:min-h-[22rem]" eager={eager} />
-        <div className="p-7 md:p-10 flex flex-col gap-4 justify-center">
-          <CategoryPill article={article} />
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-foreground leading-tight tracking-tight m-0 group-hover:text-accent transition-colors duration-200">
+        <Cover article={article} className="h-56 md:h-full md:min-h-[22rem] rounded-xl" eager={eager} />
+        <div className="flex flex-col gap-4 justify-center pb-1">
+          <Kicker article={article} />
+          <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-[2.75rem] text-foreground leading-[1.08] m-0 group-hover:text-accent transition-colors duration-200">
             {article.title}
           </h2>
-          <p className="text-sm md:text-base text-muted-foreground leading-relaxed m-0 line-clamp-4">
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed m-0 line-clamp-4">
             {article.excerpt}
           </p>
           <div className="flex items-center justify-between gap-4 pt-4 border-t border-border mt-2">
@@ -158,18 +153,18 @@ export function ArticleCard({ article, variant = 'standard', eager = false }: Pr
   return (
     <Link
       to={to}
-      className="group flex flex-col h-full rounded-3xl border border-border bg-surface overflow-hidden no-underline hover:border-accent/40 hover:bg-accent/[0.04] transition-colors duration-300"
+      className="group flex flex-col h-full border-t-2 border-foreground/85 hover:border-accent pt-5 no-underline transition-colors duration-300"
     >
-      <Cover article={article} className="h-44" eager={eager} />
-      <div className="p-6 flex flex-col gap-3 flex-1">
-        <CategoryPill article={article} />
-        <h3 className="font-display font-bold text-lg text-foreground leading-snug tracking-tight m-0 line-clamp-3 group-hover:text-accent transition-colors duration-200">
+      <Cover article={article} className="h-44 rounded-lg" eager={eager} />
+      <div className="pt-4 flex flex-col gap-2.5 flex-1">
+        <Kicker article={article} />
+        <h3 className="font-display font-bold text-xl text-foreground leading-snug m-0 line-clamp-3 group-hover:text-accent transition-colors duration-200">
           {article.title}
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed m-0 line-clamp-3 flex-1">
           {article.excerpt}
         </p>
-        <div className="flex items-center justify-between gap-3 pt-4 border-t border-border">
+        <div className="flex items-center justify-between gap-3 pt-3 border-t border-border">
           <SourceCredit article={article} />
           <time className="text-xs text-muted-foreground shrink-0" dateTime={article.published_at}>
             {timeAgo(article.published_at)}

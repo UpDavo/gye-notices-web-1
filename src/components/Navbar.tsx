@@ -5,11 +5,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useTheme } from '../hooks/useTheme';
 import { useCategories } from '../hooks/useNews';
 
-/* Píldora flotante de vidrio, la receta canónica del sistema.
+/* Cabecera editorial: una mancheta de ancho completo con filete inferior.
 
-   El ingrediente que la hace vidrio y no niebla es `saturate(1.6)`. Sobre el
-   hero (imagen oscura) el texto va en blanco; en cuanto la barra se vuelve
-   sólida pasa a seguir los tokens del tema activo. */
+   Ya no es la píldora flotante de vidrio del estándar: una edición se encabeza
+   con una barra que ocupa todo el ancho, marca en serif y navegación en
+   versalitas. El fondo translúcido con `saturate(1.6)` se conserva para que el
+   contenido pase por debajo sin volverse niebla gris. */
 
 const POLICY_ROUTES = ['/privacidad', '/terminos'];
 
@@ -33,12 +34,9 @@ export function Navbar() {
 
   const isLegalPage = POLICY_ROUTES.includes(location.pathname);
 
-  /* La píldora va SIEMPRE sólida.
-     Antes tenía un segundo estado translúcido con texto blanco, para cuando
-     flotaba sobre el hero de video oscuro. Ese hero ya no existe: ahora
-     encabeza banners que pueden ser claros, o nada. Mantener el estado
-     transparente dejaría texto blanco sobre fondo blanco. Lo que sí cambia con
-     el scroll es la sombra, que es lo que la despega del contenido. */
+  /* La barra va SIEMPRE sólida: los banners de debajo pueden ser claros y un
+     estado transparente dejaría texto blanco sobre fondo blanco. Lo que cambia
+     con el scroll es la sombra, que es lo que la despega del contenido. */
   const linkClass = 'text-foreground/70 hover:text-foreground';
   const iconClass = 'text-foreground hover:bg-foreground/10';
 
@@ -65,9 +63,9 @@ export function Navbar() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 font-body px-4 md:px-6 pt-4">
+    <nav className="fixed top-0 left-0 right-0 z-50 font-body">
       <div
-        className={`max-w-6xl mx-auto rounded-[1.75rem] border border-border bg-surface/85 transition-shadow duration-300 overflow-hidden ${
+        className={`border-b border-border bg-background/90 transition-shadow duration-300 ${
           scrolled || menuOpen ? 'shadow-[0_8px_40px_-12px_rgba(15,23,42,0.18)]' : 'shadow-none'
         }`}
         style={{
@@ -75,13 +73,13 @@ export function Navbar() {
           WebkitBackdropFilter: 'blur(20px) saturate(1.6)',
         }}
       >
-        <div className="flex items-center justify-between pl-4 pr-2.5 md:pl-6 md:pr-3 py-2.5 gap-4">
-          {/* La marca es tipográfica: se compone con la fuente del sitio en vez
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-4 md:px-6 py-2.5 gap-4">
+          {/* La marca es tipográfica: se compone con la serif de display en vez
               de cargar un SVG. Hereda el color del tema, escala con el texto y
               no hay dos versiones que mantener. */}
           <Link
             to="/"
-            className="flex items-baseline gap-1.5 no-underline shrink-0 font-display font-bold text-xl md:text-2xl tracking-tight leading-none"
+            className="flex items-baseline gap-1.5 no-underline shrink-0 font-display font-bold text-2xl md:text-[1.7rem] leading-none"
             aria-label="Guayas Hoy — portada"
           >
             <span className="text-foreground">Guayas</span>
@@ -93,7 +91,7 @@ export function Navbar() {
               <li key={category.slug}>
                 <Link
                   to={`/seccion/${category.slug}`}
-                  className={`text-sm ${linkClass} transition-colors duration-150 no-underline`}
+                  className={`text-[12px] font-semibold uppercase tracking-[0.14em] ${linkClass} transition-colors duration-150 no-underline`}
                 >
                   {category.name}
                 </Link>
@@ -106,7 +104,7 @@ export function Navbar() {
               <label htmlFor="nav-search" className="sr-only">
                 Buscar noticias
               </label>
-              <div className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5">
+              <div className="flex items-center gap-2 rounded-md border border-border px-3 py-1.5">
                 <Search size={15} className="text-muted-foreground" aria-hidden="true" />
                 <input
                   id="nav-search"
@@ -131,7 +129,7 @@ export function Navbar() {
 
             <Link
               to="/noticias"
-              className="hidden md:inline-block rounded-full px-4 py-1.5 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity duration-150 no-underline"
+              className="hidden md:inline-block rounded-md px-4 py-1.5 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity duration-150 no-underline"
             >
               Ver todo
             </Link>
@@ -165,7 +163,7 @@ export function Navbar() {
                   <label htmlFor="nav-search-mobile" className="sr-only">
                     Buscar noticias
                   </label>
-                  <div className="flex items-center gap-2 rounded-full border border-border px-4 py-2 w-full">
+                  <div className="flex items-center gap-2 rounded-md border border-border px-4 py-2 w-full">
                     <Search size={15} className="text-muted-foreground" aria-hidden="true" />
                     <input
                       id="nav-search-mobile"
@@ -182,7 +180,7 @@ export function Navbar() {
                   <Link
                     key={category.slug}
                     to={`/seccion/${category.slug}`}
-                    className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-150 no-underline"
+                    className="text-[13px] font-semibold uppercase tracking-[0.14em] text-foreground/70 hover:text-foreground transition-colors duration-150 no-underline"
                   >
                     {category.name}
                   </Link>
@@ -190,7 +188,7 @@ export function Navbar() {
 
                 <Link
                   to="/noticias"
-                  className="mt-1 self-start rounded-full px-5 py-2 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity duration-150 no-underline"
+                  className="mt-1 self-start rounded-md px-5 py-2 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity duration-150 no-underline"
                 >
                   Ver todo
                 </Link>

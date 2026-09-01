@@ -42,7 +42,9 @@
    nunca un gris puro tipo #333.
 ──────────────────────────────────────────────────────────── */
 @theme {
-  --font-display: "AtkinsonHyperlegible", ui-sans-serif, system-ui, sans-serif;
+  /* Serif moderna solo para el display: es lo que hace «editorial» sin caer en
+     el diario clásico. El cuerpo sigue en Atkinson por accesibilidad. */
+  --font-display: "Fraunces", Georgia, "Iowan Old Style", serif;
   --font-body: "AtkinsonHyperlegible", ui-sans-serif, system-ui, sans-serif;
 
   --color-background: hsl(var(--background));
@@ -87,7 +89,9 @@
   --muted-foreground: 211 15% 42%;
   --border: 207 24% 88%;
 
-  --radius: 1rem;
+  /* Radios contenidos: la edición editorial vive de reglas y filetes, no de
+     píldoras. Lo redondo queda para imágenes y controles pequeños. */
+  --radius: 0.5rem;
 
   color-scheme: light;
 }
@@ -159,7 +163,24 @@ body {
 :where(a, button, [role="button"], summary, input, textarea, select):focus-visible {
   outline: 2px solid hsl(var(--accent));
   outline-offset: 2px;
-  border-radius: 999px;
+  border-radius: 4px;
+}
+
+/* ─── Vocabulario editorial ──────────────────────────────
+   Reglas y filetes: la estructura de la página la ponen las líneas, no las
+   cajas. `.rule-lead` es la raya gruesa que abre una sección o una nota;
+   el hover la tiñe de acento en las tarjetas. */
+.rule-lead {
+  border-top: 2px solid hsl(var(--foreground) / 0.85);
+}
+
+/* Kicker: la micro-etiqueta celeste en versalitas que antecede a un titular. */
+.kicker {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: hsl(var(--accent));
 }
 
 /* ─── Recortes de texto ──────────────────────────────── */

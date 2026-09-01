@@ -3,13 +3,14 @@ import { AlertTriangle, Newspaper } from 'lucide-react';
 /* Los tres estados que toda lista de noticias tiene que saber pintar.
 
    El esqueleto reserva exactamente la altura de la tarjeta real: si midiera
-   distinto, la portada saltaría al llegar los datos. */
+   distinto, la portada saltaría al llegar los datos. Las tarjetas ya no son
+   cajas, así que el esqueleto tampoco: regla arriba, imagen y líneas. */
 
 export function CardSkeleton({ variant = 'standard' }: { variant?: 'standard' | 'lead' | 'compact' }) {
   if (variant === 'compact') {
     return (
       <div className="flex gap-4 items-start animate-pulse" aria-hidden="true">
-        <div className="h-16 w-20 shrink-0 rounded-xl bg-muted" />
+        <div className="h-16 w-20 shrink-0 rounded-md bg-muted" />
         <div className="flex-1 flex flex-col gap-2 pt-1">
           <div className="h-3 rounded bg-muted w-full" />
           <div className="h-3 rounded bg-muted w-4/5" />
@@ -22,14 +23,14 @@ export function CardSkeleton({ variant = 'standard' }: { variant?: 'standard' | 
   if (variant === 'lead') {
     return (
       <div
-        className="grid grid-cols-1 md:grid-cols-2 rounded-3xl border border-border bg-surface overflow-hidden animate-pulse"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 border-t-2 border-foreground/85 pt-6 animate-pulse"
         aria-hidden="true"
       >
-        <div className="h-56 md:h-full md:min-h-[22rem] bg-muted" />
-        <div className="p-7 md:p-10 flex flex-col gap-4 justify-center">
-          <div className="h-5 w-24 rounded-full bg-muted" />
-          <div className="h-7 rounded bg-muted w-full" />
-          <div className="h-7 rounded bg-muted w-3/4" />
+        <div className="h-56 md:h-full md:min-h-[22rem] rounded-xl bg-muted" />
+        <div className="flex flex-col gap-4 justify-center">
+          <div className="h-3 w-24 rounded bg-muted" />
+          <div className="h-8 rounded bg-muted w-full" />
+          <div className="h-8 rounded bg-muted w-3/4" />
           <div className="h-3 rounded bg-muted w-full mt-2" />
           <div className="h-3 rounded bg-muted w-5/6" />
         </div>
@@ -39,12 +40,12 @@ export function CardSkeleton({ variant = 'standard' }: { variant?: 'standard' | 
 
   return (
     <div
-      className="flex flex-col rounded-3xl border border-border bg-surface overflow-hidden animate-pulse"
+      className="flex flex-col border-t-2 border-foreground/85 pt-5 animate-pulse"
       aria-hidden="true"
     >
-      <div className="h-44 bg-muted" />
-      <div className="p-6 flex flex-col gap-3">
-        <div className="h-5 w-20 rounded-full bg-muted" />
+      <div className="h-44 rounded-lg bg-muted" />
+      <div className="pt-4 flex flex-col gap-3">
+        <div className="h-3 w-20 rounded bg-muted" />
         <div className="h-4 rounded bg-muted w-full" />
         <div className="h-4 rounded bg-muted w-4/5" />
         <div className="h-3 rounded bg-muted w-full mt-2" />
@@ -57,7 +58,7 @@ export function CardSkeleton({ variant = 'standard' }: { variant?: 'standard' | 
 export function GridSkeleton({ count = 6 }: { count?: number }) {
   return (
     <div
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
       role="status"
       aria-label="Cargando noticias"
     >
@@ -76,11 +77,11 @@ export function EmptyState({
   message?: string;
 }) {
   return (
-    <div className="rounded-3xl border border-border bg-surface px-8 py-16 text-center">
+    <div className="border-t-2 border-foreground/85 border-b border-border px-8 py-16 text-center">
       <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-accent/10 mb-5">
         <Newspaper className="w-6 h-6 text-accent" aria-hidden="true" />
       </div>
-      <h3 className="font-display font-bold text-xl text-foreground m-0 mb-2 tracking-tight">{title}</h3>
+      <h3 className="font-display font-bold text-2xl text-foreground m-0 mb-2">{title}</h3>
       <p className="text-sm text-muted-foreground m-0 max-w-md mx-auto leading-relaxed">{message}</p>
     </div>
   );
@@ -88,11 +89,11 @@ export function EmptyState({
 
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div className="rounded-3xl border border-border bg-surface px-8 py-16 text-center" role="alert">
+    <div className="border-t-2 border-foreground/85 border-b border-border px-8 py-16 text-center" role="alert">
       <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-accent/10 mb-5">
         <AlertTriangle className="w-6 h-6 text-accent" aria-hidden="true" />
       </div>
-      <h3 className="font-display font-bold text-xl text-foreground m-0 mb-2 tracking-tight">
+      <h3 className="font-display font-bold text-2xl text-foreground m-0 mb-2">
         No pudimos cargar las noticias
       </h3>
       <p className="text-sm text-muted-foreground m-0 mb-6 max-w-md mx-auto leading-relaxed">{message}</p>
@@ -100,7 +101,7 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
         <button
           type="button"
           onClick={onRetry}
-          className="rounded-full px-7 py-3 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity border-0 cursor-pointer"
+          className="rounded-md px-7 py-3 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity border-0 cursor-pointer"
         >
           Reintentar
         </button>

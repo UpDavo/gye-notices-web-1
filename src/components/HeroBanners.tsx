@@ -131,14 +131,17 @@ export function HeroBanners() {
     return () => window.clearInterval(timer);
   }, [reduced, paused, total, goTo]);
 
-  // Sin banners no hay hero, pero sí el hueco de la barra flotante.
-  if (total === 0) return <div className="h-28 md:h-32" aria-hidden="true" />;
+  // Sin banners no hay hero, pero sí el hueco de la mancheta fija.
+  if (total === 0) return <div className="h-24 md:h-28" aria-hidden="true" />;
 
+  /* La mancheta ya no flota sobre la imagen: es una barra sólida de ancho
+     completo, así que el banner empieza debajo de ella. El `pt` reserva su
+     altura. */
   return (
     <section
       aria-label="Destacados"
       aria-roledescription="carrusel"
-      className="relative w-full bg-muted"
+      className="relative w-full bg-muted pt-[57px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}

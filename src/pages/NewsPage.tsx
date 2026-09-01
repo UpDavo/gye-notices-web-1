@@ -65,10 +65,11 @@ export function NewsPage() {
       <main className="flex-1 pt-32 md:pt-36 px-6 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
           <header className="mb-10">
-            <p className="text-accent font-semibold text-base tracking-tight m-0 mb-3">
+            <p className="kicker flex items-center gap-3 m-0 mb-4">
+              <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
               {query ? 'Búsqueda' : 'Archivo'}
             </p>
-            <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-tight m-0 mb-3">
+            <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground leading-[1.05] m-0 mb-3">
               {query ? `“${query}”` : 'Todas las noticias'}
             </h1>
             <p className="text-muted-foreground m-0">
@@ -82,7 +83,7 @@ export function NewsPage() {
             <label htmlFor="page-search" className="sr-only">
               Buscar noticias
             </label>
-            <div className="flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 flex-1 max-w-md focus-within:border-accent transition-colors">
+            <div className="flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2.5 flex-1 max-w-md focus-within:border-accent transition-colors">
               <Search size={16} className="text-muted-foreground shrink-0" aria-hidden="true" />
               <input
                 id="page-search"
@@ -96,7 +97,7 @@ export function NewsPage() {
             </div>
             <button
               type="submit"
-              className="rounded-full px-6 py-2.5 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity border-0 cursor-pointer"
+              className="rounded-md px-6 py-2.5 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity border-0 cursor-pointer"
             >
               Buscar
             </button>
@@ -105,7 +106,7 @@ export function NewsPage() {
                 type="button"
                 onClick={() => setParams(new URLSearchParams())}
                 aria-label="Limpiar búsqueda"
-                className="flex items-center justify-center h-11 w-11 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors bg-transparent cursor-pointer"
+                className="flex items-center justify-center h-11 w-11 rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors bg-transparent cursor-pointer"
               >
                 <X size={16} />
               </button>

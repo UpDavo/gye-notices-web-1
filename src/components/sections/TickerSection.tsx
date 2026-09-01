@@ -20,7 +20,9 @@ export function TickerSection() {
       to={`/noticia/${article.slug}`}
       className="flex items-center gap-3 px-6 py-3 text-sm text-foreground/80 hover:text-accent no-underline transition-colors whitespace-nowrap"
     >
-      <span className="h-1.5 w-1.5 rounded-full bg-accent shrink-0" aria-hidden="true" />
+      {/* Viñeta cuadrada: el vocabulario editorial es de filetes y cuadrados,
+          no de puntos redondos. */}
+      <span className="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true" />
       <span className="max-w-[26rem] truncate">{article.title}</span>
       <span className="text-xs text-muted-foreground">· {article.source.name}</span>
     </Link>

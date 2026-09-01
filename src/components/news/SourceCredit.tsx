@@ -21,7 +21,7 @@ export function SourceCredit({ article, variant = 'inline', className = '' }: Pr
   if (variant === 'inline') {
     return (
       <span className={`inline-flex items-center gap-1.5 text-xs text-muted-foreground ${className}`}>
-        <span className="h-1.5 w-1.5 rounded-full bg-accent shrink-0" aria-hidden="true" />
+        <span className="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true" />
         <span className="font-semibold text-foreground/75">{source.name}</span>
       </span>
     );
@@ -41,12 +41,12 @@ export function SourceCredit({ article, variant = 'inline', className = '' }: Pr
     );
   }
 
+  /* El bloque de salida abre con la regla gruesa del sistema: es el elemento
+     principal de la página de nota y se compone como una pieza más. */
   return (
-    <div className={`rounded-2xl border border-border bg-surface p-5 ${className}`}>
-      <p className="text-[11px] uppercase tracking-widest text-muted-foreground m-0 mb-2">
-        Publicado originalmente por
-      </p>
-      <p className="font-display font-bold text-lg text-foreground m-0 mb-1">{source.name}</p>
+    <div className={`border-t-2 border-foreground/85 bg-surface rounded-b-lg p-5 ${className}`}>
+      <p className="kicker m-0 mb-2">Publicado originalmente por</p>
+      <p className="font-display font-bold text-xl text-foreground m-0 mb-1">{source.name}</p>
       <p className="text-sm text-muted-foreground m-0 mb-4">
         Guayas Hoy resume y enlaza. El artículo completo, las fotos y los
         derechos son de {source.name}.
@@ -56,7 +56,7 @@ export function SourceCredit({ article, variant = 'inline', className = '' }: Pr
           href={article.canonical_url}
           target="_blank"
           rel="noopener noreferrer nofollow"
-          className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold bg-accent text-white no-underline hover:opacity-90 transition-opacity"
+          className="inline-flex items-center gap-2 rounded-md px-6 py-2.5 text-sm font-semibold bg-accent text-white no-underline hover:opacity-90 transition-opacity"
         >
           Leer la nota completa
           <ExternalLink size={14} aria-hidden="true" />

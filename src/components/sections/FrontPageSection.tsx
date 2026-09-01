@@ -41,16 +41,16 @@ export function FrontPageSection() {
         <Reveal className="flex flex-wrap items-end justify-between gap-4 mb-12">
           <div>
             <Eyebrow>Portada</Eyebrow>
-            <h2 className="font-display font-bold text-4xl md:text-6xl text-foreground tracking-tight leading-tight m-0">
+            <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05] m-0">
               Lo principal de hoy.
             </h2>
           </div>
           <Link
             to="/noticias"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent no-underline hover:gap-2.5 transition-all duration-200"
+            className="kicker inline-flex items-center gap-1.5 no-underline hover:gap-2.5 transition-all duration-200"
           >
             Ver todas
-            <ArrowRight size={16} aria-hidden="true" />
+            <ArrowRight size={14} aria-hidden="true" />
           </Link>
         </Reveal>
 
@@ -78,23 +78,34 @@ export function FrontPageSection() {
 
         {!error && !loading && lead && (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-14">
               <Reveal className="lg:col-span-2" y={24}>
                 <ArticleCard article={lead} variant="lead" eager />
               </Reveal>
 
-              <Reveal className="flex flex-col gap-5 lg:pl-2" y={24} delay={0.1}>
-                <p className="text-[11px] uppercase tracking-widest text-muted-foreground m-0">
+              {/* El filete vertical separa la columna de breves de la nota
+                  principal, como en una plana compuesta. Cada breve se separa
+                  del siguiente con su propia regla fina. */}
+              <Reveal className="flex flex-col lg:border-l lg:border-border lg:pl-8" y={24} delay={0.1}>
+                <p className="kicker flex items-center gap-3 m-0 mb-5">
+                  <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
                   También hoy
                 </p>
-                {aside.map((article) => (
-                  <ArticleCard key={article.slug} article={article} variant="compact" />
-                ))}
+                <div className="flex flex-col">
+                  {aside.map((article, i) => (
+                    <div
+                      key={article.slug}
+                      className={i === 0 ? '' : 'pt-4 mt-4 border-t border-border'}
+                    >
+                      <ArticleCard article={article} variant="compact" />
+                    </div>
+                  ))}
+                </div>
               </Reveal>
             </div>
 
             {rest.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {rest.slice(0, 3).map((article, i) => (
                   <Reveal key={article.slug} y={24} delay={i * 0.08}>
                     <ArticleCard article={article} />

@@ -50,8 +50,11 @@ export function SourcesPage() {
       <main className="flex-1 pt-32 md:pt-36 px-6 md:px-12 lg:px-20">
         <div className="max-w-3xl mx-auto">
           <header className="mb-14">
-            <p className="text-accent font-semibold text-base tracking-tight m-0 mb-3">Fuentes</p>
-            <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-tight m-0 mb-5">
+            <p className="kicker flex items-center gap-3 m-0 mb-4">
+              <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
+              Fuentes
+            </p>
+            <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground leading-[1.05] m-0 mb-5">
               De dónde sale todo esto.
             </h1>
             <p className="text-muted-foreground text-lg leading-relaxed m-0">
@@ -61,7 +64,7 @@ export function SourcesPage() {
           </header>
 
           <section className="mb-16">
-            <h2 className="font-display font-bold text-2xl text-foreground tracking-tight m-0 mb-6">
+            <h2 className="font-display font-bold text-2xl text-foreground m-0 mb-6">
               Medios que agregamos
             </h2>
             <ul className="list-none m-0 p-0 flex flex-col gap-3">
@@ -71,7 +74,7 @@ export function SourcesPage() {
                     href={source.homepage_url}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    className="group flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface px-6 py-5 no-underline hover:border-accent/40 transition-colors"
+                    className="group flex items-center justify-between gap-4 rounded-lg border border-border bg-surface px-6 py-5 no-underline hover:border-accent/40 transition-colors"
                   >
                     <div>
                       <p className="font-display font-bold text-lg text-foreground m-0 group-hover:text-accent transition-colors">
@@ -91,10 +94,10 @@ export function SourcesPage() {
           </section>
 
           <section className="mb-20">
-            <h2 className="font-display font-bold text-2xl text-foreground tracking-tight m-0 mb-6">
+            <h2 className="font-display font-bold text-2xl text-foreground m-0 mb-6">
               Las reglas
             </h2>
-            <div className="rounded-3xl border border-border bg-surface divide-y divide-border">
+            <div className="rounded-lg border border-border bg-surface divide-y divide-border">
               {RULES.map((rule) => (
                 <div key={rule.title} className="px-6 md:px-8 py-6">
                   <h3 className="font-semibold text-base text-foreground m-0 mb-2">{rule.title}</h3>

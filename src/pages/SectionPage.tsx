@@ -66,8 +66,11 @@ export function SectionPage() {
       <main className="flex-1 pt-32 md:pt-36 px-6 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
           <header className="mb-10">
-            <p className="text-accent font-semibold text-base tracking-tight m-0 mb-3">Sección</p>
-            <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-tight m-0 mb-3">
+            <p className="kicker flex items-center gap-3 m-0 mb-4">
+              <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
+              Sección
+            </p>
+            <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground leading-[1.05] m-0 mb-3">
               {name}
             </h1>
             {category?.description && (

@@ -14,7 +14,7 @@ type Props = {
 };
 
 const baseClass =
-  'shrink-0 rounded-full px-4 py-1.5 text-sm no-underline border transition-colors duration-200 whitespace-nowrap';
+  'shrink-0 rounded-sm px-3.5 py-1.5 text-[12px] uppercase tracking-[0.1em] no-underline border transition-colors duration-200 whitespace-nowrap';
 
 export function CategoryTabs({ categories, allTo = '/noticias', className = '' }: Props) {
   return (
@@ -27,8 +27,8 @@ export function CategoryTabs({ categories, allTo = '/noticias', className = '' }
             className={({ isActive }) =>
               `${baseClass} ${
                 isActive
-                  ? 'bg-accent text-white border-accent font-semibold'
-                  : 'border-border text-muted-foreground hover:text-foreground hover:border-foreground/30'
+                  ? 'bg-accent text-white border-accent font-bold'
+                  : 'border-border text-muted-foreground hover:text-accent hover:border-accent/50'
               }`
             }
           >
@@ -42,8 +42,8 @@ export function CategoryTabs({ categories, allTo = '/noticias', className = '' }
               className={({ isActive }) =>
                 `${baseClass} ${
                   isActive
-                    ? 'bg-accent text-white border-accent font-semibold'
-                    : 'border-border text-muted-foreground hover:text-foreground hover:border-foreground/30'
+                    ? 'bg-accent text-white border-accent font-bold'
+                    : 'border-border text-muted-foreground hover:text-accent hover:border-accent/50'
                 }`
               }
             >
