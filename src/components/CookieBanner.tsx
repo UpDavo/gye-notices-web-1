@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+/* Aviso de cookies: una tarjeta flotante abajo a la izquierda, no una franja
+   a todo el ancho. Tapa una esquina, no la portada. */
+
 export function CookieBanner() {
   const [dismissed, setDismissed] = useState(() => {
     try {
@@ -23,27 +26,27 @@ export function CookieBanner() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-border text-foreground px-6 md:px-12 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_-8px_32px_-12px_rgba(15,23,42,0.25)]">
-      <p className="text-sm text-foreground/80 max-w-xl m-0">
-        Usamos cookies para recordar tus preferencias, como el modo oscuro.{' '}
-        <Link to="/privacidad" className="underline hover:text-foreground transition-colors">
+    <div
+      role="dialog"
+      aria-label="Aviso de cookies"
+      className="fixed bottom-4 left-4 right-4 sm:right-auto sm:max-w-sm z-50 rounded-[var(--radius-card-lg)] bg-ink text-white p-5 shadow-[0_24px_60px_-20px_rgba(6,40,61,0.6)]"
+    >
+      <p className="text-sm text-white/85 leading-relaxed m-0 mb-4">
+        Usamos almacenamiento local para recordar tus preferencias, como el modo oscuro.{' '}
+        <Link to="/privacidad" className="text-white underline underline-offset-4 hover:text-accent-bright transition-colors">
           Más información
         </Link>
       </p>
-      <div className="flex items-center gap-3 shrink-0">
-        <button
-          type="button"
-          onClick={() => decide('declined')}
-          className="px-4 py-2 text-sm rounded-md border border-border text-foreground/70 hover:text-foreground hover:border-foreground/40 transition-colors bg-transparent cursor-pointer"
-        >
-          Rechazar
+      <div className="flex items-center gap-2">
+        <button type="button" onClick={() => decide('accepted')} className="pill pill-light">
+          Aceptar
         </button>
         <button
           type="button"
-          onClick={() => decide('accepted')}
-          className="px-4 py-2 text-sm rounded-md bg-accent text-white font-semibold hover:opacity-90 transition-opacity border-0 cursor-pointer"
+          onClick={() => decide('declined')}
+          className="pill bg-transparent text-white/80 hover:text-white border-white/25 hover:border-white"
         >
-          Aceptar
+          Rechazar
         </button>
       </div>
     </div>

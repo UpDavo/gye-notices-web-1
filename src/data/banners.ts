@@ -1,17 +1,15 @@
-/* Banners del hero de Guayas Hoy.
+/* Piezas propias de Guayas Hoy.
 
-   Están aquí, quemados, y no vienen de la API: son piezas que cambian cada
+   Están aquí, quemadas, y no vienen de la API: son piezas que cambian cada
    varias semanas, y traerlas del backend costaba una petición en la primera
    pantalla, un estado de carga y un despliegue del backend cada vez que se
    cambia una imagen. Editar este archivo y desplegar la web es más corto y no
    puede fallar a medias.
 
-   Hoy hay una sola, y es una foto de la ciudad. Las tres siluetas vectoriales
-   que ocupaban el hueco eran relleno de maqueta: con una imagen real detrás,
-   rotar hacia un placeholder cada seis segundos abarataba la portada en vez de
-   llenarla. Cuando haya más piezas propias se añaden a esta lista y el
-   carrusel vuelve a girar solo —las flechas y los puntos aparecen a partir del
-   segundo banner.
+   Se usan en dos sitios. `PromoBanner` muestra la primera como franja ancha a
+   media portada, con el título y el subtítulo encima de la foto. `HeroLead`
+   usa la foto de la primera como respaldo cuando la nota principal no trae
+   imagen o la suya falla, para que el hero nunca quede a medias.
 
    Las imágenes viven en `public/img/` de esta misma web, así que se referencian
    por ruta absoluta del sitio.

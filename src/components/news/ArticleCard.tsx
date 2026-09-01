@@ -1,50 +1,46 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import type { Article } from '../../lib/api';
-import { timeAgo } from '../../lib/format';
-import { SourceCredit } from './SourceCredit';
+import { shortDate, timeAgo } from '../../lib/format';
 
-/* Tarjeta de nota en tres tamaños, en clave editorial.
+/* Tarjeta de nota en cuatro tamaños.
 
-   Ya no son cajas con borde y fondo: cada nota es una pieza plana que abre con
-   una regla gruesa arriba —la firma del sistema— y cierra con un filete fino
-   sobre la línea de crédito. La regla se tiñe de celeste al pasar el puntero,
-   igual que el titular. `lead` manda en la portada, `standard` llena las
-   rejillas y `compact` es la fila de una lista lateral. */
+   Sin bordes, sin fondo, sin reglas: la pieza es la foto redondeada, una fila
+   de metadatos pequeña (viñeta con la sección a la izquierda, calendario con
+   la fecha a la derecha), el titular en negrita apretada y dos líneas de
+   extracto en gris. Lo que separa una tarjeta de otra es el aire.
 
-type Variant = 'lead' | 'standard' | 'compact';
+   `standard` llena las rejillas; `compact` es la fila de una lista con
+   miniatura cuadrada; `media` es la fila grande del bloque de tendencias;
+   `overlay` es la foto a sangre con el titular encima. */
+
+type Variant = 'standard' | 'compact' | 'media' | 'overlay';
 
 type Props = {
   article: Article;
   variant?: Variant;
   /* Las primeras tarjetas visibles no deben ir en lazy: retrasa el LCP. */
   eager?: boolean;
+  className?: string;
 };
 
-function Kicker({ article }: { article: Article }) {
-  if (!article.category) return null;
-  return <span className="kicker">{article.category.name}</span>;
-}
-
-/* Un medio puede no traer imagen: los feeds de WordPress casi nunca la traen.
-
-   El hueco se rellena con el motivo de olas de la marca y el nombre del medio.
-   Es deliberadamente discreto — una tarjeta sin foto no debe gritar más que
-   una con foto, solo mantener la altura para que la rejilla no se desalinee. */
+/* Un medio puede no traer imagen, o su CDN puede fallar. En los dos casos el
+   hueco se rellena con un degradado de tinta y el nombre del medio, discreto:
+   mantiene la altura para que la rejilla no se desalinee, sin gritar. */
 function Fallback({ article, label = true }: { article: Article; label?: boolean }) {
   return (
     <div
       className="relative h-full w-full flex items-end p-3 overflow-hidden"
       style={{
         background:
-          'linear-gradient(140deg, hsl(var(--accent-deep)) 0%, hsl(var(--accent)) 62%, hsl(var(--accent-bright)) 100%)',
+          'linear-gradient(150deg, hsl(var(--ink)) 0%, hsl(var(--ink-soft)) 55%, hsl(var(--accent-deep)) 100%)',
       }}
     >
       <svg
         viewBox="0 0 200 60"
         preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full opacity-25"
+        className="absolute inset-0 h-full w-full opacity-20"
         aria-hidden="true"
       >
         <path d="M0 30q12.5-14 25 0t25 0 25 0 25 0 25 0 25 0 25 0" fill="none" stroke="#fff" strokeWidth="2.5" />
@@ -52,7 +48,7 @@ function Fallback({ article, label = true }: { article: Article; label?: boolean
         <path d="M0 16q12.5-14 25 0t25 0 25 0 25 0 25 0 25 0 25 0" fill="none" stroke="#fff" strokeWidth="2.5" />
       </svg>
       {label && (
-        <span className="relative font-display font-bold text-white/90 text-sm leading-tight">
+        <span className="relative font-bold text-white/90 text-xs leading-tight">
           {article.source.name}
         </span>
       )}
@@ -60,12 +56,7 @@ function Fallback({ article, label = true }: { article: Article; label?: boolean
   );
 }
 
-/* Las imágenes viven en los servidores de cada medio, así que fallan por
-   motivos que este sitio no controla: hotlinking bloqueado, la nota se edita y
-   la foto cambia de ruta, o el CDN del medio se cae. Cuando eso pasa, un
-   `<img>` roto deja un icono gris y una tarjeta mutilada, así que el error se
-   captura y se cae al mismo motivo que las notas sin foto. */
-function Cover({
+export function Cover({
   article,
   className,
   eager,
@@ -87,7 +78,7 @@ function Cover({
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
           onError={() => setFailed(true)}
-          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="h-full w-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out"
         />
       ) : (
         <Fallback article={article} label={label} />
@@ -96,81 +87,97 @@ function Cover({
   );
 }
 
-export function ArticleCard({ article, variant = 'standard', eager = false }: Props) {
+/* La fila de metadatos: «• Sección» a la izquierda y la fecha con calendario
+   a la derecha. Si la nota no tiene sección, la viñeta lleva el medio: la fila
+   nunca queda coja. */
+function Meta({ article, date = 'short' }: { article: Article; date?: 'short' | 'ago' }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <span className="tag-dot truncate">{article.category?.name ?? article.source.name}</span>
+      <time
+        dateTime={article.published_at}
+        className="inline-flex items-center gap-1 text-[11px] text-muted-foreground shrink-0"
+      >
+        <Calendar size={11} aria-hidden="true" />
+        {date === 'short' ? shortDate(article.published_at) : timeAgo(article.published_at)}
+      </time>
+    </div>
+  );
+}
+
+export function ArticleCard({ article, variant = 'standard', eager = false, className = '' }: Props) {
   const to = `/noticia/${article.slug}`;
 
   if (variant === 'compact') {
     return (
-      <Link to={to} className="group flex gap-4 items-start no-underline">
-        <Cover article={article} className="h-16 w-20 shrink-0 rounded-md" eager={eager} label={false} />
-        <div className="flex flex-col gap-1.5 min-w-0">
-          <h3 className="font-display font-bold text-[15px] text-foreground leading-snug m-0 line-clamp-3 group-hover:text-accent transition-colors duration-200">
+      <Link to={to} className={`group flex gap-3.5 items-start no-underline ${className}`}>
+        <Cover article={article} className="h-16 w-16 shrink-0 rounded-lg" eager={eager} label={false} />
+        <div className="flex flex-col gap-1.5 min-w-0 pt-0.5">
+          <span className="tag-dot">{article.category?.name ?? article.source.name}</span>
+          <h3 className="font-semibold text-[14px] text-foreground leading-snug tracking-[-0.01em] m-0 line-clamp-2 group-hover:text-accent transition-colors duration-150">
             {article.title}
           </h3>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <SourceCredit article={article} />
-            <span aria-hidden="true">·</span>
-            <time dateTime={article.published_at}>{timeAgo(article.published_at)}</time>
-          </div>
         </div>
       </Link>
     );
   }
 
-  if (variant === 'lead') {
+  if (variant === 'media') {
+    return (
+      <Link to={to} className={`group flex gap-4 items-start no-underline ${className}`}>
+        <Cover article={article} className="h-[5.5rem] w-32 shrink-0 rounded-xl" eager={eager} label={false} />
+        <div className="flex flex-col gap-1.5 min-w-0 flex-1">
+          <Meta article={article} />
+          <h3 className="font-bold text-[15px] text-foreground leading-snug tracking-[-0.01em] m-0 line-clamp-2 group-hover:text-accent transition-colors duration-150">
+            {article.title}
+          </h3>
+          <p className="text-xs text-muted-foreground leading-relaxed m-0 line-clamp-2">
+            {article.excerpt}
+          </p>
+        </div>
+      </Link>
+    );
+  }
+
+  if (variant === 'overlay') {
     return (
       <Link
         to={to}
-        className="group grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 border-t-2 border-foreground/85 hover:border-accent pt-6 no-underline transition-colors duration-300"
+        className={`group relative flex flex-col justify-end overflow-hidden rounded-[var(--radius-card-lg)] bg-ink text-white no-underline min-h-[22rem] ${className}`}
       >
-        <Cover article={article} className="h-56 md:h-full md:min-h-[22rem] rounded-xl" eager={eager} />
-        <div className="flex flex-col gap-4 justify-center pb-1">
-          <Kicker article={article} />
-          <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-[2.75rem] text-foreground leading-[1.08] m-0 group-hover:text-accent transition-colors duration-200">
-            {article.title}
-          </h2>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed m-0 line-clamp-4">
-            {article.excerpt}
+        <Cover article={article} className="absolute inset-0 rounded-none" eager={eager} label={false} />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to top, hsl(203 82% 8% / 0.92) 0%, hsl(203 82% 8% / 0.45) 45%, transparent 75%)',
+          }}
+          aria-hidden="true"
+        />
+        <div className="relative p-6 md:p-8 flex flex-col gap-3">
+          <p className="text-[12px] text-white/75 m-0">
+            {article.category?.name ?? article.source.name}
+            <span aria-hidden="true"> – </span>
+            <time dateTime={article.published_at}>{shortDate(article.published_at)}</time>
           </p>
-          <div className="flex items-center justify-between gap-4 pt-4 border-t border-border mt-2">
-            <div className="flex items-center gap-2 min-w-0">
-              <SourceCredit article={article} />
-              <span className="text-xs text-muted-foreground" aria-hidden="true">·</span>
-              <time className="text-xs text-muted-foreground shrink-0" dateTime={article.published_at}>
-                {timeAgo(article.published_at)}
-              </time>
-            </div>
-            <span className="text-xs font-semibold text-foreground group-hover:text-accent transition-colors flex items-center gap-1 shrink-0">
-              Leer
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
-            </span>
-          </div>
+          <h3 className="display uppercase text-xl md:text-2xl text-white m-0 line-clamp-3 leading-[1.05]">
+            {article.title}
+          </h3>
         </div>
       </Link>
     );
   }
 
   return (
-    <Link
-      to={to}
-      className="group flex flex-col h-full border-t-2 border-foreground/85 hover:border-accent pt-5 no-underline transition-colors duration-300"
-    >
-      <Cover article={article} className="h-44 rounded-lg" eager={eager} />
-      <div className="pt-4 flex flex-col gap-2.5 flex-1">
-        <Kicker article={article} />
-        <h3 className="font-display font-bold text-xl text-foreground leading-snug m-0 line-clamp-3 group-hover:text-accent transition-colors duration-200">
-          {article.title}
-        </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed m-0 line-clamp-3 flex-1">
-          {article.excerpt}
-        </p>
-        <div className="flex items-center justify-between gap-3 pt-3 border-t border-border">
-          <SourceCredit article={article} />
-          <time className="text-xs text-muted-foreground shrink-0" dateTime={article.published_at}>
-            {timeAgo(article.published_at)}
-          </time>
-        </div>
-      </div>
+    <Link to={to} className={`group flex flex-col gap-3 no-underline ${className}`}>
+      <Cover article={article} className="aspect-[4/3] rounded-xl" eager={eager} />
+      <Meta article={article} />
+      <h3 className="font-bold text-[1.05rem] text-foreground leading-snug tracking-[-0.015em] m-0 line-clamp-2 group-hover:text-accent transition-colors duration-150">
+        {article.title}
+      </h3>
+      <p className="text-[13px] text-muted-foreground leading-relaxed m-0 line-clamp-2">
+        {article.excerpt}
+      </p>
     </Link>
   );
 }

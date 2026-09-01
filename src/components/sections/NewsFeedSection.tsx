@@ -1,26 +1,19 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import { useArticles, useCategories } from '../../hooks/useNews';
 import { ArticleCard } from '../news/ArticleCard';
+import { pillTabClass } from '../news/pillTab';
 import { EmptyState, ErrorState, GridSkeleton } from '../news/States';
-import { Eyebrow, Reveal } from '../ui/ScrollMotion';
+import { Reveal, SectionHeader } from '../ui/ScrollMotion';
 
-/* Un solo flujo de noticias con badges para filtrar.
-
-   Antes esto eran cinco franjas, una por sección, apiladas. Leía como cinco
-   listas cortas en vez de como un periódico, y obligaba a bajar mucho para ver
-   poco. Ahora es una sola rejilla y la sección se elige con un badge.
+/* Un solo flujo de noticias con píldoras para filtrar.
 
    El filtro NO navega: cambia el estado y vuelve a pedir. Los enlaces de
-   sección permanentes siguen existiendo en `/seccion/:slug`, que es lo que se
-   comparte y lo que indexa un buscador; esto es para hojear.
+   sección permanentes siguen existiendo en `/seccion/:slug`, que es lo que
+   se comparte y lo que indexa un buscador; esto es para hojear.
 
-   Los esqueletos salen solos al cambiar de badge: `useArticles` está cacheado
-   por la clave de la consulta, así que al cambiar el filtro la clave deja de
-   coincidir y el hook vuelve a `loading` hasta que llega la respuesta. Sin eso
-   la rejilla se quedaría con las notas de la sección anterior mientras carga y
-   parecería que el badge no hizo nada. */
+   Los esqueletos salen solos al cambiar de píldora: `useArticles` está
+   cacheado por la clave de la consulta, así que al cambiar el filtro la
+   clave deja de coincidir y el hook vuelve a `loading`. */
 
 const PAGE_SIZE = 9;
 
@@ -32,36 +25,15 @@ export function NewsFeedSection() {
     page_size: PAGE_SIZE,
   });
 
-  // Una sección sin notas es un badge que solo puede decepcionar.
+  // Una sección sin notas es una píldora que solo puede decepcionar.
   const withContent = (categories ?? []).filter((c) => (c.article_count ?? 0) > 0);
   const articles = data?.results ?? [];
 
-  /* Pestañas rectangulares en versalitas: el vocabulario editorial no lleva
-     píldoras. La activa se rellena de acento. */
-  const badgeClass = (isActive: boolean) =>
-    `shrink-0 rounded-sm px-3.5 py-1.5 text-[12px] uppercase tracking-[0.1em] border cursor-pointer transition-colors duration-200 whitespace-nowrap ${
-      isActive
-        ? 'bg-accent text-white border-accent font-bold'
-        : 'bg-transparent border-border text-muted-foreground hover:text-accent hover:border-accent/50'
-    }`;
-
   return (
-    <section id="secciones" className="pt-16 md:pt-20 pb-24 md:pb-32 px-6 md:px-12 lg:px-20 bg-background scroll-mt-28">
-      <div className="max-w-6xl mx-auto">
-        <Reveal className="flex flex-wrap items-end justify-between gap-4 mb-8">
-          <div>
-            <Eyebrow>Al día</Eyebrow>
-            <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05] m-0">
-              Por dónde va la ciudad.
-            </h2>
-          </div>
-          <Link
-            to="/noticias"
-            className="kicker inline-flex items-center gap-1.5 no-underline hover:gap-2.5 transition-all duration-200"
-          >
-            Ver todas
-            <ArrowRight size={14} aria-hidden="true" />
-          </Link>
+    <section id="secciones" className="px-4 md:px-6 pt-16 md:pt-20 scroll-mt-20">
+      <div className="max-w-[1200px] mx-auto">
+        <Reveal className="mb-6">
+          <SectionHeader to="/noticias">Explora la ciudad</SectionHeader>
         </Reveal>
 
         {/* Botones reales, no enlaces: esto filtra en la misma página. */}
@@ -70,8 +42,12 @@ export function NewsFeedSection() {
           aria-label="Filtrar por sección"
           className="flex gap-2 overflow-x-auto no-scrollbar pb-1 mb-10"
         >
-          <button type="button" onClick={() => setActive(null)} aria-pressed={active === null}
-                  className={badgeClass(active === null)}>
+          <button
+            type="button"
+            onClick={() => setActive(null)}
+            aria-pressed={active === null}
+            className={pillTabClass(active === null)}
+          >
             Todas
           </button>
           {withContent.map((category) => (
@@ -80,10 +56,10 @@ export function NewsFeedSection() {
               type="button"
               onClick={() => setActive(category.slug)}
               aria-pressed={active === category.slug}
-              className={badgeClass(active === category.slug)}
+              className={pillTabClass(active === category.slug)}
             >
               {category.name}
-              <span className="ml-1.5 opacity-60 text-xs">{category.article_count}</span>
+              <span className="text-[11px] opacity-60 tabular-nums">{category.article_count}</span>
             </button>
           ))}
         </div>
@@ -97,9 +73,9 @@ export function NewsFeedSection() {
         )}
 
         {!error && !loading && articles.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
             {articles.map((article, i) => (
-              <Reveal key={article.slug} y={24} delay={Math.min(i, 5) * 0.06}>
+              <Reveal key={article.slug} delay={Math.min(i, 5) * 0.05}>
                 <ArticleCard article={article} />
               </Reveal>
             ))}

@@ -1,93 +1,110 @@
 import { Link } from 'react-router-dom';
-import { ArrowUp } from 'lucide-react';
+import { ArrowRight, ArrowUp, Mail } from 'lucide-react';
 import { environment } from '../environments/environment';
+import { useCategories } from '../hooks/useNews';
+
+/* El pie: bloque de tinta, como el hero.
+
+   Arriba, la frase grande y el contacto: no hay boletín ni formulario —no
+   existe backend que reciba envíos— así que el sitio del «suscríbete» de la
+   referencia lo ocupa el correo, que es el único canal real. Debajo, la marca
+   con su línea, las columnas de secciones y sitio, y la línea legal. Cierra
+   la palabra gigante recortada, que es textura y no rótulo. */
 
 const YEAR = new Date().getFullYear();
 
-/* El pie: navegación y poco más.
-
-   Antes cargaba con la declaración de origen entera —la lista de medios, el
-   aviso de agregador— y ocupaba pantalla y media. Eso ya lo dice cada nota, en
-   su propio crédito y con el enlace al medio, que es donde el lector lo mira.
-   Repetirlo aquí no informaba a nadie: solo alargaba la página.
-
-   Por lo mismo se fue la columna de secciones: navegar por sección se hace
-   desde la barra, arriba, que es donde el lector la busca.
-
-   Queda el bloque oscuro con el halo de marca, la marca, los enlaces del
-   sitio y la línea legal. */
-
 function ColumnTitle({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 m-0 mb-5">{children}</p>
-  );
+  return <p className="text-[13px] font-semibold text-white m-0 mb-4">{children}</p>;
 }
 
-const linkClass = 'text-base text-white/85 hover:text-white no-underline transition-colors';
+const linkClass = 'text-[13px] text-white/60 hover:text-white no-underline transition-colors';
 
 export function Footer() {
+  const { data: categories } = useCategories();
+
   function scrollTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   return (
-    <footer className="relative overflow-hidden bg-[hsl(213_44%_8%)] text-white border-t-4 border-accent mt-24">
-      {/* Halo de marca, con fundido superior para que no haya corte duro */}
-      <div
-        className="absolute inset-x-0 top-0 h-[80%] pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(130% 110% at 50% 8%, hsl(199 95% 55% / 0.30) 0%, hsl(200 98% 39% / 0.14) 42%, transparent 76%)',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 22%, black 70%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 22%, black 70%, transparent 100%)',
-        }}
-        aria-hidden="true"
-      />
+    <footer className="relative overflow-hidden bg-ink text-white mt-24 md:mt-32">
+      <div className="relative max-w-[1200px] mx-auto px-6 md:px-8 pt-16 md:pt-20">
+        {/* Frase y contacto */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
+          <h2 className="display text-[2.75rem] md:text-6xl lg:text-7xl text-white m-0 max-w-xl">
+            La ciudad, <span className="text-accent-bright">hoy.</span>
+          </h2>
 
-      <div className="relative px-6 md:px-12 lg:px-20 pt-16 pb-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-start justify-between gap-12">
-            {/* Mismo wordmark tipográfico de la barra, en claro. */}
-            <Link
-              to="/"
-              className="no-underline font-display font-bold text-2xl leading-none flex items-baseline gap-1.5"
-              aria-label="Guayas Hoy — portada"
+          <div className="md:max-w-sm w-full">
+            <p className="text-[13px] text-white/70 m-0 mb-3">Escríbenos</p>
+            <a
+              href={`mailto:${environment.contactEmail}`}
+              className="group flex items-center gap-3 rounded-full border border-white/25 bg-white/5 hover:bg-white hover:text-ink pl-5 pr-1.5 h-13 no-underline text-white transition-colors"
             >
-              <span className="text-white">Guayas</span>
-              <span className="text-[hsl(199_95%_65%)]">Hoy</span>
-            </Link>
-
-            <div>
-              <ColumnTitle>Sitio</ColumnTitle>
-              <ul className="list-none m-0 p-0 flex flex-col gap-2.5">
-                <li><Link to="/noticias" className={linkClass}>Todas las notas</Link></li>
-                <li><Link to="/privacidad" className={linkClass}>Privacidad</Link></li>
-                <li><Link to="/terminos" className={linkClass}>Términos</Link></li>
-                {/* Contacto: un `mailto:` y nada más. No hay formulario en
-                    ninguna página —no existe backend que reciba envíos—, así
-                    que el pie enlaza al correo directamente. */}
-                <li>
-                  <a href={`mailto:${environment.contactEmail}`} className={linkClass}>
-                    {environment.contactEmail}
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <button
-              type="button"
-              onClick={scrollTop}
-              aria-label="Volver arriba"
-              className="hidden md:inline-flex items-center justify-center w-11 h-11 shrink-0 rounded-full border border-white/20 bg-white/5 hover:bg-white hover:text-[hsl(213_44%_8%)] hover:border-white text-white transition-colors cursor-pointer"
-            >
-              <ArrowUp className="w-4 h-4" aria-hidden="true" />
-            </button>
-          </div>
-
-          <div className="relative mt-14 pt-6 border-t border-white/10 text-[11px] uppercase tracking-[0.14em] text-white/45">
-            <p className="m-0">© {YEAR} Guayas Hoy</p>
+              <Mail size={16} aria-hidden="true" className="shrink-0 opacity-70" />
+              <span className="text-sm font-medium flex-1 truncate">{environment.contactEmail}</span>
+              <span className="flex items-center justify-center h-10 w-10 rounded-full bg-white text-ink group-hover:bg-ink group-hover:text-white transition-colors">
+                <ArrowRight size={16} aria-hidden="true" />
+              </span>
+            </a>
           </div>
         </div>
+
+        <div className="mt-14 pt-12 border-t border-white/10 grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr] gap-10 md:gap-14">
+          <div>
+            <Link
+              to="/"
+              className="display uppercase tracking-[0.1em] text-xl leading-none no-underline text-white"
+              aria-label="Guayas Hoy — portada"
+            >
+              Guayas<span className="text-accent-bright">Hoy</span>
+            </Link>
+            <p className="text-[13px] text-white/60 leading-relaxed m-0 mt-4 max-w-xs">
+              Las noticias de Guayaquil de los principales medios de la ciudad, reunidas en un
+              solo lugar y enlazadas siempre al original.
+            </p>
+          </div>
+
+          <div>
+            <ColumnTitle>Secciones</ColumnTitle>
+            <ul className="list-none m-0 p-0 flex flex-col gap-2.5">
+              {(categories ?? []).slice(0, 6).map((category) => (
+                <li key={category.slug}>
+                  <Link to={`/seccion/${category.slug}`} className={linkClass}>
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <ColumnTitle>Sitio</ColumnTitle>
+            <ul className="list-none m-0 p-0 flex flex-col gap-2.5">
+              <li><Link to="/noticias" className={linkClass}>Todas las noticias</Link></li>
+              <li><Link to="/medios" className={linkClass}>Medios y reglas</Link></li>
+              <li><Link to="/privacidad" className={linkClass}>Privacidad</Link></li>
+              <li><Link to="/terminos" className={linkClass}>Términos</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-14 pt-6 border-t border-white/10 flex items-center justify-between gap-6 text-[12px] text-white/50">
+          <p className="m-0">© {YEAR} Guayas Hoy · Todos los derechos de las notas son de cada medio.</p>
+          <button
+            type="button"
+            onClick={scrollTop}
+            aria-label="Volver arriba"
+            className="inline-flex items-center justify-center w-11 h-11 shrink-0 rounded-full border border-white/20 bg-transparent hover:bg-white hover:text-ink text-white transition-colors cursor-pointer"
+          >
+            <ArrowUp className="w-4 h-4" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+
+      {/* Palabra gigante recortada por abajo */}
+      <div className="relative mt-6 h-[0.55em] overflow-hidden giant-word text-center" aria-hidden="true">
+        GUAYASHOY
       </div>
     </footer>
   );

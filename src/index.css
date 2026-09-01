@@ -1,51 +1,29 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
-/* ─── Fuente local ────────────────────────────────────── */
+/* ─── Fuente ──────────────────────────────────────────────
+   Una sola familia, Inter variable (peso 400–900 + eje óptico), autoalojada:
+   la CSP de `public/_headers` solo permite `font-src 'self'`, así que una
+   fuente de Google Fonts nunca llegaba a cargar en producción. El eje `opsz`
+   es lo que hace que los titulares grandes se vean apretados y los textos
+   pequeños abiertos, con el mismo archivo. */
 @font-face {
-  font-family: "AtkinsonHyperlegible";
-  src: url("/fonts/AtkinsonHyperlegible-Regular.ttf") format("truetype");
-  font-weight: 400;
+  font-family: "Inter";
+  src: url("/fonts/Inter-Variable.woff2") format("woff2");
+  font-weight: 400 900;
   font-style: normal;
   font-display: swap;
 }
 
-@font-face {
-  font-family: "AtkinsonHyperlegible";
-  src: url("/fonts/AtkinsonHyperlegible-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "AtkinsonHyperlegible";
-  src: url("/fonts/AtkinsonHyperlegible-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "AtkinsonHyperlegible";
-  src: url("/fonts/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* ─── Guayas Hoy — Design Tokens ──────────────────
-   Mismo sistema que el estándar de la casa; cambia la paleta.
-   Allí el fondo era negro y el acento morado; aquí el fondo es blanco y el
-   acento celeste, porque un periódico se lee de día y en pantallas malas.
-   Los neutrales llevan tinte 205-213 (frío) para amarrarlos al celeste:
-   nunca un gris puro tipo #333.
-──────────────────────────────────────────────────────────── */
+/* ─── Guayas Hoy — Design Tokens ──────────────────────────
+   Edición «deportiva» en blanco y azul profundo. Blanco de fondo, superficies
+   en gris-azul muy claro para las tarjetas y las tablas, y un bloque de tinta
+   (`--ink`, azul noche) para el hero, el crédito de salida y el pie: es el
+   equivalente del bloque verde de la referencia. El celeste de marca queda
+   como acento de texto, viñetas y estados activos. */
 @theme {
-  /* Serif moderna solo para el display: es lo que hace «editorial» sin caer en
-     el diario clásico. El cuerpo sigue en Atkinson por accesibilidad. */
-  --font-display: "Fraunces", Georgia, "Iowan Old Style", serif;
-  --font-body: "AtkinsonHyperlegible", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -62,14 +40,19 @@
   --color-border: hsl(var(--border));
   --color-ring: hsl(var(--ring));
   --color-surface: hsl(var(--surface));
+  --color-ink: hsl(var(--ink));
+  --color-ink-soft: hsl(var(--ink-soft));
+  --color-ink-foreground: hsl(var(--ink-foreground));
+
+  --radius-card: 1rem;
+  --radius-card-lg: 1.25rem;
 }
 
 :root {
-  /* Celeste de marca #0284C7, bajado de luminosidad para pasar AA sobre blanco.
-     `accent-bright` es el mismo tono subido: solo para superficies grandes y
-     gradientes, nunca para texto pequeño. */
+  /* Celeste de marca #0284C7, bajado para pasar AA sobre blanco. `bright` es
+     el mismo tono subido: chips y viñetas sobre el bloque de tinta. */
   --accent: 200 98% 39%;
-  --accent-bright: 199 95% 54%;
+  --accent-bright: 199 95% 58%;
   --accent-deep: 205 90% 26%;
   --accent-foreground: 0 0% 100%;
   --ring: 200 98% 39%;
@@ -78,50 +61,54 @@
   --primary-foreground: 0 0% 100%;
 
   --background: 0 0% 100%;
-  --foreground: 213 34% 12%;
+  --foreground: 210 24% 8%;
 
-  /* Superficie elevada: casi blanco, tintado de azul (≈ #f5f8fb) */
-  --surface: 205 44% 97%;
+  /* Superficie: gris-azul casi blanco (≈ #f3f5f8) para tarjetas y tablas.
+     Es el «crema» de la referencia, enfriado para amarrarlo al celeste. */
+  --surface: 210 24% 96%;
+  --secondary: 210 24% 96%;
+  --secondary-foreground: 210 24% 8%;
+  --muted: 210 20% 93%;
+  --muted-foreground: 210 10% 42%;
+  --border: 210 16% 89%;
 
-  --secondary: 205 44% 97%;
-  --secondary-foreground: 213 34% 12%;
-  --muted: 205 40% 95%;
-  --muted-foreground: 211 15% 42%;
-  --border: 207 24% 88%;
-
-  /* Radios contenidos: la edición editorial vive de reglas y filetes, no de
-     píldoras. Lo redondo queda para imágenes y controles pequeños. */
-  --radius: 0.5rem;
+  /* Tinta: azul noche profundo (≈ #06283d). Es el bloque de marca. */
+  --ink: 203 82% 13%;
+  --ink-soft: 203 60% 20%;
+  --ink-foreground: 0 0% 100%;
 
   color-scheme: light;
 }
 
-/* ─── Modo oscuro (clase .dark en <html>) ──────────────
-   Inverso del principal: el fondo se va a azul noche, no a negro puro, para
-   no perder el parentesco con el celeste. El acento SUBE de luminosidad —
-   sobre oscuro el acento emite, sobre claro marca. */
+/* ─── Modo oscuro (clase .dark en <html>) ─────────────────
+   El fondo va a azul noche, no a negro. La tinta se separa del fondo por
+   luminosidad, no por tono, para que el hero siga siendo un bloque. El
+   acento SUBE de luminosidad: sobre oscuro emite, sobre claro marca. */
 html.dark {
   --accent: 199 95% 60%;
-  --accent-bright: 199 92% 52%;
-  /* En oscuro el degradado de las tarjetas sin foto va de azul profundo a
-     celeste medio. Si arrancara del mismo tono que el acento, el bloque
-     brillaría más que las fotos reales de al lado. */
+  --accent-bright: 199 92% 66%;
   --accent-deep: 206 88% 22%;
-  --accent-foreground: 213 44% 8%;
+  --accent-foreground: 206 44% 6%;
   --ring: 199 95% 60%;
 
   --primary: 199 95% 60%;
-  --primary-foreground: 213 44% 8%;
+  --primary-foreground: 206 44% 6%;
 
-  --background: 213 44% 8%;
-  --foreground: 205 30% 96%;
+  --background: 206 40% 6%;
+  --foreground: 210 20% 96%;
 
-  --surface: 213 34% 13%;
-  --secondary: 213 34% 13%;
-  --secondary-foreground: 205 30% 96%;
-  --muted: 213 30% 17%;
-  --muted-foreground: 209 16% 64%;
-  --border: 213 25% 22%;
+  --surface: 206 32% 10%;
+  --secondary: 206 32% 10%;
+  --secondary-foreground: 210 20% 96%;
+  --muted: 206 28% 14%;
+  --muted-foreground: 208 14% 66%;
+  --border: 206 22% 18%;
+
+  /* La tinta sube un escalón sobre el fondo: si fuera casi igual, el hero y
+     el pie dejarían de leerse como bloques. */
+  --ink: 203 62% 15%;
+  --ink-soft: 203 50% 21%;
+  --ink-foreground: 0 0% 100%;
 
   color-scheme: dark;
 }
@@ -142,6 +129,7 @@ body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-body);
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -158,29 +146,117 @@ body {
   color: hsl(var(--foreground));
 }
 
-/* El estándar de la casa no tiene focus visible en botones ni enlaces — es un
-   hueco de accesibilidad conocido. Aquí se cierra desde el día uno. */
 :where(a, button, [role="button"], summary, input, textarea, select):focus-visible {
   outline: 2px solid hsl(var(--accent));
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-/* ─── Vocabulario editorial ──────────────────────────────
-   Reglas y filetes: la estructura de la página la ponen las líneas, no las
-   cajas. `.rule-lead` es la raya gruesa que abre una sección o una nota;
-   el hover la tiñe de acento en las tarjetas. */
-.rule-lead {
-  border-top: 2px solid hsl(var(--foreground) / 0.85);
+/* ─── Vocabulario tipográfico ────────────────────────────
+   `.display` es el titular grande: peso 800, tracking negativo y el eje
+   óptico forzado a 32 para que Inter enseñe su corte de display. Se usa en
+   los h2 de sección, el hero, los h1 de página y el pie. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variation-settings: "opsz" 32;
 }
 
-/* Kicker: la micro-etiqueta celeste en versalitas que antecede a un titular. */
+/* Etiqueta con viñeta: «• Guayaquil». Es la micro-etiqueta de cada tarjeta
+   y va en gris, no en celeste: la referencia la usa como dato, no como
+   reclamo. La viñeta sí lleva el acento. */
+.tag-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  color: hsl(var(--muted-foreground));
+  white-space: nowrap;
+}
+.tag-dot::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: hsl(var(--accent));
+  flex-shrink: 0;
+}
+
+/* Kicker: versalitas pequeñas para rótulos («Sección», «Publicado por»). */
 .kicker {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Enlace «Ver todas →» de cabecera de sección: subrayado con aire. */
+.link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 14px;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: hsl(var(--foreground) / 0.35);
+  transition: color 150ms ease, text-decoration-color 150ms ease, gap 200ms ease;
+}
+.link-more:hover {
   color: hsl(var(--accent));
+  text-decoration-color: hsl(var(--accent));
+  gap: 0.65rem;
+}
+
+/* Botones píldora. `pill-light` es blanco sobre tinta (el CTA del hero);
+   `pill-ink` es tinta sobre blanco; `pill-ghost` es contorno. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.75rem 1.4rem;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+.pill:active {
+  transform: scale(0.97);
+}
+.pill-light {
+  background: #fff;
+  color: hsl(203 82% 13%);
+}
+.pill-light:hover {
+  background: hsl(var(--accent-bright));
+  color: hsl(203 82% 13%);
+}
+.pill-ink {
+  background: hsl(var(--ink));
+  color: hsl(var(--ink-foreground));
+}
+.pill-ink:hover {
+  background: hsl(var(--accent));
+  color: #fff;
+}
+.pill-ghost {
+  background: transparent;
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+}
+.pill-ghost:hover {
+  border-color: hsl(var(--foreground));
 }
 
 /* ─── Recortes de texto ──────────────────────────────── */
@@ -195,9 +271,7 @@ body {
 .line-clamp-3 { -webkit-line-clamp: 3; }
 .line-clamp-4 { -webkit-line-clamp: 4; }
 
-/* ─── Barra de secciones ─────────────────────────────── */
-/* Las pestañas de sección se desplazan de lado en móvil; sin scrollbar
-   visible, que en una barra de 40px de alto se come el texto. */
+/* ─── Barras que se desplazan de lado ───────────────── */
 .no-scrollbar {
   scrollbar-width: none;
 }
@@ -205,30 +279,32 @@ body {
   display: none;
 }
 
-/* ─── Cintillo de últimas noticias ───────────────────── */
-@keyframes ticker-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
+/* ─── Hero ────────────────────────────────────────────
+   El panel de tinta lleva la esquina superior izquierda cortada en diagonal,
+   como el bloque verde de la referencia. Solo en escritorio: en móvil el
+   panel va debajo de la foto y el corte no tiene sentido. */
+@media (min-width: 768px) {
+  .hero-slant {
+    clip-path: polygon(0 7%, 100% 0, 100% 100%, 0 100%);
   }
 }
 
-.ticker-track {
-  display: flex;
-  width: max-content;
-  animation: ticker-scroll 60s linear infinite;
-}
-
-.ticker-track:hover {
-  animation-play-state: paused;
+/* ─── Palabra gigante del pie ─────────────────────────
+   Se recorta por abajo con el `overflow` del contenedor: se ve la mitad
+   superior de las letras, que es lo que la hace textura y no rótulo. */
+.giant-word {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.8;
+  font-variation-settings: "opsz" 32;
+  font-size: clamp(4.5rem, 17vw, 15rem);
+  color: hsl(0 0% 100% / 0.06);
+  user-select: none;
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker-track {
-    animation: none;
-  }
   html {
     scroll-behavior: auto;
   }

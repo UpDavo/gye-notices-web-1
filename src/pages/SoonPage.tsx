@@ -63,7 +63,7 @@ export function SoonPage({ onUnlock }: { onUnlock: () => void }) {
         }}
       />
 
-      <h1 className="relative font-display font-bold text-4xl md:text-6xl leading-[1.05] text-center max-w-3xl m-0">
+      <h1 className="relative display text-4xl md:text-6xl text-center max-w-3xl m-0">
         Estamos armando la portada
       </h1>
 

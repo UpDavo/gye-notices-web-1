@@ -63,19 +63,23 @@ export function SectionPage() {
     <div className="flex flex-col bg-background min-h-screen">
       <Navbar />
 
-      <main className="flex-1 pt-32 md:pt-36 px-6 md:px-12 lg:px-20">
-        <div className="max-w-6xl mx-auto">
-          <header className="mb-10">
-            <p className="kicker flex items-center gap-3 m-0 mb-4">
-              <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
-              Sección
+      <main className="flex-1 pt-10 md:pt-14 px-4 md:px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+            <div>
+              <p className="kicker m-0 mb-3">Sección</p>
+              <h1 className="display text-4xl md:text-6xl text-foreground m-0 mb-3">{name}</h1>
+              {category?.description && (
+                <p className="text-muted-foreground text-base md:text-lg m-0 max-w-2xl">
+                  {category.description}
+                </p>
+              )}
+            </div>
+            <p className="text-muted-foreground m-0 tabular-nums shrink-0">
+              {typeof data?.count === 'number'
+                ? `${data.count} ${data.count === 1 ? 'nota' : 'notas'}`
+                : ''}
             </p>
-            <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground leading-[1.05] m-0 mb-3">
-              {name}
-            </h1>
-            {category?.description && (
-              <p className="text-muted-foreground text-lg m-0 max-w-2xl">{category.description}</p>
-            )}
           </header>
 
           <CategoryTabs categories={categories ?? []} className="mb-10" />

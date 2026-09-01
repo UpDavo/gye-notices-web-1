@@ -4,7 +4,9 @@ import { Footer } from '../components/Footer';
 import { usePageSeo } from '../hooks/usePageSeo';
 
 /* Marco compartido por las dos páginas legales: mismo ritmo tipográfico, un
-   solo sitio donde tocarlo. */
+   solo sitio donde tocarlo. Cabecera ancha con el titular grande y la fecha,
+   y el texto en medida de lectura con los apartados numerados a la
+   izquierda. */
 
 type Section = { title: string; body: ReactNode };
 
@@ -35,26 +37,19 @@ export function LegalPage({
     <div className="flex flex-col bg-background min-h-screen">
       <Navbar />
 
-      <main className="flex-1 pt-32 md:pt-36 px-6 md:px-12 lg:px-20">
-        <div className="max-w-3xl mx-auto pb-8">
-          <header className="mb-12">
-            <p className="kicker flex items-center gap-3 m-0 mb-4">
-              <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
-              {eyebrow}
-            </p>
-            <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground leading-[1.05] m-0 mb-4">
-              {title}
-            </h1>
-            <p className="text-sm text-muted-foreground m-0 mb-6">Última actualización: {updated}</p>
-            <p className="text-lg text-foreground/85 leading-relaxed border-l-2 border-accent pl-6 m-0">
-              {intro}
-            </p>
+      <main className="flex-1 pt-10 md:pt-14 px-4 md:px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <header className="max-w-3xl mb-12 md:mb-16">
+            <p className="kicker m-0 mb-3">{eyebrow}</p>
+            <h1 className="display text-4xl md:text-6xl text-foreground m-0 mb-4">{title}</h1>
+            <p className="text-sm text-muted-foreground m-0 mb-8">Última actualización: {updated}</p>
+            <p className="text-lg md:text-xl text-foreground/90 leading-relaxed m-0">{intro}</p>
           </header>
 
-          <div className="flex flex-col gap-10">
+          <div className="max-w-3xl flex flex-col divide-y divide-border">
             {sections.map((section) => (
-              <section key={section.title}>
-                <h2 className="font-display font-bold text-xl md:text-2xl text-foreground m-0 mb-3">
+              <section key={section.title} className="py-8 first:pt-0">
+                <h2 className="font-bold text-lg md:text-xl text-foreground tracking-[-0.01em] m-0 mb-3">
                   {section.title}
                 </h2>
                 <div className="text-base text-muted-foreground leading-relaxed flex flex-col gap-3">

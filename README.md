@@ -106,11 +106,11 @@ src/
 │   ├── useTheme.ts     Claro ↔ oscuro, persistido en localStorage
 │   └── usePageSeo.ts   Meta en tiempo de ejecución
 ├── components/
-│   ├── HeroBanners.tsx  El hero: banners del backend, sin animación
+│   ├── HeroLead.tsx     El hero: la nota principal como tarjeta de tinta y foto
+│   ├── PromoBanner.tsx  Franja ancha con la pieza propia de src/data/banners.ts
 │   ├── news/           El módulo de noticias: tarjeta, rejilla, paginación, crédito, estados
 │   ├── sections/       Bloques de la portada
-│   ├── hero/           Hero con salida scroll-driven
-│   └── ui/             Reveal, Eyebrow, TextScrollReveal
+│   └── ui/             Reveal y SectionHeader
 └── pages/              Una por ruta
 ```
 

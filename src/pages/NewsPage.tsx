@@ -62,56 +62,52 @@ export function NewsPage() {
     <div className="flex flex-col bg-background min-h-screen">
       <Navbar />
 
-      <main className="flex-1 pt-32 md:pt-36 px-6 md:px-12 lg:px-20">
-        <div className="max-w-6xl mx-auto">
-          <header className="mb-10">
-            <p className="kicker flex items-center gap-3 m-0 mb-4">
-              <span className="h-[2px] w-8 bg-accent" aria-hidden="true" />
-              {query ? 'Búsqueda' : 'Archivo'}
-            </p>
-            <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground leading-[1.05] m-0 mb-3">
-              {query ? `“${query}”` : 'Todas las noticias'}
-            </h1>
-            <p className="text-muted-foreground m-0">
-              {typeof data?.count === 'number'
-                ? `${data.count} ${data.count === 1 ? 'nota' : 'notas'}`
-                : 'Cargando…'}
-            </p>
-          </header>
-
-          <form onSubmit={submitSearch} role="search" className="mb-6 flex gap-3">
-            <label htmlFor="page-search" className="sr-only">
-              Buscar noticias
-            </label>
-            <div className="flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2.5 flex-1 max-w-md focus-within:border-accent transition-colors">
-              <Search size={16} className="text-muted-foreground shrink-0" aria-hidden="true" />
-              <input
-                id="page-search"
-                name="q"
-                type="search"
-                defaultValue={query}
-                key={query}
-                placeholder="Buscar en las noticias"
-                className="bg-transparent border-0 outline-none text-sm w-full text-foreground placeholder:text-muted-foreground"
-              />
+      <main className="flex-1 pt-10 md:pt-14 px-4 md:px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+            <div>
+              <p className="kicker m-0 mb-3">{query ? 'Búsqueda' : 'Archivo'}</p>
+              <h1 className="display text-4xl md:text-6xl text-foreground m-0 mb-3">
+                {query ? `“${query}”` : 'Todas las noticias'}
+              </h1>
+              <p className="text-muted-foreground m-0 tabular-nums">
+                {typeof data?.count === 'number'
+                  ? `${data.count} ${data.count === 1 ? 'nota' : 'notas'}`
+                  : 'Cargando…'}
+              </p>
             </div>
-            <button
-              type="submit"
-              className="rounded-md px-6 py-2.5 text-sm font-semibold bg-accent text-white hover:opacity-90 transition-opacity border-0 cursor-pointer"
-            >
-              Buscar
-            </button>
-            {query && (
-              <button
-                type="button"
-                onClick={() => setParams(new URLSearchParams())}
-                aria-label="Limpiar búsqueda"
-                className="flex items-center justify-center h-11 w-11 rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors bg-transparent cursor-pointer"
-              >
-                <X size={16} />
-              </button>
-            )}
-          </form>
+
+            <form onSubmit={submitSearch} role="search" className="flex items-center gap-2 w-full md:w-auto">
+              <label htmlFor="page-search" className="sr-only">
+                Buscar noticias
+              </label>
+              <div className="flex items-center gap-2 rounded-full bg-surface pl-4 pr-1.5 h-12 flex-1 md:w-80 focus-within:ring-2 focus-within:ring-accent/40 transition-shadow">
+                <Search size={16} className="text-muted-foreground shrink-0" aria-hidden="true" />
+                <input
+                  id="page-search"
+                  name="q"
+                  type="search"
+                  defaultValue={query}
+                  key={query}
+                  placeholder="Buscar en las noticias"
+                  className="bg-transparent border-0 outline-none text-base w-full text-foreground placeholder:text-muted-foreground"
+                />
+                <button type="submit" className="pill pill-ink !py-2.5 !px-4 text-[13px]">
+                  Buscar
+                </button>
+              </div>
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setParams(new URLSearchParams())}
+                  aria-label="Limpiar búsqueda"
+                  className="flex items-center justify-center h-12 w-12 shrink-0 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors bg-transparent cursor-pointer"
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </form>
+          </header>
 
           <CategoryTabs categories={categories ?? []} className="mb-10" />
 

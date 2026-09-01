@@ -37,9 +37,9 @@ export function ArticleFeed({
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
         {articles.map((article, i) => (
-          <Reveal key={article.slug} y={24} delay={Math.min(i, 5) * 0.06}>
+          <Reveal key={article.slug} delay={Math.min(i, 5) * 0.05}>
             <ArticleCard article={article} eager={i < 3} />
           </Reveal>
         ))}

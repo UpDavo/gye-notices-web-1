@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-/* Paginación numérica.
+/* Paginación numérica en píldoras.
 
    Con muchas páginas se colapsa a una ventana alrededor de la actual más los
    extremos: una fila de 40 números no la usa nadie y rompe el móvil. */
@@ -32,13 +32,13 @@ function windowedPages(page: number, totalPages: number): (number | 'gap')[] {
 }
 
 const arrowClass =
-  'flex h-9 w-9 items-center justify-center rounded-md border border-border text-foreground bg-transparent cursor-pointer transition-colors hover:border-accent/50 hover:text-accent disabled:opacity-30 disabled:pointer-events-none';
+  'flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground bg-transparent cursor-pointer transition-colors hover:border-foreground disabled:opacity-30 disabled:pointer-events-none';
 
 export function Pagination({ page, totalPages, onChange }: Props) {
   if (totalPages <= 1) return null;
 
   return (
-    <nav aria-label="Paginación" className="flex justify-center items-center gap-2 mt-12">
+    <nav aria-label="Paginación" className="flex justify-center items-center gap-2 mt-14">
       <button
         type="button"
         onClick={() => onChange(page - 1)}
@@ -61,10 +61,10 @@ export function Pagination({ page, totalPages, onChange }: Props) {
             onClick={() => onChange(item)}
             aria-label={`Página ${item}`}
             aria-current={item === page ? 'page' : undefined}
-            className={`h-9 min-w-9 px-3 rounded-md text-sm border cursor-pointer transition-colors ${
+            className={`h-11 min-w-11 px-3 rounded-full text-sm font-semibold cursor-pointer transition-colors border ${
               item === page
-                ? 'bg-accent text-white border-accent font-semibold'
-                : 'border-border text-muted-foreground bg-transparent hover:text-accent hover:border-accent/50'
+                ? 'bg-ink text-ink-foreground border-ink'
+                : 'border-transparent text-muted-foreground bg-transparent hover:bg-surface hover:text-foreground'
             }`}
           >
             {item}

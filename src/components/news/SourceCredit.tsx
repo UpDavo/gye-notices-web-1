@@ -1,4 +1,4 @@
-import { ExternalLink } from 'lucide-react';
+import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import type { Article } from '../../lib/api';
 
 /* El crédito al medio.
@@ -20,9 +20,8 @@ export function SourceCredit({ article, variant = 'inline', className = '' }: Pr
 
   if (variant === 'inline') {
     return (
-      <span className={`inline-flex items-center gap-1.5 text-xs text-muted-foreground ${className}`}>
-        <span className="h-1.5 w-1.5 bg-accent shrink-0" aria-hidden="true" />
-        <span className="font-semibold text-foreground/75">{source.name}</span>
+      <span className={`tag-dot ${className}`}>
+        <span className="font-semibold text-foreground/80">{source.name}</span>
       </span>
     );
   }
@@ -33,39 +32,47 @@ export function SourceCredit({ article, variant = 'inline', className = '' }: Pr
         href={article.canonical_url}
         target="_blank"
         rel="noopener noreferrer nofollow"
-        className={`inline-flex items-center gap-1.5 text-xs font-semibold text-accent no-underline hover:underline ${className}`}
+        className={`inline-flex items-center gap-1.5 text-sm font-semibold text-foreground no-underline hover:text-accent transition-colors ${className}`}
       >
         {source.name}
-        <ExternalLink size={12} aria-hidden="true" />
+        <ExternalLink size={13} aria-hidden="true" />
       </a>
     );
   }
 
-  /* El bloque de salida abre con la regla gruesa del sistema: es el elemento
-     principal de la página de nota y se compone como una pieza más. */
+  /* El bloque de salida es una tarjeta de tinta: es el elemento principal de
+     la página de nota —aquí no hay más texto que leer— y se compone con el
+     mismo bloque oscuro del hero para que se lea como «lo importante». */
   return (
-    <div className={`border-t-2 border-foreground/85 bg-surface rounded-b-lg p-5 ${className}`}>
-      <p className="kicker m-0 mb-2">Publicado originalmente por</p>
-      <p className="font-display font-bold text-xl text-foreground m-0 mb-1">{source.name}</p>
-      <p className="text-sm text-muted-foreground m-0 mb-4">
-        Guayas Hoy resume y enlaza. El artículo completo, las fotos y los
-        derechos son de {source.name}.
+    <div
+      className={`relative overflow-hidden rounded-[var(--radius-card-lg)] bg-ink text-ink-foreground p-7 md:p-9 ${className}`}
+    >
+      <div
+        className="absolute -right-24 -top-24 h-72 w-72 rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, hsl(var(--accent-bright) / 0.35), transparent 65%)' }}
+        aria-hidden="true"
+      />
+      <p className="relative kicker text-white/60 m-0 mb-3">Publicado originalmente por</p>
+      <p className="relative display text-2xl md:text-3xl text-white m-0 mb-3">{source.name}</p>
+      <p className="relative text-sm text-white/75 leading-relaxed m-0 mb-6 max-w-md">
+        Guayas Hoy resume y enlaza. El artículo completo, las fotos y los derechos son de{' '}
+        {source.name}.
       </p>
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="relative flex flex-wrap items-center gap-4">
         <a
           href={article.canonical_url}
           target="_blank"
           rel="noopener noreferrer nofollow"
-          className="inline-flex items-center gap-2 rounded-md px-6 py-2.5 text-sm font-semibold bg-accent text-white no-underline hover:opacity-90 transition-opacity"
+          className="pill pill-light"
         >
           Leer la nota completa
-          <ExternalLink size={14} aria-hidden="true" />
+          <ArrowUpRight size={16} aria-hidden="true" />
         </a>
         <a
           href={source.homepage_url}
           target="_blank"
           rel="noopener noreferrer nofollow"
-          className="text-sm text-muted-foreground no-underline hover:text-foreground transition-colors"
+          className="text-sm text-white/70 no-underline hover:text-white transition-colors"
         >
           {source.domain}
         </a>
