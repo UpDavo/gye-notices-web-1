@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
+import { environment } from '../environments/environment';
 
 const YEAR = new Date().getFullYear();
 
@@ -62,6 +63,14 @@ export function Footer() {
                 <li><Link to="/noticias" className={linkClass}>Todas las notas</Link></li>
                 <li><Link to="/privacidad" className={linkClass}>Privacidad</Link></li>
                 <li><Link to="/terminos" className={linkClass}>Términos</Link></li>
+                {/* Contacto: un `mailto:` y nada más. No hay formulario en
+                    ninguna página —no existe backend que reciba envíos—, así
+                    que el pie enlaza al correo directamente. */}
+                <li>
+                  <a href={`mailto:${environment.contactEmail}`} className={linkClass}>
+                    {environment.contactEmail}
+                  </a>
+                </li>
               </ul>
             </div>
 

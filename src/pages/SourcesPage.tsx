@@ -3,6 +3,7 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { useSources } from '../hooks/useNews';
 import { usePageSeo } from '../hooks/usePageSeo';
+import { environment } from '../environments/environment';
 
 /* La página donde el proyecto explica su trato con los medios.
 
@@ -107,7 +108,9 @@ export function SourcesPage() {
             </div>
           </section>
 
-          {/* Sin canal de contacto público: no hay formulario ni correo de contacto.
+          {/* Único canal de contacto del sitio: un `mailto:` y nada más. Sin
+              formulario —no hay backend que reciba envíos, y un formulario que
+              no llega a ningún sitio es peor que no tenerlo. */}
           <section className="rounded-3xl border border-border bg-surface p-8 md:p-10 mb-8 text-center">
             <h2 className="font-display font-bold text-2xl text-foreground tracking-tight m-0 mb-3">
               ¿Eres de un medio?
@@ -117,13 +120,12 @@ export function SourcesPage() {
               frecuencia, o si quieres que tu medio aparezca aquí.
             </p>
             <a
-              href="mailto:hola@guayashoy.com"
+              href={`mailto:${environment.contactEmail}`}
               className="inline-block rounded-full px-8 py-3 text-sm font-semibold bg-accent text-white no-underline hover:opacity-90 transition-opacity"
             >
-              hola@guayashoy.com
+              {environment.contactEmail}
             </a>
           </section>
-          */}
         </div>
       </main>
 
