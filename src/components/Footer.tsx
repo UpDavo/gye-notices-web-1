@@ -75,16 +75,7 @@ export function Footer() {
             </button>
           </div>
 
-          {/* La palabra gigante del cierre, en la serif de la marca y casi
-              fundida con el fondo: es el colofón de la edición. */}
-          <p
-            className="font-display font-bold text-white/[0.07] leading-[0.8] m-0 mt-16 -mb-4 select-none whitespace-nowrap text-[14vw] lg:text-[10.5rem]"
-            aria-hidden="true"
-          >
-            Guayas Hoy
-          </p>
-
-          <div className="relative mt-6 pt-6 border-t border-white/10 text-[11px] uppercase tracking-[0.14em] text-white/45">
+          <div className="relative mt-14 pt-6 border-t border-white/10 text-[11px] uppercase tracking-[0.14em] text-white/45">
             <p className="m-0">© {YEAR} Guayas Hoy</p>
           </div>
         </div>

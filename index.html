@@ -23,7 +23,7 @@
     <title>Guayas Hoy | Lo que pasa en la ciudad, hoy</title>
     <meta name="description" content="Las noticias de Guayaquil de los principales medios de la ciudad, reunidas en un solo lugar. Titulares, extracto y enlace directo al medio que las publicó." />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#0b141d" />
+    <meta name="theme-color" content="#ffffff" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Guayas Hoy" />
@@ -41,15 +41,15 @@
     <meta name="twitter:image" content="https://guayashoy.com/img/og.png" />
 
     <!-- Tema: se aplica antes del primer paint para evitar el flash.
-         El sitio nace en oscuro; solo se queda en claro si el lector lo eligió
-         antes. Si el almacenamiento está bloqueado, gana el oscuro igual. -->
+         El sitio nace en claro; solo pasa a oscuro si el lector lo eligió
+         antes. Si el almacenamiento está bloqueado, gana el claro igual. -->
     <script>
       (function () {
         var stored = null;
         try {
           stored = localStorage.getItem('guayashoy-theme');
         } catch (e) {}
-        if (stored !== 'light') {
+        if (stored === 'dark') {
           document.documentElement.classList.add('dark');
         }
       })();

@@ -31,7 +31,7 @@ Stack: Vite + React + TS + Tailwind v4 + framer-motion.
 | Display | Fraunces (Google Fonts, variable 400–700) | Serif moderna: editorial sin caer en lo clásico |
 | Cuerpo | Atkinson Hyperlegible local | Elección de accesibilidad |
 | Estructura | Regla gruesa + filete fino | La firma del sistema; el hover tiñe la regla de celeste |
-| Modo por defecto | Oscuro (`html.dark`), claro guardado | Decisión previa del sitio; ambos temas se prueban |
+| Modo por defecto | Claro; oscuro con `html.dark` guardado | Un periódico se lee de día; ambos temas se prueban |
 | Vidrio | Solo la mancheta (`blur(20px) saturate(1.6)`) | El contenido pasa por debajo sin volverse niebla |
 
 ---
@@ -179,13 +179,7 @@ pegajosa (`lg:top-24`) y filete vertical.
 ## 8. El pie
 
 Bloque azul noche **plano** (sin esquinas redondeadas) que abre con un filete
-grueso celeste (`border-t-4 border-accent`) y conserva el halo de marca. Cierra
-con la palabra gigante en serif casi fundida con el fondo:
-
-```jsx
-"font-display font-bold text-white/[0.07] leading-[0.8] whitespace-nowrap
- text-[14vw] lg:text-[10.5rem]"   /* aria-hidden: es colofón, no contenido */
-```
+grueso celeste (`border-t-4 border-accent`) y conserva el halo de marca.
 
 ---
 
@@ -225,7 +219,7 @@ Estas no cambian con el rediseño; nacen de que el contenido es de otros.
 - [ ] Vidrio solo en la mancheta; `blur(20px) saturate(1.6)`
 - [ ] Foco visible global; `line-clamp` y `onError` en todo lo de terceros
 - [ ] Los tres estados en todo listado
-- [ ] Ambos temas probados (el sitio nace en oscuro)
+- [ ] Ambos temas probados (el sitio nace en claro)
 
 ### Errores comunes
 
