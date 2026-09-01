@@ -4,7 +4,7 @@ import { Search, X } from 'lucide-react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { ArticleFeed } from '../components/news/ArticleFeed';
-import { CategoryTabs } from '../components/news/CategoryTabs';
+import { CategorySidebar } from '../components/news/CategorySidebar';
 import { useArticles, useCategories } from '../hooks/useNews';
 import { usePageSeo } from '../hooks/usePageSeo';
 
@@ -109,21 +109,25 @@ export function NewsPage() {
             </form>
           </header>
 
-          <CategoryTabs categories={categories ?? []} className="mb-10" />
+          <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] lg:grid-cols-[220px_minmax(0,1fr)] gap-6 md:gap-10">
+            <CategorySidebar categories={categories ?? []} />
 
-          <ArticleFeed
-            data={data}
-            loading={loading}
-            error={error}
-            onRetry={reload}
-            onPageChange={setPage}
-            emptyTitle={query ? 'Sin resultados' : undefined}
-            emptyMessage={
-              query
-                ? `No encontramos notas que mencionen “${query}”. Prueba con otra palabra.`
-                : undefined
-            }
-          />
+            <div>
+              <ArticleFeed
+                data={data}
+                loading={loading}
+                error={error}
+                onRetry={reload}
+                onPageChange={setPage}
+                emptyTitle={query ? 'Sin resultados' : undefined}
+                emptyMessage={
+                  query
+                    ? `No encontramos notas que mencionen “${query}”. Prueba con otra palabra.`
+                    : undefined
+                }
+              />
+            </div>
+          </div>
         </div>
       </main>
 

@@ -5,11 +5,14 @@ import { PromoBanner } from '../components/PromoBanner';
 import { BreakingSection } from '../components/sections/BreakingSection';
 import { LatestSection } from '../components/sections/LatestSection';
 import { TrendingSection } from '../components/sections/TrendingSection';
+import { BriefsSection } from '../components/sections/BriefsSection';
 import { NewsFeedSection } from '../components/sections/NewsFeedSection';
+import { AdsSection } from '../components/sections/AdsSection';
 import { EmptyState, ErrorState } from '../components/news/States';
 import { useCategories, useFeatured, useLatest } from '../hooks/useNews';
 import { usePageSeo } from '../hooks/usePageSeo';
 import { SITE_URL } from '../lib/api';
+import { splitByImage } from '../lib/articles';
 
 const TITLE = 'Guayas Hoy | Lo que pasa en la ciudad, hoy';
 const DESCRIPTION =
@@ -17,11 +20,20 @@ const DESCRIPTION =
 
 /* La portada.
 
-   Cuatro peticiones, las mismas de antes: destacadas, últimas, secciones y
-   la rejilla filtrable. Las destacadas se reparten entre el hero (1), última
-   hora (4), tendencias (3) y la foto grande (1); el backend ya devuelve lo
-   más reciente si nadie marcó destacadas, así que la portada nunca queda
-   vacía. Ninguna nota sale dos veces: el reparto es por posición. */
+   Cuatro peticiones: destacadas, últimas, secciones y la rejilla filtrable.
+   El backend ya devuelve lo más reciente si nadie marcó destacadas, así que
+   la portada nunca queda vacía. Ninguna nota sale dos veces: el reparto es
+   por posición sobre una lista ya repartida.
+
+   Ese reparto empieza por la foto. El hero, última hora, tendencias y la
+   pieza a sangre son bloques ilustrados —la última es literalmente el titular
+   encima de la imagen—, así que salen todos de las notas que traen foto. Las
+   que no la traen no se descartan ni se rellenan con un dibujo: bajan a «En
+   breve», que es una lista de titulares y no necesita imagen para estar
+   bien compuesta.
+
+   Dentro de cada bloque el orden lo sigue dando la fecha: `-published_at`
+   llega del backend y filtrar por foto no lo altera. */
 
 export function HomePage() {
   usePageSeo({
@@ -45,25 +57,24 @@ export function HomePage() {
     },
   });
 
-  const featured = useFeatured(9);
+  /* Se pide de más —14 y no 9— porque ahora la lista se parte en dos y los
+     bloques ilustrados solo se sirven de una mitad. */
+  const featured = useFeatured(14);
   const latest = useLatest(6);
   const { data: categories } = useCategories();
 
   const pool = featured.data?.results ?? [];
+  const { withImage, withoutImage } = splitByImage(pool);
 
-  /* El hero ocupa media pantalla, así que se prefiere una nota con foto; si
-     ninguna la trae se usa la primera y el hero cae a la foto propia. */
-  const leadIndex = Math.max(0, pool.findIndex((article) => article.image_url));
-  const lead = pool[leadIndex];
-  const rest = pool.filter((_, i) => i !== leadIndex);
+  const lead = withImage[0];
+  const breaking = withImage.slice(1, 5);
+  const trendingItems = withImage.slice(5, 8);
+  const feature = withImage[8];
 
-  const breaking = rest.slice(0, 4);
-  const trending = rest.slice(4, 7);
-  /* La foto grande necesita foto de verdad: se busca la primera con imagen
-     entre lo que queda y, si no hay, se toma la primera de tendencias. */
-  const tail = rest.slice(7);
-  const feature = tail.find((a) => a.image_url) ?? tail[0] ?? trending.find((a) => a.image_url);
-  const trendingItems = feature ? trending.filter((a) => a.slug !== feature.slug) : trending;
+  /* «En breve» recoge lo que llegó sin foto. Si una corrida no trae ninguna,
+     la sección no se pinta: `BriefsSection` devuelve null con la lista
+     vacía. */
+  const briefs = withoutImage;
 
   return (
     <div className="flex flex-col bg-background min-h-screen">
@@ -97,11 +108,15 @@ export function HomePage() {
               categories={categories ?? []}
             />
             <TrendingSection items={trendingItems} feature={feature} loading={featured.loading} />
+            <BriefsSection articles={briefs} />
           </>
         )}
 
         <PromoBanner />
         <NewsFeedSection />
+        {/* La pauta va al final del recorrido y rotulada: la portada se lee
+            primero y se monetiza después. Se edita en `src/data/ads.ts`. */}
+        <AdsSection slot="home" />
       </main>
       <Footer />
     </div>

@@ -198,12 +198,6 @@ export function ArticlePage() {
                   </p>
 
                   <SourceCredit article={article} variant="block" className="mb-5" />
-
-                  <p className="text-xs text-muted-foreground leading-relaxed m-0 max-w-[70ch]">
-                    Guayas Hoy es un agregador: reproduce el titular y un extracto breve con
-                    fines informativos y enlaza al artículo completo. Los derechos sobre el texto
-                    y las imágenes pertenecen a {article.source.name}.
-                  </p>
                 </article>
               )}
             </div>

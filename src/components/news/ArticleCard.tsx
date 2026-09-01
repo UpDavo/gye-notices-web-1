@@ -25,42 +25,25 @@ type Props = {
   className?: string;
 };
 
-/* Un medio puede no traer imagen, o su CDN puede fallar. En los dos casos el
-   hueco se rellena con un degradado de tinta y el nombre del medio, discreto:
-   mantiene la altura para que la rejilla no se desalinee, sin gritar. */
-function Fallback({ article, label = true }: { article: Article; label?: boolean }) {
-  return (
-    <div
-      className="relative h-full w-full flex items-end p-3 overflow-hidden"
-      style={{
-        background:
-          'linear-gradient(150deg, hsl(var(--ink)) 0%, hsl(var(--ink-soft)) 55%, hsl(var(--accent-deep)) 100%)',
-      }}
-    >
-      <svg
-        viewBox="0 0 200 60"
-        preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full opacity-20"
-        aria-hidden="true"
-      >
-        <path d="M0 30q12.5-14 25 0t25 0 25 0 25 0 25 0 25 0 25 0" fill="none" stroke="#fff" strokeWidth="2.5" />
-        <path d="M0 44q12.5-14 25 0t25 0 25 0 25 0 25 0 25 0 25 0" fill="none" stroke="#fff" strokeWidth="2.5" />
-        <path d="M0 16q12.5-14 25 0t25 0 25 0 25 0 25 0 25 0 25 0" fill="none" stroke="#fff" strokeWidth="2.5" />
-      </svg>
-      {label && (
-        <span className="relative font-bold text-white/90 text-xs leading-tight">
-          {article.source.name}
-        </span>
-      )}
-    </div>
-  );
-}
+/* La foto, o nada.
 
+   Un medio puede no traer imagen —media docena de los feeds del catálogo no la
+   publican— y una foto de terceros puede fallar por motivos que este sitio no
+   controla. En los dos casos la tarjeta se queda sin ella y punto: la nota se
+   pinta como nota de texto.
+
+   Antes había un relleno con degradado y el nombre del medio. Ocupaba el mismo
+   sitio que una foto sin ser una, así que la rejilla se llenaba de cajas
+   decorativas que no informaban de nada y competían con las fotos de verdad.
+   Una nota sin foto es una nota corta, no una nota rota.
+
+   Devolver `null` y no una caja vacía es lo que deja que el titular suba a
+   ocupar el hueco: cada variante ya es un flex o una columna, así que el
+   elemento que falta simplemente no reserva espacio. */
 export function Cover({
   article,
   className,
   eager,
-  label = true,
 }: {
   article: Article;
   className: string;
@@ -69,20 +52,18 @@ export function Cover({
 }) {
   const [failed, setFailed] = useState(false);
 
+  if (!article.image_url || failed) return null;
+
   return (
     <div className={`overflow-hidden bg-muted ${className}`}>
-      {article.image_url && !failed ? (
-        <img
-          src={article.image_url}
-          alt=""
-          loading={eager ? 'eager' : 'lazy'}
-          decoding="async"
-          onError={() => setFailed(true)}
-          className="h-full w-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out"
-        />
-      ) : (
-        <Fallback article={article} label={label} />
-      )}
+      <img
+        src={article.image_url}
+        alt=""
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+        onError={() => setFailed(true)}
+        className="h-full w-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out"
+      />
     </div>
   );
 }
@@ -139,7 +120,11 @@ export function ArticleCard({ article, variant = 'standard', eager = false, clas
     );
   }
 
-  if (variant === 'overlay') {
+  /* `overlay` es la única variante cuyo diseño ES la foto: el titular va en
+     blanco encima de ella. Sin imagen quedaría un rectángulo de tinta con
+     texto, que es justo el relleno que se acaba de quitar, así que la nota
+     sin foto cae a la tarjeta normal. */
+  if (variant === 'overlay' && article.image_url) {
     return (
       <Link
         to={to}

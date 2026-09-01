@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { ArticleFeed } from '../components/news/ArticleFeed';
-import { CategoryTabs } from '../components/news/CategoryTabs';
+import { CategorySidebar } from '../components/news/CategorySidebar';
 import { useArticles, useCategories } from '../hooks/useNews';
 import { usePageSeo } from '../hooks/usePageSeo';
 import { SITE_URL } from '../lib/api';
@@ -82,17 +82,21 @@ export function SectionPage() {
             </p>
           </header>
 
-          <CategoryTabs categories={categories ?? []} className="mb-10" />
+          <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] lg:grid-cols-[220px_minmax(0,1fr)] gap-6 md:gap-10">
+            <CategorySidebar categories={categories ?? []} activeSlug={slug} />
 
-          <ArticleFeed
-            data={data}
-            loading={loading}
-            error={error}
-            onRetry={reload}
-            onPageChange={setPage}
-            emptyTitle={`Nada en ${name} por ahora`}
-            emptyMessage="En cuanto los medios publiquen algo de esta sección, aparecerá aquí."
-          />
+            <div>
+              <ArticleFeed
+                data={data}
+                loading={loading}
+                error={error}
+                onRetry={reload}
+                onPageChange={setPage}
+                emptyTitle={`Nada en ${name} por ahora`}
+                emptyMessage="En cuanto los medios publiquen algo de esta sección, aparecerá aquí."
+              />
+            </div>
+          </div>
         </div>
       </main>
 
