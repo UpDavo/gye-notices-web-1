@@ -37,17 +37,29 @@ export type FormatSpec = {
   name: string;
   /* Medida de referencia, la que se le pide al diseñador del anunciante. */
   size: string;
-  /* Proporción en móvil y en escritorio. Se aplica siempre —a la pieza real
-     y al cartel de espacio libre— para que el hueco mida lo mismo con y sin
-     campaña y la portada no salte al cargar. */
+  /* Proporción en móvil y en escritorio. La pieza real la respeta siempre; el
+     cartel de espacio libre la usa como MÍNIMO (`min-h-fit`) y crece si su
+     texto no cabe. Recortar el cartel para conservar la proporción exacta era
+     el peor de los dos males: el hueco medía bien y no se leía. */
   aspect: string;
+  /* Altura mínima del cartel de espacio libre. NO se usa la proporción: un
+     `aspect-ratio` fija la altura y recorta el texto que no quepa, y un
+     titular cortado es peor que un hueco un poco más alto de la cuenta. Con
+     `min-h` el hueco mide lo que mide la pieza y crece si hace falta. */
+  vacantMinH: string;
+  /* Cómo se compone el cartel de espacio libre. Un formato ancho y bajo
+     —leaderboard, faldón— no admite cuatro líneas apiladas: ahí el texto va a
+     la izquierda y el botón a la derecha. */
+  layout: 'stack' | 'row';
+  /* Formatos estrechos: tipografía un escalón más pequeña. */
+  dense?: boolean;
 };
 
 export const FORMATS: Record<AdFormat, FormatSpec> = {
-  billboard:   { name: 'Billboard',        size: '970 × 250 px', aspect: 'aspect-[16/9] sm:aspect-[3/1] md:aspect-[970/250]' },
-  leaderboard: { name: 'Leaderboard',      size: '728 × 90 px',  aspect: 'aspect-[8/3] sm:aspect-[6/1] md:aspect-[728/90]' },
-  rectangle:   { name: 'Rectángulo',       size: '300 × 250 px', aspect: 'aspect-[300/250]' },
-  halfpage:    { name: 'Media página',     size: '300 × 600 px', aspect: 'aspect-[3/2] md:aspect-[300/600]' },
+  billboard:   { name: 'Billboard',    size: '970 × 250 px', aspect: 'aspect-[16/9] sm:aspect-[3/1] md:aspect-[970/250]', vacantMinH: 'min-h-[13rem] md:min-h-[19rem]', layout: 'stack' },
+  leaderboard: { name: 'Leaderboard',  size: '728 × 90 px',  aspect: 'aspect-[8/3] sm:aspect-[6/1] md:aspect-[728/90]',   vacantMinH: 'min-h-[8rem] md:min-h-[9.25rem]', layout: 'row' },
+  rectangle:   { name: 'Rectángulo',   size: '300 × 250 px', aspect: 'aspect-[300/250]',                                  vacantMinH: 'min-h-[13rem]',                   layout: 'stack', dense: true },
+  halfpage:    { name: 'Media página', size: '300 × 600 px', aspect: 'aspect-[3/2] md:aspect-[300/600]',                  vacantMinH: 'min-h-[18rem] md:min-h-[37rem]',  layout: 'stack' },
 };
 
 export type SpaceSpec = {

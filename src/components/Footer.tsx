@@ -59,10 +59,6 @@ export function Footer() {
             >
               Guayas<span className="text-accent-bright">Hoy</span>
             </Link>
-            <p className="text-[13px] text-white/60 leading-relaxed m-0 mt-4 max-w-xs">
-              Las noticias de Guayaquil de los principales medios de la ciudad, reunidas en un
-              solo lugar y enlazadas siempre al original.
-            </p>
           </div>
 
           <div>

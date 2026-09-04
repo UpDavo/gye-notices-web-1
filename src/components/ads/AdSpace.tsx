@@ -57,6 +57,8 @@ export function AdSpace({ slot, className = '' }: Props) {
   const format = FORMATS[space.format];
   const sold = adForSlot(slot);
   const ad = sold && !failed ? sold : null;
+  const row = format.layout === 'row';
+  const dense = Boolean(format.dense);
 
   return (
     <figure className={`m-0 ${className}`}>
@@ -86,10 +88,19 @@ export function AdSpace({ slot, className = '' }: Props) {
         </AdLink>
       ) : (
         /* Espacio libre. Bloque de tinta con el halo celeste de marca, el
-           mismo lenguaje del hero y del crédito de salida. */
+           mismo lenguaje del hero y del crédito de salida.
+
+           El cartel va con `min-h` y NO con la proporción del formato: un
+           `aspect-ratio` fija la altura y recorta el titular que no quepa. La
+           pieza vendida sí conserva la proporción exacta, que es donde
+           importa. */
         <a
           href={contactUrl(space, format)}
-          className={`group relative flex flex-col justify-center items-center text-center gap-2 overflow-hidden rounded-[var(--radius-card)] bg-ink text-ink-foreground no-underline px-6 py-8 ${format.aspect}`}
+          className={`group relative flex overflow-hidden rounded-[var(--radius-card)] bg-ink text-ink-foreground no-underline ${format.vacantMinH} ${
+            row
+              ? 'flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-5 py-5 sm:px-8'
+              : 'flex-col items-center justify-center text-center gap-2 px-5 py-6 sm:px-6 sm:py-8'
+          }`}
         >
           <span
             aria-hidden="true"
@@ -99,19 +110,37 @@ export function AdSpace({ slot, className = '' }: Props) {
                 'radial-gradient(40rem 20rem at 50% 120%, hsl(var(--accent-deep) / 0.85), transparent 70%)',
             }}
           />
-          <span className="relative display uppercase text-lg sm:text-xl md:text-2xl leading-[1.05] max-w-2xl">
-            {space.vacant.title}
+
+          <span className={`relative min-w-0 ${row ? '' : 'contents'}`}>
+            <span
+              className={`relative block display uppercase leading-[1.05] ${
+                dense
+                  ? 'text-[15px] sm:text-base'
+                  : row
+                    ? 'text-lg md:text-xl'
+                    : 'text-lg sm:text-xl md:text-2xl max-w-2xl'
+              }`}
+            >
+              {space.vacant.title}
+            </span>
+            <span
+              className={`relative block text-white/70 ${
+                dense ? 'text-[12px] leading-snug mt-1.5' : 'text-[13px] md:text-sm mt-1.5 max-w-md'
+              }`}
+            >
+              {space.vacant.subtitle}
+            </span>
           </span>
-          <span className="relative text-[13px] md:text-sm text-white/70 max-w-md">
-            {space.vacant.subtitle}
-          </span>
-          <span className="relative pill pill-light mt-2 text-[13px] !py-2.5 !px-4">
-            {space.vacant.cta}
-            <ArrowRight size={15} aria-hidden="true" />
-          </span>
-          {/* La medida, en pequeño: es el dato que pide el anunciante. */}
-          <span className="relative kicker text-white/45 mt-1">
-            {format.name} · {format.size}
+
+          <span className={`relative flex flex-col items-center gap-2 shrink-0 ${row ? 'sm:items-end' : 'mt-2'}`}>
+            <span className={`pill pill-light ${dense ? 'text-[13px] !py-2 !px-3.5' : 'text-[13px] !py-2.5 !px-4'}`}>
+              {space.vacant.cta}
+              <ArrowRight size={15} aria-hidden="true" />
+            </span>
+            {/* La medida, en pequeño: es el dato que pide el anunciante. */}
+            <span className="kicker text-white/45 text-[10px]">
+              {format.name} · {format.size}
+            </span>
           </span>
         </a>
       )}
