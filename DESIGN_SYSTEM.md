@@ -141,3 +141,41 @@ secciones y sitio, línea legal, y la palabra gigante recortada al final.
   `lg:grid-cols-[5fr_7fr]`.
 - Objetivos táctiles: 44px (`h-11`) en iconos y paginación, 40px en píldoras
   de filtro, 48px en campos de búsqueda.
+
+---
+
+## 7. Publicidad
+
+Los huecos vendibles viven en `src/data/ads.ts` y los pinta `AdSpace` /
+`AdBand` (`src/components/ads/AdSpace.tsx`). Dos listas separadas y esa
+separación es lo importante:
+
+- `SPACES` — los huecos: dónde están, qué formato son y qué dicen mientras
+  nadie los compra. **Existen siempre.** Un espacio que solo aparece cuando ya
+  está vendido no se le puede enseñar a un anunciante; y al reservar su altura
+  desde el primer frame, la portada no salta cuando entra la campaña.
+- `ADS` — las piezas vendidas. Vender es añadir una entrada; al terminar la
+  campaña se borra y el hueco vuelve solo a su cartel.
+
+| Hueco | Formato | Dónde |
+|---|---|---|
+| `home-top` | Billboard 970×250 | Portada, bajo el hero |
+| `home-mid` | Leaderboard 728×90 | Portada, antes de la franja propia |
+| `home-end` | Billboard 970×250 | Portada, al cierre |
+| `rail` | Rectángulo 300×250 | Columna lateral de `/noticias` y de la nota |
+| `article-end` | Leaderboard 728×90 | Tras la salida al medio |
+| `section-top` | Leaderboard 728×90 | Cabecera de sección |
+
+Los formatos son medidas IAB estándar: un anunciante que ya tiene banners
+hechos para otro medio los entrega tal cual.
+
+**Forma del hueco libre:** bloque de tinta con el halo celeste, titular en
+`.display` en versales, píldora `pill-light` de contacto y la medida en
+`.kicker`. Es una pieza de la portada que además vende, no un recuadro
+punteado de maqueta.
+
+**Reglas duras.** Todo hueco va rotulado («Publicidad», «Espacio
+publicitario») y el rótulo nunca miente: un anuncio que se hace pasar por nota
+quema la confianza que sostiene al resto de la portada. Los enlaces externos
+salen con `rel="sponsored"`. Una pieza que no carga cae al cartel de espacio
+libre, nunca al icono roto.

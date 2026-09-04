@@ -7,7 +7,7 @@ import { LatestSection } from '../components/sections/LatestSection';
 import { TrendingSection } from '../components/sections/TrendingSection';
 import { BriefsSection } from '../components/sections/BriefsSection';
 import { NewsFeedSection } from '../components/sections/NewsFeedSection';
-import { AdsSection } from '../components/sections/AdsSection';
+import { AdBand } from '../components/ads/AdSpace';
 import { EmptyState, ErrorState } from '../components/news/States';
 import { useCategories, useFeatured, useLatest } from '../hooks/useNews';
 import { usePageSeo } from '../hooks/usePageSeo';
@@ -99,6 +99,11 @@ export function HomePage() {
 
         {!featured.error && lead && <HeroLead article={lead} />}
 
+        {/* Billboard bajo el hero: el hueco más visto del sitio. Los espacios
+            se definen en `src/data/ads.ts`; libres o vendidos, siempre ocupan
+            su altura, así que la portada no salta al entrar una campaña. */}
+        <AdBand slot="home-top" />
+
         {!featured.error && (
           <>
             <BreakingSection articles={breaking} loading={featured.loading} />
@@ -112,11 +117,12 @@ export function HomePage() {
           </>
         )}
 
+        <AdBand slot="home-mid" />
         <PromoBanner />
         <NewsFeedSection />
-        {/* La pauta va al final del recorrido y rotulada: la portada se lee
-            primero y se monetiza después. Se edita en `src/data/ads.ts`. */}
-        <AdsSection slot="home" />
+        {/* Y la franja ancha de cierre, ya rotulada: la portada se lee
+            primero y se monetiza después. */}
+        <AdBand slot="home-end" />
       </main>
       <Footer />
     </div>

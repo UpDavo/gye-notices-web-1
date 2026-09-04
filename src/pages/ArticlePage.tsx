@@ -7,6 +7,7 @@ import { ArticleCard } from '../components/news/ArticleCard';
 import { SourceCredit } from '../components/news/SourceCredit';
 import { CardSkeleton, ErrorState } from '../components/news/States';
 import { SectionHeader } from '../components/ui/ScrollMotion';
+import { AdSpace } from '../components/ads/AdSpace';
 import { useArticle, useArticles, useLatest } from '../hooks/useNews';
 import { usePageSeo } from '../hooks/usePageSeo';
 import { formatDateTime, shortDate, singleLine, timeAgo } from '../lib/format';
@@ -198,6 +199,10 @@ export function ArticlePage() {
                   </p>
 
                   <SourceCredit article={article} variant="block" className="mb-5" />
+
+                  {/* Después de la salida al medio: el lector ya terminó de
+                      leer y el anuncio no se interpone con la nota. */}
+                  <AdSpace slot="article-end" className="mt-10" />
                 </article>
               )}
             </div>
@@ -230,6 +235,8 @@ export function ArticlePage() {
                   <ArrowRight size={15} aria-hidden="true" />
                 </Link>
               </div>
+
+              <AdSpace slot="rail" className="mt-8" />
             </aside>
           </div>
 

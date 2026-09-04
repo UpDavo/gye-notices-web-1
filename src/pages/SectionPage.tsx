@@ -4,6 +4,7 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { ArticleFeed } from '../components/news/ArticleFeed';
 import { CategorySidebar } from '../components/news/CategorySidebar';
+import { AdSpace } from '../components/ads/AdSpace';
 import { useArticles, useCategories } from '../hooks/useNews';
 import { usePageSeo } from '../hooks/usePageSeo';
 import { SITE_URL } from '../lib/api';
@@ -81,6 +82,9 @@ export function SectionPage() {
                 : ''}
             </p>
           </header>
+
+          {/* Patrocinio de sección: encima de la rejilla, bajo el titular. */}
+          <AdSpace slot="section-top" className="mb-10" />
 
           <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] lg:grid-cols-[220px_minmax(0,1fr)] gap-6 md:gap-10">
             <CategorySidebar categories={categories ?? []} activeSlug={slug} />
