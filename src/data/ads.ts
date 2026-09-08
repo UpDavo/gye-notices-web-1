@@ -97,7 +97,7 @@ export const SPACES: Record<AdSlot, SpaceSpec> = {
     format: 'billboard',
     label: 'Espacio publicitario',
     vacant: {
-      title: 'Miles de guayaquileños leen aquí',
+      title: 'Miles de guayasenses leen aquí',
       subtitle: 'Tu marca puede estar en medio. Franja ancha al cierre de la portada.',
       cta: 'Quiero anunciar',
     },

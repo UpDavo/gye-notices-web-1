@@ -32,7 +32,7 @@ export function Footer() {
         {/* Frase y contacto */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
           <h2 className="display text-[2.75rem] md:text-6xl lg:text-7xl text-white m-0 max-w-xl">
-            La ciudad, <span className="text-accent-bright">hoy.</span>
+            La provincia, <span className="text-accent-bright">hoy.</span>
           </h2>
 
           <div className="md:max-w-sm w-full">
