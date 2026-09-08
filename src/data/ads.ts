@@ -35,8 +35,6 @@ export type AdSlot =
 export type FormatSpec = {
   /* Nombre comercial: es el que va en el correo con el anunciante. */
   name: string;
-  /* Medida de referencia, la que se le pide al diseñador del anunciante. */
-  size: string;
   /* Proporción en móvil y en escritorio. La pieza real la respeta siempre; el
      cartel de espacio libre la usa como MÍNIMO (`min-h-fit`) y crece si su
      texto no cabe. Recortar el cartel para conservar la proporción exacta era
@@ -55,11 +53,25 @@ export type FormatSpec = {
   dense?: boolean;
 };
 
+/* MEDIDAS DE ENTREGA — REFERENCIA INTERNA, NO SE MUESTRAN EN EL SITIO
+   ────────────────────────────────────────────────────────────────────
+   La pieza que hay que pedirle al diseñador del anunciante. Vivían en un
+   campo `size` que se pintaba bajo cada hueco; en pantalla no le decían nada
+   al lector y hacían que el cartel pareciera un hueco de red publicitaria en
+   vez de un espacio de la casa. Se pasan a esta tabla: se consultan al armar
+   la orden de publicidad y se escriben a mano en el correo.
+
+     billboard      970 × 250 px
+     leaderboard    728 ×  90 px
+     rectangle      300 × 250 px
+     halfpage       300 × 600 px
+
+   Si cambia una medida, cambia también su `aspect` aquí abajo. */
 export const FORMATS: Record<AdFormat, FormatSpec> = {
-  billboard:   { name: 'Billboard',    size: '970 × 250 px', aspect: 'aspect-[16/9] sm:aspect-[3/1] md:aspect-[970/250]', vacantMinH: 'min-h-[13rem] md:min-h-[19rem]', layout: 'stack' },
-  leaderboard: { name: 'Leaderboard',  size: '728 × 90 px',  aspect: 'aspect-[8/3] sm:aspect-[6/1] md:aspect-[728/90]',   vacantMinH: 'min-h-[8rem] md:min-h-[9.25rem]', layout: 'row' },
-  rectangle:   { name: 'Rectángulo',   size: '300 × 250 px', aspect: 'aspect-[300/250]',                                  vacantMinH: 'min-h-[13rem]',                   layout: 'stack', dense: true },
-  halfpage:    { name: 'Media página', size: '300 × 600 px', aspect: 'aspect-[3/2] md:aspect-[300/600]',                  vacantMinH: 'min-h-[18rem] md:min-h-[37rem]',  layout: 'stack' },
+  billboard:   { name: 'Billboard',    aspect: 'aspect-[16/9] sm:aspect-[3/1] md:aspect-[970/250]', vacantMinH: 'min-h-[13rem] md:min-h-[19rem]', layout: 'stack' },
+  leaderboard: { name: 'Leaderboard',  aspect: 'aspect-[8/3] sm:aspect-[6/1] md:aspect-[728/90]',   vacantMinH: 'min-h-[8rem] md:min-h-[9.25rem]', layout: 'row' },
+  rectangle:   { name: 'Rectángulo',   aspect: 'aspect-[300/250]',                                  vacantMinH: 'min-h-[13rem]',                   layout: 'stack', dense: true },
+  halfpage:    { name: 'Media página', aspect: 'aspect-[3/2] md:aspect-[300/600]',                  vacantMinH: 'min-h-[18rem] md:min-h-[37rem]',  layout: 'stack' },
 };
 
 export type SpaceSpec = {
@@ -156,7 +168,7 @@ export type Ad = {
 export const ADS: Ad[] = [];
 
 export function contactUrl(space: SpaceSpec, format: FormatSpec): string {
-  const body = `Hola, me interesa el espacio «${space.vacant.title}» (${format.name}, ${format.size}).`;
+  const body = `Hola, me interesa el espacio «${space.vacant.title}» (${format.name}).`;
   return `mailto:${environment.contactEmail}?subject=${CONTACT_SUBJECT}&body=${encodeURIComponent(body)}`;
 }
 

@@ -137,10 +137,6 @@ export function AdSpace({ slot, className = '' }: Props) {
               {space.vacant.cta}
               <ArrowRight size={15} aria-hidden="true" />
             </span>
-            {/* La medida, en pequeño: es el dato que pide el anunciante. */}
-            <span className="kicker text-white/45 text-[10px]">
-              {format.name} · {format.size}
-            </span>
           </span>
         </a>
       )}
