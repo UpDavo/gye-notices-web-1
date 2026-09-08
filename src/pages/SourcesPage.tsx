@@ -56,7 +56,7 @@ export function SourcesPage() {
               De dónde sale todo esto.
             </h1>
             <p className="text-muted-foreground text-lg leading-relaxed m-0">
-              Guayas Hoy no produce noticias. Reúne lo que publican los medios de la ciudad y
+              Guayas Hoy no produce noticias. Reúne lo que publican los medios de la provincia y
               del país, y manda al lector de vuelta a ellos.
             </p>
           </header>

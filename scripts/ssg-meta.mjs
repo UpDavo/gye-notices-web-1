@@ -28,7 +28,7 @@ const PAGES = [
     outPath: 'noticias/index.html',
     title: 'Todas las noticias — Guayas Hoy',
     description:
-      'El archivo completo de notas de Guayaquil: todo lo que publican los medios de la ciudad, con crédito y enlace al artículo original.',
+      'El archivo completo de notas del Guayas: todo lo que publican los medios de la provincia, con crédito y enlace al artículo original.',
     canonical: `${SITE_URL}/noticias`,
     ogType: 'website',
   },
@@ -52,7 +52,7 @@ const PAGES = [
     outPath: 'terminos/index.html',
     title: 'Términos y condiciones — Guayas Hoy',
     description:
-      'Condiciones de uso de Guayas Hoy, agregador de noticias de la ciudad, y cómo se trata el contenido de los medios.',
+      'Condiciones de uso de Guayas Hoy, agregador de noticias de la provincia, y cómo se trata el contenido de los medios.',
     canonical: `${SITE_URL}/terminos`,
     ogType: 'article',
   },

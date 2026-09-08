@@ -34,7 +34,7 @@ export const HERO_BANNERS: Banner[] = [
   {
     key: 'malecon',
     title: 'Guayaquil desde el Malecón',
-    subtitle: 'La ciudad y el río, todos los días.',
+    subtitle: 'La provincia y el río, todos los días.',
     alt: 'Vista aérea del Malecón 2000 y la rueda La Perla, con el río Guayas al fondo',
     image_url: '/img/banner-malecon.jpg',
     image_url_mobile: '/img/banner-malecon-mobile.jpg',

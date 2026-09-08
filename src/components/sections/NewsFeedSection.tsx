@@ -63,7 +63,7 @@ export function NewsFeedSection() {
     <section id="secciones" className="px-4 md:px-6 pt-16 md:pt-20 scroll-mt-20">
       <div className="max-w-[1200px] mx-auto">
         <Reveal className="mb-8">
-          <SectionHeader to="/noticias">Explora la ciudad</SectionHeader>
+          <SectionHeader to="/noticias">Explora la provincia</SectionHeader>
         </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] lg:grid-cols-[220px_minmax(0,1fr)] gap-6 md:gap-10">

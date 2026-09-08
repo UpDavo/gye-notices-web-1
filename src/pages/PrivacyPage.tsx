@@ -19,7 +19,7 @@ export function PrivacyPage() {
           title: '1. Quiénes somos',
           body: (
             <p className="m-0">
-              Guayas Hoy es un agregador de noticias de la ciudad. Reunimos titulares
+              Guayas Hoy es un agregador de noticias de la provincia. Reunimos titulares
               y extractos publicados por medios de comunicación y enlazamos a sus artículos
               originales. No producimos contenido periodístico propio.
             </p>

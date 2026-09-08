@@ -81,7 +81,7 @@ export function HeroLead({ article }: { article: Article }) {
               aria-hidden="true"
             />
             <p className="absolute bottom-3 right-4 m-0 text-[11px] text-white/70 drop-shadow">
-              {useOwnImage ? article.image_credit || article.source.name : 'Guayaquil'}
+              {useOwnImage ? article.image_credit || article.source.name : 'Guayas'}
             </p>
           </div>
         </Link>

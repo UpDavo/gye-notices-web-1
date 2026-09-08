@@ -63,7 +63,7 @@ export function ArticlePage() {
   const { data: article, loading, error, errorCode, reload } = useArticle(slug);
 
   /* Relacionadas: misma sección, sin repetir la que se está leyendo. La
-     columna lateral trae lo último de toda la ciudad. */
+     columna lateral trae lo último de toda la provincia. */
   const related = useArticles(
     article?.category ? { category: article.category.slug, page_size: 5 } : { page_size: 5 },
   );

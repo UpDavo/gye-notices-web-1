@@ -164,7 +164,7 @@ body {
   font-variation-settings: "opsz" 32;
 }
 
-/* Etiqueta con viñeta: «• Guayaquil». Es la micro-etiqueta de cada tarjeta
+/* Etiqueta con viñeta: «• Guayas». Es la micro-etiqueta de cada tarjeta
    y va en gris, no en celeste: la referencia la usa como dato, no como
    reclamo. La viñeta sí lleva el acento. */
 .tag-dot {

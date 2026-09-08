@@ -12,7 +12,7 @@ export function TermsPage() {
       updated={UPDATED}
       path="/terminos"
       seoTitle="Términos y condiciones — Guayas Hoy"
-      seoDescription="Condiciones de uso de Guayas Hoy, agregador de noticias de la ciudad, y cómo se trata el contenido de los medios."
+      seoDescription="Condiciones de uso de Guayas Hoy, agregador de noticias de la provincia, y cómo se trata el contenido de los medios."
       intro="Al usar Guayas Hoy aceptas estas condiciones. La más importante cabe en una línea: el contenido no es nuestro, y por eso siempre te llevamos a quien lo escribió."
       sections={[
         {

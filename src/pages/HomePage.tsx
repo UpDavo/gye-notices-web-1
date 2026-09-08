@@ -14,9 +14,9 @@ import { usePageSeo } from '../hooks/usePageSeo';
 import { SITE_URL } from '../lib/api';
 import { splitByImage } from '../lib/articles';
 
-const TITLE = 'Guayas Hoy | Lo que pasa en la ciudad, hoy';
+const TITLE = 'Guayas Hoy | Lo que pasa en la provincia, hoy';
 const DESCRIPTION =
-  'Las noticias de Guayaquil de los principales medios de la ciudad, reunidas en un solo lugar. Titulares, extracto y enlace directo al medio que las publicó.';
+  'Las noticias del Guayas de los principales medios de la provincia, reunidas en un solo lugar. Titulares, extracto y enlace directo al medio que las publicó.';
 
 /* La portada.
 

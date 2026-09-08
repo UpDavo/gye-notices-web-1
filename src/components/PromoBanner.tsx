@@ -6,7 +6,7 @@ import { HERO_BANNERS, type Banner } from '../data/banners';
 /* Banner ancho a media portada: la pieza propia de `src/data/banners.ts`.
 
    Foto a sangre, velo oscuro por abajo y el texto encima en versales. Es el
-   sitio de las piezas de la casa —campañas, la ciudad, un especial— entre las
+   sitio de las piezas de la casa —campañas, la provincia, un especial— entre las
    notas de los medios. Cuáles son y a dónde llevan se edita en ese archivo,
    no aquí. Se muestra la primera; sin banners, la franja desaparece. */
 

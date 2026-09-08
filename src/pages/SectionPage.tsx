@@ -38,7 +38,7 @@ export function SectionPage() {
     title: `${name} — Guayas Hoy`,
     description:
       category?.description ||
-      `Noticias de ${name} publicadas por los medios de Guayaquil, con crédito y enlace al original.`,
+      `Noticias de ${name} publicadas por los medios del Guayas, con crédito y enlace al original.`,
     path: `/seccion/${slug}`,
     jsonLd: data?.results?.length
       ? {

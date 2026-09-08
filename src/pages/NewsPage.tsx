@@ -51,8 +51,8 @@ export function NewsPage() {
   usePageSeo({
     title,
     description: query
-      ? `Resultados de "${query}" en las noticias de Guayaquil.`
-      : 'Todas las noticias de Guayaquil publicadas por los medios de la ciudad, con crédito y enlace al original.',
+      ? `Resultados de "${query}" en las noticias del Guayas.`
+      : 'Todas las noticias del Guayas publicadas por los medios de la provincia, con crédito y enlace al original.',
     path: query ? `/noticias?q=${encodeURIComponent(query)}` : '/noticias',
     // Una página de resultados no aporta nada a un buscador y compite con las
     // notas reales por presupuesto de rastreo.
